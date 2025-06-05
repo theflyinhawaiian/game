@@ -24,8 +24,35 @@ public class Program
             -6, 161, 124, 55, -4, -28, -111, 67, -107, -157,
             -88, 135, 194, -116, -80, 0, 198, -13, 3, -38,
             106, 157, -186, 20, -101, -90, -128, 143, 174, -8
-            };
+        };
 
+        int[] testArray = new int[]
+        {
+            2, 3, -4, 5, 6, 6, -9, 2, -1, 0, -26
+        };
+
+        int evenNumbTotal = 0;
+        int numbTotal = 0;
+
+        int arrayLength = numbers.Length;
+
+        int evenNumbs = 0;
+
+        for (int i = 0; i < arrayLength; i++)
+        {
+            if (i % 2 == 0)
+            {
+                evenNumbTotal = evenNumbTotal + numbers[i];
+                evenNumbs++;
+                Console.WriteLine(evenNumbTotal);
+            }
+
+        }
+
+        float evenNumbAverage = (float)evenNumbTotal / evenNumbs;
+        Console.WriteLine(evenNumbAverage);
+
+        
         /*
             Your task is to solve the following problems using the array of integers above.
             Use separate loops for each problem, and make sure to print the results to the console.
@@ -33,6 +60,7 @@ public class Program
             Problem #1: Find the average of the even-indexed numbers in the array.
             Example: { -4, 13, 2, 10, 11}
             Answer: (-4 + 2 + 11) / 3 = 3
+            Solution: :)
         
             Problem #2: Determine if the majority of the numbers in the array are positive.
             Example: { -4, 13, 2, 10, 11}
