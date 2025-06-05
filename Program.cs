@@ -28,10 +28,10 @@ public class Program
 
         int[] testArray = new int[]
         {
-            2, 3, -4, 5, 6, 6, -9, 2, -1, 0, -26
+            2, 3, -4, 5, 6, 6, -9, 2, -1, 0, -26, 33, 24, 55, 11, 667, 11
         };
 
-        int evenNumbTotal = 0;
+        /*int evenNumbTotal = 0;
         int numbTotal = 0;
 
         int arrayLength = numbers.Length;
@@ -50,7 +50,41 @@ public class Program
         }
 
         float evenNumbAverage = (float)evenNumbTotal / evenNumbs;
-        Console.WriteLine(evenNumbAverage);
+        Console.WriteLine(evenNumbAverage);*/
+
+        /*int arrayLength = numbers.Length;
+        int posNumbs = 0;
+        
+
+        for (int j = 0; j < arrayLength; j++)
+        {
+            if (numbers[j] > 0)
+            {
+                posNumbs++;
+            }
+            Console.WriteLine(posNumbs);
+            
+        }
+
+        if (posNumbs > arrayLength / 2)
+        {
+            Console.WriteLine(posNumbs + "positive numbers out of " + arrayLength + "total numbers, so majority is positive");
+        }
+        else
+        {
+            Console.WriteLine("negative");
+        }*/
+        int arrayLength = numbers.Length;
+
+        for(int l = 0; l < arrayLength; l++)
+        {
+            if (numbers[l] == 11)
+            {
+                Console.WriteLine(l);
+                break;
+            }
+            //Console.WriteLine(l);
+        }
 
         
         /*
@@ -65,10 +99,12 @@ public class Program
             Problem #2: Determine if the majority of the numbers in the array are positive.
             Example: { -4, 13, 2, 10, 11}
             Answer: 4 positive numbers out of 5 total numbers, so majority is positive.
+            Solution: :D
 
             Problem #3: Find the index of the first occurring 11 in the array.
             Example: { -4, 13, 2, 10, 11}
             Answer: 4
+            Solution: 8D
         */
     }
 }
