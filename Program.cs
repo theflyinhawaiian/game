@@ -105,6 +105,14 @@ public class Program
             Example: { -4, 13, 2, 10, 11}
             Answer: 4
             Solution: 8D
+
+            Problem #4: Find the largest number in the array.
+            Example: { -4, 13, 2, 10, 11}
+            Answer: 13
+
+            Problem #5: Find the 5 largest numbers in the array.
+            Example: { -4, 13, 2, 10, 11, 2, -4, 8, 1, 0, -26, 33, 24, 55, 11, 667, 11}
+            Answer: 667, 55, 33, 24, 13
         */
     }
 }
