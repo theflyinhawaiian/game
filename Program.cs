@@ -74,19 +74,46 @@ public class Program
         {
             Console.WriteLine("negative");
         }*/
-        int arrayLength = numbers.Length;
+        /* int arrayLength = numbers.Length;
 
-        for(int l = 0; l < arrayLength; l++)
+         for(int l = 0; l < arrayLength; l++)
+         {
+             if (numbers[l] == 11)
+             {
+                 Console.WriteLine(l);
+                 break;
+             }
+             //Console.WriteLine(l);
+         }
+        */
+
+        /*int arrayLength = testArray.Length;
+        int biggestNumb = 0;
+
+        for (int i = 0; i < arrayLength; i++)
         {
-            if (numbers[l] == 11)
+            if (testArray[i] > biggestNumb)
             {
-                Console.WriteLine(l);
-                break;
+                biggestNumb = testArray[i];
             }
-            //Console.WriteLine(l);
+        }
+        Console.WriteLine(biggestNumb);
+        */
+
+
+        int arrayLength = testArray.Length;
+        //int[] bigFive = new int[5];
+        int topHowMany = 5;
+        
+        
+        Array.Sort(numbers,  (a, b) => b.CompareTo(a));
+        for (int i = 0; i < topHowMany; i++)
+        {
+            Console.WriteLine(numbers[i]);
         }
 
         
+
         /*
             Your task is to solve the following problems using the array of integers above.
             Use separate loops for each problem, and make sure to print the results to the console.
