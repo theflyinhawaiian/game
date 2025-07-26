@@ -4,6 +4,10 @@ public class Program
     public static void Main(string[] args)
     {
         bool playAgain = true;
+        int[] playerGuesses = new int[]
+        {
+            10,10,10,10,10,10,10,10
+        };
 
         while (playAgain == true)
         {
@@ -35,6 +39,17 @@ public class Program
                 intTemp = Convert.ToInt32(input);
 
             }
+
+            playerGuesses[6] = guessCounter;
+
+            int topFiveGuesses = 5;
+
+            Array.Sort(playerGuesses, (a, b) => a.CompareTo(b));
+            for (int i = 0; i < topFiveGuesses; i++)
+            {
+                Console.WriteLine(playerGuesses[i]);
+            }
+            
 
             Console.WriteLine($"nice job :) it took you {guessCounter} guesses. Would you like to play again? y/n ");
             var playResponse = Console.ReadLine();
