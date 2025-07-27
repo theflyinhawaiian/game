@@ -26,12 +26,42 @@ public class Program
             "often","together","asked","house","going","want","school","important","until","form", "balls","cum"
             
         };
+        var wordFound = false;
+
+        int guessCounter = 0;
 
         var random = new Random();
         var ranWordNum = random.Next(words.Length) + 1;
         var ranWord = words[ranWordNum];
 
+        
+
         Console.WriteLine(ranWord);
+        while (wordFound == false && guessCounter < 7)
+        {
+            var letterFound = false;
+
+            Console.WriteLine("Guess a Letter: ");
+
+            var input = Console.ReadLine();
+
+            
+            char character = char.Parse(input);
+            foreach (char c in ranWord)
+            {
+                if (character == c)
+                {
+                    letterFound = true;
+                }
+                //Console.WriteLine(c);
+            }
+            guessCounter++;
+            Console.WriteLine(letterFound);
+            
+
+        }
+        
+
 
 
 
