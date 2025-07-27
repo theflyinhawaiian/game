@@ -34,7 +34,15 @@ public class Program
         var ranWordNum = random.Next(words.Length) + 1;
         var ranWord = words[ranWordNum];
 
-        
+        string missLetters = "";
+
+        for (int i = 0; i < ranWord.Length; i++)
+        {
+            missLetters = missLetters + "_";
+        }
+
+        Console.WriteLine(missLetters);
+
 
         Console.WriteLine(ranWord);
         while (wordFound == false && guessCounter < 7)
@@ -53,12 +61,13 @@ public class Program
                 {
                     letterFound = true;
                 }
-                //Console.WriteLine(c);
             }
             guessCounter++;
             Console.WriteLine(letterFound);
-            
 
+            
+            
+            
         }
         
 
