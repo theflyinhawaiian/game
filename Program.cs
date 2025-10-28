@@ -34,51 +34,56 @@ public class Program
         var ranWordNum = random.Next(words.Length) + 1;
         var ranWord = words[ranWordNum];
 
-        string missLetters = "";
-
+        string[] missingLetters = new string[ranWord.Length];
+       
+        //Establishing missing letters
         for (int i = 0; i < ranWord.Length; i++)
         {
-            missLetters = missLetters + "_";
+            missingLetters[i] = "_";
         }
-
-        Console.WriteLine(missLetters);
 
 
         Console.WriteLine(ranWord);
-        while (wordFound == false && guessCounter < 7)
+
+        //Writes out underscores = to ranword length
+        for (int l = 0; l < ranWord.Length; l++)
         {
-            var letterFound = false;
-
-            Console.WriteLine("Guess a Letter: ");
-
-            var input = Console.ReadLine();
-
-            
-            char character = char.Parse(input);
-            foreach (char c in ranWord)
-            {
-                if (character == c)
-                {
-                    letterFound = true;
-                }
-            }
-            guessCounter++;
-            Console.WriteLine(letterFound);
-
-            
-            
-            
+            Console.WriteLine(missingLetters[l]);
         }
         
 
 
+        
+        while (wordFound == false && guessCounter < 7)
+        {
+
+            var letterFound = false;
+
+            
+            //Takes a letter from the player, converts it into a character
+            Console.WriteLine("Guess a Letter: ");
+            var input = Console.ReadLine();
+            char character = char.Parse(input);
+
+            
+
+            for (int c = 0; c < ranWord.Length; c++)
+            {
+                if (character == ranWord[c])
+                {
+                    missingLetters[c] = ranWord[c].ToString();
+                }
+            }
+
+            guessCounter++;
+            for (int i = 0; i < ranWord.Length; i++)
+            {
+                Console.WriteLine(missingLetters[i]);
+            }
 
 
-
-
-
-
-
+        }
+        
 
     }
 }
