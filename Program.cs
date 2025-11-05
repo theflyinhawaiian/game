@@ -35,6 +35,8 @@ public class Program
         var ranWord = words[ranWordNum];
 
         string[] missingLetters = new string[ranWord.Length];
+
+        
        
         //Establishing missing letters
         for (int i = 0; i < ranWord.Length; i++)
@@ -43,7 +45,7 @@ public class Program
         }
 
 
-        Console.WriteLine(ranWord);
+        
 
         //Writes out underscores = to ranword length
         for (int l = 0; l < ranWord.Length; l++)
@@ -58,7 +60,7 @@ public class Program
         {
 
             var letterFound = false;
-
+            
             
             //Takes a letter from the player, converts it into a character
             Console.WriteLine("Guess a Letter: ");
@@ -74,13 +76,15 @@ public class Program
                     missingLetters[c] = ranWord[c].ToString();
                 }
             }
-
             guessCounter++;
+
+            var output = "";
+
             for (int i = 0; i < ranWord.Length; i++)
             {
-                Console.WriteLine(missingLetters[i]);
+                output = output + missingLetters[i];
             }
-
+            Console.WriteLine(output);
 
         }
         
