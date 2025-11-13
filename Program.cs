@@ -67,16 +67,23 @@ public class Program
             var input = Console.ReadLine();
             char character = char.Parse(input);
 
-            
+
+            var correctGuess = false;
 
             for (int c = 0; c < ranWord.Length; c++)
             {
                 if (character == ranWord[c])
                 {
                     missingLetters[c] = ranWord[c].ToString();
+                    correctGuess = true;
                 }
             }
-            guessCounter++;
+
+            if (correctGuess == false)
+            {
+                guessCounter++;
+            }
+            
 
             var output = "";
 
