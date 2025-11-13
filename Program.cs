@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 public class Program
 {
     public static void Main(string[] args)
@@ -93,6 +95,7 @@ public class Program
             }
             Console.WriteLine(output);
 
+            Console.WriteLine("you have " + (7 - guessCounter) + " guesses remaining");
         }
         
 
