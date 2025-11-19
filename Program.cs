@@ -28,7 +28,6 @@ public class Program
             "often","together","asked","house","going","want","school","important","until","form", "balls","cum"
             
         };
-        var wordFound = false;
 
         int incorrectGuessCounter = 0;
 
@@ -59,12 +58,9 @@ public class Program
         var guessedLetters = new char[26];
         var totalGuessCounter = 0;
         
-        while (wordFound == false && incorrectGuessCounter < 7)
+        while (incorrectGuessCounter < 7)
         {
 
-            var letterFound = false;
-            
-            
             //Takes a letter from the player, converts it into a character
             Console.WriteLine("Guess a Letter: ");
             var input = Console.ReadLine();
@@ -116,8 +112,14 @@ public class Program
             }
             Console.WriteLine(output);
 
+            if(output == ranWord)
+            {
+                Console.WriteLine("You won! " + output + " is the correct guess!");
+                break;
+            }
 
             Console.WriteLine("you have " + (7 - incorrectGuessCounter) + " guesses remaining");
+
         }
         
 
