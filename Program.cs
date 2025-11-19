@@ -30,7 +30,7 @@ public class Program
         };
         var wordFound = false;
 
-        int guessCounter = 0;
+        int incorrectGuessCounter = 0;
 
         var random = new Random();
         var ranWordNum = random.Next(words.Length) + 1;
@@ -54,11 +54,12 @@ public class Program
         {
             Console.WriteLine(missingLetters[l]);
         }
-        
 
 
+        var guessedLetters = new char[26];
+        var totalGuessCounter = 0;
         
-        while (wordFound == false && guessCounter < 7)
+        while (wordFound == false && incorrectGuessCounter < 7)
         {
 
             var letterFound = false;
@@ -68,7 +69,25 @@ public class Program
             Console.WriteLine("Guess a Letter: ");
             var input = Console.ReadLine();
             char character = char.Parse(input);
+            var alreadyGuessed = false;
+            
+            
+            for (int i = 0; i < guessedLetters.Length; i++)
+            {
+                if (character == guessedLetters[i])
+                {
+                    alreadyGuessed = true;
+                    break;
+                }
+            }
+            if (alreadyGuessed)
+            {
+                Console.WriteLine("hey! you dingus! you've already guessed this!");
+                continue;
+            }
 
+
+            guessedLetters[totalGuessCounter] = character;
 
             var correctGuess = false;
 
@@ -83,8 +102,10 @@ public class Program
 
             if (correctGuess == false)
             {
-                guessCounter++;
+                incorrectGuessCounter++;
             }
+
+            totalGuessCounter++;
             
 
             var output = "";
@@ -95,7 +116,8 @@ public class Program
             }
             Console.WriteLine(output);
 
-            Console.WriteLine("you have " + (7 - guessCounter) + " guesses remaining");
+
+            Console.WriteLine("you have " + (7 - incorrectGuessCounter) + " guesses remaining");
         }
         
 
