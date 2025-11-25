@@ -1,11 +1,20 @@
 ﻿
+using System;
+using System.Runtime.InteropServices;
+
 public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("Enter a number:");
-        var input = Console.ReadLine();
 
-        Console.WriteLine($"Your number is: {input}");
+        var random = new Random();
+        var ranNum = random.Next(52);
+
+        Console.WriteLine(ranNum);
+
+
+
+
+
     }
 }
