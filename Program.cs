@@ -1,9 +1,13 @@
 ﻿
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 public class Program
 {
+    static int numberOfCardsInDeck = 13;
+    
+
     static void PrintCard(int cardID)
     {
         var rankNum = (cardID % 13) + 1;
@@ -61,22 +65,24 @@ public class Program
         
     }
 
-    static int[] DealHand(int cardsToDeal)
+    static int[] DealHand(int[] cardsInPlay, int cardsToDeal)
     {
-        int[] hand = new int[52];
-        var cardsDealt = 0;
 
+        int[] hand = new int[numberOfCardsInDeck];
+        var cardsInHand = 0;
 
-        while (cardsDealt < cardsToDeal)
+        int[] totalCards = cardsInPlay.Concat(hand).ToArray();
+
+        while (cardsInHand < cardsToDeal)
         {
             var random = new Random();
-            var cardID = random.Next(52);
-
+            var cardID = random.Next(numberOfCardsInDeck);
             var duplicateCard = false;
 
-            for (int j = 0; j < hand.Length; j++)
+
+            for (int i = 0; i < totalCards.Length; i++)
             {
-                if (hand[j] == cardID)
+                if (totalCards[i] == cardID)
                 {
                     duplicateCard = true;
                 }
@@ -84,10 +90,16 @@ public class Program
 
             if (duplicateCard) { continue; }
 
-            hand[cardsDealt] = cardID;
-            cardsDealt++;
+            hand[cardsInHand] = cardID;
+            totalCards[cardsInHand] = cardID;
+            cardsInHand++;
 
             
+            /*foreach (int card in totalCards)
+            {
+                Console.WriteLine("TEST:" + card);
+            }
+            Console.WriteLine("Dealt Cards after Round " + cardsInHand);*/
 
         }
 
@@ -96,8 +108,24 @@ public class Program
 
     public static void Main(string[] args)
     {
-        var playerHand = DealHand(30);
-        PrintHand(playerHand, 30);
+        int numberOfCardsInHand = 4;
+        int[] cardsInPlay = new int[numberOfCardsInDeck];
 
+
+        var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
+        cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
+        PrintHand(playerHand, numberOfCardsInHand);
+
+        Console.WriteLine("-------");
+
+        var player2Hand = DealHand(cardsInPlay, numberOfCardsInHand);
+        cardsInPlay = cardsInPlay.Concat(player2Hand).ToArray();
+        PrintHand(player2Hand, numberOfCardsInHand);
+
+        Console.WriteLine("-------");
+
+        var dealerHand = DealHand(cardsInPlay, numberOfCardsInHand);
+        cardsInPlay = cardsInPlay.Concat(dealerHand).ToArray();
+        PrintHand(dealerHand, numberOfCardsInHand);
     }
 }
