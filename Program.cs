@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public class Program
 {
-    static int numberOfCardsInDeck = 13;
+    static int numberOfCardsInDeck = 52;
     
 
     static void PrintCard(int cardID)
@@ -54,6 +54,38 @@ public class Program
         var cardDisplay = rank + " of " + suit;
         Console.WriteLine(cardDisplay);
     }
+
+    static int ScoreCard(int cardID)
+    {
+        var rankNum = (cardID % 13) + 1;
+        var cardScore = 0;
+
+        if (rankNum >= 2 && rankNum <= 10)
+        {
+            cardScore = rankNum;
+        }
+        else if (rankNum >= 11 && rankNum <= 13)
+        {
+            cardScore = 10;
+        }
+        else
+        {
+            cardScore = 11;
+        }
+        return cardScore;
+    }
+
+    static void ScoreHand(int[] hand)
+    {
+        var totalHandScore = 0;
+
+        for (int i = 0; i < hand.Length; i++)
+        {
+            totalHandScore = totalHandScore + ScoreCard(hand[i]);
+        }
+        Console.WriteLine("Score is " + totalHandScore + " u hitting?");
+    }
+
 
     static void PrintHand(int[] hand, int cardsDealt)
     {
@@ -130,9 +162,8 @@ public class Program
         var dealerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(dealerHand).ToArray();
         Console.WriteLine("Card Hidden");
-        Console.WriteLine("The hidden card is: " + dealerHand[0]);
         PrintCard(dealerHand[1]);
-        
 
+        ScoreHand(playerHand);
     }
 }
