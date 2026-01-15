@@ -72,7 +72,7 @@ public class Program
 
         for (int i = 0; i < cardsToDeal; i++)
         {
-            hand[i] = -100000000;
+            hand[i] = -1;
         }
 
 
@@ -104,46 +104,35 @@ public class Program
             totalCards[cardsInPlay.Length + cardsInHand] = cardID;
             cardsInHand++;
 
-            
-            /*foreach (int card in totalCards)
-            {
-                Console.WriteLine("TEST:" + card);
-            }
-            Console.WriteLine("Dealt Cards after Round " + cardsInHand);*/
-
         }
-        
-        
 
         return hand;
     }
 
     public static void Main(string[] args)
     {
-        int numberOfCardsInHand = 13;
+        int numberOfCardsInHand = 2;
 
         int[] cardsInPlay = new int[numberOfCardsInDeck];
 
-
-        for (int i = 0; i < 1;  i++)
+        for (int i = 0; i < cardsInPlay.Length; i++)
         {
-            var playerHand = DealHand(cardsInPlay, 13);
-            cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
-            PrintHand(playerHand, numberOfCardsInHand);
-            Console.WriteLine("-------");
+            cardsInPlay[i] = -1;
         }
-        
 
-        
 
-        /*var player2Hand = DealHand(cardsInPlay, numberOfCardsInHand);
-        cardsInPlay = cardsInPlay.Concat(player2Hand).ToArray();
-        PrintHand(player2Hand, numberOfCardsInHand);
 
+        var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
+        cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
+        PrintHand(playerHand, numberOfCardsInHand);
         Console.WriteLine("-------");
 
         var dealerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(dealerHand).ToArray();
-        PrintHand(dealerHand, numberOfCardsInHand);*/
+        Console.WriteLine("Card Hidden");
+        Console.WriteLine("The hidden card is: " + dealerHand[0]);
+        PrintCard(dealerHand[1]);
+        
+
     }
 }
