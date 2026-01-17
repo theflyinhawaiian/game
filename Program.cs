@@ -75,7 +75,7 @@ public class Program
         return cardScore;
     }
 
-    static void ScoreHand(int[] hand)
+    static int ScoreHand(int[] hand)
     {
         var totalHandScore = 0;
         var aceCounter = 0;
@@ -92,7 +92,7 @@ public class Program
                 aceCounter--;
             }
         }
-        Console.WriteLine("Score is " + totalHandScore + " u hitting?");
+        return totalHandScore;
     }
 
 
@@ -163,7 +163,7 @@ public class Program
 
 
 
-        /*var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
+        var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
         PrintHand(playerHand, numberOfCardsInHand);
         Console.WriteLine("-------");
@@ -173,10 +173,7 @@ public class Program
         Console.WriteLine("Card Hidden");
         PrintCard(dealerHand[1]);
 
-        ScoreHand(playerHand);*/
+        var playerHandScore = ScoreHand(playerHand);
 
-        int[] testHand = new int[] {0,10};
-
-        ScoreHand(testHand);
     }
 }
