@@ -78,10 +78,19 @@ public class Program
     static void ScoreHand(int[] hand)
     {
         var totalHandScore = 0;
+        var aceCounter = 0;
 
         for (int i = 0; i < hand.Length; i++)
         {
+            if (ScoreCard(hand[i]) == 11) { aceCounter++; }
+
             totalHandScore = totalHandScore + ScoreCard(hand[i]);
+
+            while (totalHandScore > 21 && aceCounter > 0)
+            {
+                totalHandScore = totalHandScore - 10;
+                aceCounter--;
+            }
         }
         Console.WriteLine("Score is " + totalHandScore + " u hitting?");
     }
@@ -154,7 +163,7 @@ public class Program
 
 
 
-        var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
+        /*var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
         PrintHand(playerHand, numberOfCardsInHand);
         Console.WriteLine("-------");
@@ -164,6 +173,10 @@ public class Program
         Console.WriteLine("Card Hidden");
         PrintCard(dealerHand[1]);
 
-        ScoreHand(playerHand);
+        ScoreHand(playerHand);*/
+
+        int[] testHand = new int[] {0,10};
+
+        ScoreHand(testHand);
     }
 }
