@@ -161,19 +161,62 @@ public class Program
             cardsInPlay[i] = -1;
         }
 
+        Console.Clear();
 
-
+        Console.WriteLine("Player Hand: \n");
         var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
         PrintHand(playerHand, numberOfCardsInHand);
         Console.WriteLine("-------");
 
+        Console.WriteLine("Dealer Hand: \n");
         var dealerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(dealerHand).ToArray();
         Console.WriteLine("Card Hidden");
         PrintCard(dealerHand[1]);
 
         var playerHandScore = ScoreHand(playerHand);
+
+        while (playerHandScore < 21)
+        {
+            Console.WriteLine("\n \nYou are at " + playerHandScore + ". Would you like to hit or stay?");
+
+            var input = Console.ReadLine();
+
+            if (input == "hit")
+            {
+                Console.Clear();
+                Console.WriteLine("Player Hand: \n");
+                PrintHand(playerHand, numberOfCardsInHand);
+                Console.WriteLine("-------");
+                Console.WriteLine("Dealer Hand: \n");
+                Console.WriteLine("Card Hidden");
+                PrintCard(dealerHand[1]);
+
+                Console.WriteLine("\n \nYou have chosen to hit at " + playerHandScore + ". hit again?");
+
+
+                
+            }
+            else if (input == "stay")
+            { 
+                Console.WriteLine("\nYou have chosen to stay at " + playerHandScore);
+                break;
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Player Hand: \n");
+                PrintHand(playerHand, numberOfCardsInHand);
+                Console.WriteLine("-------");
+                Console.WriteLine("Dealer Hand: \n");
+                Console.WriteLine("Card Hidden");
+                PrintCard(dealerHand[1]);
+
+                Console.WriteLine("Not a valid input. Please try again.\n\n");
+            }
+        }
+        
 
     }
 }
