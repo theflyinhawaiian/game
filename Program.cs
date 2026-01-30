@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.CodeDom;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -150,19 +151,29 @@ public class Program
         return hand;
     }
 
-    static void PrintStateOfGame(int[] playerHand, int[] dealerHand)
+    static void PrintStateOfGame(int[] playerHand, int[] dealerHand, bool finishedWithRound = false)
     {
         Console.Clear();
         Console.WriteLine("Player Hand: \n");
         PrintHand(playerHand);
         Console.WriteLine("-------");
         Console.WriteLine("Dealer Hand: \n");
-        Console.WriteLine("Card Hidden");
-        PrintCard(dealerHand[1]);
+        if (finishedWithRound == true)
+        {
+            PrintHand(dealerHand);
+        }
+        else
+        {
+            Console.WriteLine("Card Hidden");
+            PrintCard(dealerHand[1]);
+        }
+        
     }
 
     public static void Main(string[] args)
     {
+        var finishedWithRound = false;
+
         int numberOfCardsInHand = 2;
 
         int[] cardsInPlay = new int[numberOfCardsInDeck];
@@ -181,6 +192,9 @@ public class Program
         PrintStateOfGame(playerHand, dealerHand);
 
         var playerHandScore = ScoreHand(playerHand);
+        var dealerHandScore = ScoreHand(dealerHand);
+
+        
 
         while (playerHandScore < 21)
         {
@@ -210,10 +224,30 @@ public class Program
                 Console.WriteLine("Not a valid input. Please try again.\n\n");
             }
         }
-        Console.WriteLine("\n \n You are at " + playerHandScore);
+
+        finishedWithRound = true;
+
+        Console.WriteLine("\n \nYou are at " + playerHandScore);
+
         if (playerHandScore <= 21)
         {
+            while (dealerHandScore < 17)
+            {
+                var dealtCard = DealCards(cardsInPlay, 1);
+                cardsInPlay = cardsInPlay.Concat(dealtCard).ToArray();
+                dealerHand = dealerHand.Concat(dealtCard).ToArray();
+
+                dealerHandScore = ScoreHand(dealerHand);
+            }
             
+
+            
+
+            PrintStateOfGame(playerHand, dealerHand, finishedWithRound);
+
+            
+
+            Console.WriteLine(dealerHandScore);
         }
         else if (playerHandScore > 21)
         {
