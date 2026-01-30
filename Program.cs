@@ -106,7 +106,7 @@ public class Program
         
     }
 
-    static int[] DealHand(int[] cardsInPlay, int cardsToDeal)
+    static int[] DealCards(int[] cardsInPlay, int cardsToDeal)
     {
 
         int[] hand = new int[cardsToDeal];
@@ -172,10 +172,10 @@ public class Program
             cardsInPlay[i] = -1;
         }
 
-        var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
+        var playerHand = DealCards(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
 
-        var dealerHand = DealHand(cardsInPlay, numberOfCardsInHand);
+        var dealerHand = DealCards(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(dealerHand).ToArray();
 
         PrintStateOfGame(playerHand, dealerHand);
@@ -190,12 +190,13 @@ public class Program
 
             if (input == "hit")
             {
+                var dealtCard = DealCards(cardsInPlay, 1);
+                cardsInPlay = cardsInPlay.Concat(dealtCard).ToArray();
+                playerHand = playerHand.Concat(dealtCard).ToArray();
+
+                playerHandScore = ScoreHand(playerHand);
+
                 PrintStateOfGame(playerHand, dealerHand);
-
-                Console.WriteLine("\n \nYou have chosen to hit at " + playerHandScore + ". hit again?");
-
-
-                
             }
             else if (input == "stay")
             { 
@@ -209,7 +210,15 @@ public class Program
                 Console.WriteLine("Not a valid input. Please try again.\n\n");
             }
         }
-        
+        Console.WriteLine("\n \n You are at " + playerHandScore);
+        if (playerHandScore <= 21)
+        {
+            
+        }
+        else if (playerHandScore > 21)
+        {
+            Console.WriteLine("BUST!");
+        }
 
     }
 }
