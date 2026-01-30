@@ -96,9 +96,9 @@ public class Program
     }
 
 
-    static void PrintHand(int[] hand, int cardsDealt)
+    static void PrintHand(int[] hand)
     {
-        for(int i = 0; i < cardsDealt; i++)
+        for(int i = 0; i < hand.Length; i++)
         {
             PrintCard(hand[i]);
 
@@ -150,6 +150,17 @@ public class Program
         return hand;
     }
 
+    static void PrintStateOfGame(int[] playerHand, int[] dealerHand)
+    {
+        Console.Clear();
+        Console.WriteLine("Player Hand: \n");
+        PrintHand(playerHand);
+        Console.WriteLine("-------");
+        Console.WriteLine("Dealer Hand: \n");
+        Console.WriteLine("Card Hidden");
+        PrintCard(dealerHand[1]);
+    }
+
     public static void Main(string[] args)
     {
         int numberOfCardsInHand = 2;
@@ -161,19 +172,13 @@ public class Program
             cardsInPlay[i] = -1;
         }
 
-        Console.Clear();
-
-        Console.WriteLine("Player Hand: \n");
         var playerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
-        PrintHand(playerHand, numberOfCardsInHand);
-        Console.WriteLine("-------");
 
-        Console.WriteLine("Dealer Hand: \n");
         var dealerHand = DealHand(cardsInPlay, numberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(dealerHand).ToArray();
-        Console.WriteLine("Card Hidden");
-        PrintCard(dealerHand[1]);
+
+        PrintStateOfGame(playerHand, dealerHand);
 
         var playerHandScore = ScoreHand(playerHand);
 
@@ -185,13 +190,7 @@ public class Program
 
             if (input == "hit")
             {
-                Console.Clear();
-                Console.WriteLine("Player Hand: \n");
-                PrintHand(playerHand, numberOfCardsInHand);
-                Console.WriteLine("-------");
-                Console.WriteLine("Dealer Hand: \n");
-                Console.WriteLine("Card Hidden");
-                PrintCard(dealerHand[1]);
+                PrintStateOfGame(playerHand, dealerHand);
 
                 Console.WriteLine("\n \nYou have chosen to hit at " + playerHandScore + ". hit again?");
 
@@ -205,13 +204,7 @@ public class Program
             }
             else
             {
-                Console.Clear();
-                Console.WriteLine("Player Hand: \n");
-                PrintHand(playerHand, numberOfCardsInHand);
-                Console.WriteLine("-------");
-                Console.WriteLine("Dealer Hand: \n");
-                Console.WriteLine("Card Hidden");
-                PrintCard(dealerHand[1]);
+                PrintStateOfGame(playerHand, dealerHand);
 
                 Console.WriteLine("Not a valid input. Please try again.\n\n");
             }
