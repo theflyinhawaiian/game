@@ -194,6 +194,21 @@ public class Program
         var playerHandScore = ScoreHand(playerHand);
         var dealerHandScore = ScoreHand(dealerHand);
 
+        if (playerHandScore == 21 && dealerHandScore != 21)
+        {
+            Console.WriteLine("\n \nBLACKJACK! \n \nYou beat the dealer");
+            return;
+        }
+        if (dealerHandScore == 21 && playerHandScore != 21)
+        {
+            Console.WriteLine("\n \nYou have lost... \n \nThe dealer got BlackJack");
+            return;
+        }
+        if (playerHandScore == 21 && dealerHandScore == 21)
+        {
+            Console.WriteLine("Wow! It's a tie! You both got Blackjack");
+            return;
+        }
         
 
         while (playerHandScore < 21)
@@ -228,7 +243,7 @@ public class Program
         finishedWithRound = true;
 
         Console.WriteLine("\n \nYou are at " + playerHandScore);
-
+        
         if (playerHandScore <= 21)
         {
             while (dealerHandScore < 17)
@@ -239,15 +254,21 @@ public class Program
 
                 dealerHandScore = ScoreHand(dealerHand);
             }
-            
-
-            
 
             PrintStateOfGame(playerHand, dealerHand, finishedWithRound);
 
-            
-
-            Console.WriteLine(dealerHandScore);
+            if (dealerHandScore > 21)
+            {
+                Console.WriteLine("\n \nDealer Busts! You win");
+            }
+            else if (playerHandScore > dealerHandScore)
+            {
+                Console.WriteLine("\n \nYou have won! \n \nYou beat the dealer " + playerHandScore + " to " + dealerHandScore);
+            }
+            else if (playerHandScore <= dealerHandScore)
+            {
+                Console.WriteLine("\n \nYou have lost... \n \nThe dealer beat you " + playerHandScore + " to " + dealerHandScore);
+            }
         }
         else if (playerHandScore > 21)
         {
