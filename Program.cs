@@ -170,11 +170,11 @@ public class Program
         
     }
 
-    public static void Main(string[] args)
+    static void PlayGameOfBlackJack()
     {
         var finishedWithRound = false;
 
-        int numberOfCardsInHand = 2;
+        int startingNumberOfCardsInHand = 2;
 
         int[] cardsInPlay = new int[numberOfCardsInDeck];
 
@@ -183,10 +183,10 @@ public class Program
             cardsInPlay[i] = -1;
         }
 
-        var playerHand = DealCards(cardsInPlay, numberOfCardsInHand);
+        var playerHand = DealCards(cardsInPlay, startingNumberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(playerHand).ToArray();
 
-        var dealerHand = DealCards(cardsInPlay, numberOfCardsInHand);
+        var dealerHand = DealCards(cardsInPlay, startingNumberOfCardsInHand);
         cardsInPlay = cardsInPlay.Concat(dealerHand).ToArray();
 
         PrintStateOfGame(playerHand, dealerHand);
@@ -194,22 +194,23 @@ public class Program
         var playerHandScore = ScoreHand(playerHand);
         var dealerHandScore = ScoreHand(dealerHand);
 
-        if (playerHandScore == 21 && dealerHandScore != 21)
-        {
-            Console.WriteLine("\n \nBLACKJACK! \n \nYou beat the dealer");
-            return;
-        }
-        if (dealerHandScore == 21 && playerHandScore != 21)
-        {
-            Console.WriteLine("\n \nYou have lost... \n \nThe dealer got BlackJack");
-            return;
-        }
         if (playerHandScore == 21 && dealerHandScore == 21)
         {
             Console.WriteLine("Wow! It's a tie! You both got Blackjack");
             return;
         }
-        
+        if (playerHandScore == 21)
+        {
+            Console.WriteLine("\n \nBLACKJACK! \n \nYou beat the dealer");
+            return;
+        }
+        if (dealerHandScore == 21)
+        {
+            Console.WriteLine("\n \nYou have lost... \n \nThe dealer got BlackJack");
+            return;
+        }
+
+
 
         while (playerHandScore < 21)
         {
@@ -228,7 +229,7 @@ public class Program
                 PrintStateOfGame(playerHand, dealerHand);
             }
             else if (input == "stay")
-            { 
+            {
                 Console.WriteLine("\nYou have chosen to stay at " + playerHandScore);
                 break;
             }
@@ -243,7 +244,7 @@ public class Program
         finishedWithRound = true;
 
         Console.WriteLine("\n \nYou are at " + playerHandScore);
-        
+
         if (playerHandScore <= 21)
         {
             while (dealerHandScore < 17)
@@ -259,7 +260,7 @@ public class Program
 
             if (dealerHandScore > 21)
             {
-                Console.WriteLine("\n \nDealer Busts! You win");
+                Console.WriteLine("\n \nDealer Busts! You win!!");
             }
             else if (playerHandScore > dealerHandScore)
             {
@@ -274,6 +275,36 @@ public class Program
         {
             Console.WriteLine("BUST!");
         }
+    }
 
+    public static void Main(string[] args)
+    {
+        var finishedPlaying = false;
+        while(finishedPlaying == false)
+        {
+            PlayGameOfBlackJack();
+
+            Console.WriteLine("\n \n \nWould you like to play again?");
+            var playAgain = "";
+
+            while(playAgain != "yes" && playAgain != "y" && playAgain != "no" && playAgain != "n")
+            {
+                playAgain = Console.ReadLine();
+
+                if (playAgain == "yes" || playAgain == "y")
+                {
+                    finishedPlaying = false;
+                }
+                else if (playAgain == "no" || playAgain == "n")
+                {
+                    finishedPlaying = true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Not a valid input. Please try again");
+                }
+            }
+        }
     }
 }
