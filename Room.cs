@@ -32,7 +32,7 @@ namespace game
             Console.WriteLine(description);
             if(neighbors.Count() != 0)
             {
-                Console.WriteLine($"You can see {neighbors.Count()} path");
+                Console.Write($"You can see {neighbors.Count()} path");
                 if(neighbors.Count() > 1) Console.Write("s");
             }
         }

@@ -8,7 +8,8 @@ namespace game
     public class Game
     {
         public bool isRunning = false;
-        public bool allowClear = false;
+        public bool allowClear = true;
+        public bool turnEnded = false;
         public Player? player;
         public Room playerLocation;
         public Map? map;
@@ -94,12 +95,17 @@ namespace game
         {
             while (isRunning)
             {
+                turnEnded = false;
                 if(allowClear) Console.Clear();
                 List<string> actions = GetActions();
                 PrintTurnDetails(actions);
                 string a = SelectAction(actions);
-                Console.WriteLine("selected action: " + a);
+                //Console.WriteLine("selected action: " + a);
                 DoAction(a);
+                if (turnEnded)
+                {
+                    continue;
+                }
 
                 Console.WriteLine("End turn?");
                 var ynInput = AskYesOrNo();
@@ -114,8 +120,9 @@ namespace game
 
         public void MovePlayer(Room newRoom)
         {
-            Console.WriteLine("moved player to room " + newRoom.id);
+            //Console.WriteLine("moved player to room " + newRoom.id);
             playerLocation = newRoom;
+            turnEnded = true;
         }
 
         public List<string> GetValidMoveInputs()
@@ -207,15 +214,16 @@ namespace game
 
         public void DoAction(string input)
         {
-            Console.WriteLine("do action " + input);
+            //Console.WriteLine("do action " + input);
             switch (input.Substring(1,1))
             {
                 case "m" :
                     {
                         List<string> validRooms = GetValidMoveInputs();
-                        Console.WriteLine("Move to where?\n");
+                        Console.WriteLine("\nMove to where?");
+                        Console.WriteLine(new string('-', 100));
                         PrintActions(validRooms);
-                        String roomNumber = SelectAction(validRooms).Substring(1,1);
+                        string roomNumber = SelectAction(validRooms)[^1].ToString();
                         MovePlayer(map.GetRoomByID(roomNumber));
 
                         //MovePlayer();
@@ -229,7 +237,7 @@ namespace game
             player.PrintDetails();
             Console.WriteLine("\n");
             playerLocation.print();
-            Console.WriteLine("\nWhat will you do?");    
+            Console.WriteLine("\n\n\nWhat will you do?");    
             Console.WriteLine(new string('-', 100));
             PrintActions(actions);
 

@@ -78,8 +78,10 @@ namespace game
             int id = int.Parse(input);
             foreach(Room r in allRooms)
             {
-                if(r.id == id);
-                return r;
+                if(r.id == id)
+                {
+                    return r;
+                }
             }
             return spawn; //room not found
         }
