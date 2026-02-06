@@ -10,6 +10,7 @@ namespace game
         public bool isRunning = false;
         public Player? player;
         public Map? map;
+        public Room? spawn;
         public Game()
         {
             
@@ -60,9 +61,10 @@ namespace game
 
         public void start()
         {
+            Console.Clear();
             isRunning = true;
             player = new Player(SelectName());
-            Console.WriteLine($"\nYour name is {player.Name}?");
+            Console.WriteLine($"\nYour name is {player.name}?");
             Console.WriteLine("This is where a lot of BS introduction would go");
             //TODO: tutorial? controls explained? idk
             Console.WriteLine("does this make sense yadda yadda");
@@ -77,8 +79,26 @@ namespace game
             }
             map = new Map();
             map.GenerateMap();
-            map.PrintMap();
-
+            spawn = map.spawn;
+            player.location = spawn;
         }
+
+        public void MovePlayer(Room newRoom)
+        {
+            Room oldLocation = player.location;
+            Console.Clear();
+            newRoom.print();
+            player.location = newRoom;
+        }
+
+        public void PrintTurnDetails()
+        {
+            player.PrintDetails();
+            Console.WriteLine("\n");
+            player.location.print();
+            Console.WriteLine("\nWhat will you do?");    
+        }
+
+    
     }
 }

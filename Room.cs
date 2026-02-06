@@ -30,6 +30,11 @@ namespace game
         {
             Console.WriteLine($"You are in room {id}");
             Console.WriteLine(description);
+            if(neighbors.Count() != 0)
+            {
+                Console.WriteLine($"You can see {neighbors.Count()} path");
+                if(neighbors.Count() > 1) Console.Write("s");
+            }
         }
 
         public string NeighborsStr()

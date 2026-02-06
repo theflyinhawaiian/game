@@ -9,7 +9,7 @@ namespace game
 {
     public class Map
     {        
-        public Room home;
+        public Room spawn;
         private List<Room> allRooms = new List<Room>();
 
         public void AddPath(Room a, Room b)
@@ -20,14 +20,20 @@ namespace game
             }
             if (!b.neighbors.Contains(a.id))
             {
-            b.neighbors.Add(a.id);
+                b.neighbors.Add(a.id);
             }
         }
 
         public void RemovePath(Room a, Room b)
         {
-            a.neighbors.Remove(b.id);
-            b.neighbors.Remove(a.id);
+            if(!a.neighbors.Contains(b.id))
+            {
+                a.neighbors.Remove(b.id);
+            }
+            if (!b.neighbors.Contains(a.id))
+            {
+                b.neighbors.Remove(a.id);
+            }
         }
 
         public Map()
@@ -52,7 +58,7 @@ namespace game
 
         public void GenerateMap()
         {
-            home = CreateNewRoom(desc:"This is where you start");
+            spawn = CreateNewRoom(desc:"This is where you start");
             Room r1 = CreateNewRoom(new List<int>(){0,2}, "hallwayy??????");
             Room r2 = CreateNewRoom(new List<int>(){1}, "this is definitely a room");
         }
@@ -65,14 +71,6 @@ namespace game
                 Console.WriteLine($"Room id {r.id}'s description: {r.description}");
                 Console.WriteLine($"Neighbors: {r.NeighborsStr()}\n");
             }
-        }
-
-        public string GetRoomDescription()
-        {
-            string desc = "";
-
-
-            return desc;
         }
     }
 }

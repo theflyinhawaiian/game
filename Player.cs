@@ -7,33 +7,23 @@ namespace game
 {
     public class Player
     {
-        public int Max_health {
-            get;
-            set;
-        } = 100;
-        public int Armor {
-            get;
-            set;
-        } = 1;
-        public int Inventory_size {
-            get;
-            set;
-        }= 5;
-        public int Damage {
-            get;
-            set;
-        } = 1;
-        public string Name {
-            get;
-        }
-
-        public int location = 0;
-
+        public int maxHealth = 100;
+        public int hp = 100;
+        public int armor  = 1;
+        public int inventorySize = 5;
+        public int attack = 1;
+        public string name = "placeholder";
         public Player(String n)
         {
-            Name = n;
+            name = n;
         }
+        public Room? location;
 
+        public void PrintDetails()
+        {
+            Console.WriteLine($"{name}:");
+            Console.Write($"HP: {hp}/{maxHealth}   |   Armor: {armor}   |   Attack: {attack}");
+        }
     }
 }
     

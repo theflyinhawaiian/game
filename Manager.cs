@@ -27,15 +27,22 @@ namespace game
             game = new Game();
             game.start();
             GameState = State.Started;
-
         }
 
-        // public List<String> FetchInputs()
-        // {
-        //     switch (GameState)
-        //     {
-                
-        //     }
-        // }
+        public void Run()
+        {
+            
+            while (game.isRunning)
+            {
+                Console.Clear();
+                game.PrintTurnDetails();
+                var input = Console.ReadLine();
+                // bool turnCompleted = false;
+                // while (!turnCompleted)
+                // {
+                    
+                // }
+            }
+        }
     }
 }
