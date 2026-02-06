@@ -17,8 +17,6 @@ namespace game
         {
             name = n;
         }
-        public Room? location;
-
         public void PrintDetails()
         {
             Console.WriteLine($"{name}:");

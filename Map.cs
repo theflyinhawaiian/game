@@ -14,41 +14,42 @@ namespace game
 
         public void AddPath(Room a, Room b)
         {
-            if(!a.neighbors.Contains(b.id))
+            if(!a.neighbors.Contains(b))
             {
-                a.neighbors.Add(b.id);
+                a.neighbors.Add(b);
             }
-            if (!b.neighbors.Contains(a.id))
+            if (!b.neighbors.Contains(a))
             {
-                b.neighbors.Add(a.id);
+                b.neighbors.Add(a);
             }
         }
 
         public void RemovePath(Room a, Room b)
         {
-            if(!a.neighbors.Contains(b.id))
+            if(!a.neighbors.Contains(b))
             {
-                a.neighbors.Remove(b.id);
+                a.neighbors.Remove(b);
             }
-            if (!b.neighbors.Contains(a.id))
+            if (!b.neighbors.Contains(a))
             {
-                b.neighbors.Remove(a.id);
+                b.neighbors.Remove(a);
             }
         }
 
         public Map()
         {
-            
+            spawn = CreateNewRoom(desc:"This is where you start");
+            GenerateMap();
         }
 
-        public Room CreateNewRoom(List<int>? n = null, string? desc = null)
+        public Room CreateNewRoom(List<Room>? n = null, string? desc = null)
         {
-            n ??= new List<int>();
+            n ??= new List<Room>();
             Room r = new Room(n, desc);
             allRooms.Add(r);
             foreach(Room x in allRooms)
             {
-                if (r.neighbors.Contains(x.id))
+                if (r.neighbors.Contains(x))
                 {
                     AddPath(x, r);
                 }
@@ -56,11 +57,10 @@ namespace game
             return r;
         }
 
-        public void GenerateMap()
+        private void GenerateMap()
         {
-            spawn = CreateNewRoom(desc:"This is where you start");
-            Room r1 = CreateNewRoom(new List<int>(){0,2}, "hallwayy??????");
-            Room r2 = CreateNewRoom(new List<int>(){1}, "this is definitely a room");
+            Room r1 = CreateNewRoom(new List<Room>(){spawn}, "hallwayy??????");
+            Room r2 = CreateNewRoom(new List<Room>(){r1}, "this is definitely a room");
         }
 
         public void PrintMap()
@@ -71,6 +71,17 @@ namespace game
                 Console.WriteLine($"Room id {r.id}'s description: {r.description}");
                 Console.WriteLine($"Neighbors: {r.NeighborsStr()}\n");
             }
+        }
+
+        public Room GetRoomByID(string input)
+        {
+            int id = int.Parse(input);
+            foreach(Room r in allRooms)
+            {
+                if(r.id == id);
+                return r;
+            }
+            return spawn; //room not found
         }
     }
 }

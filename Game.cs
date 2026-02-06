@@ -8,9 +8,17 @@ namespace game
     public class Game
     {
         public bool isRunning = false;
+        public bool allowClear = false;
         public Player? player;
+        public Room playerLocation;
         public Map? map;
-        public Room? spawn;
+         public enum State
+        {
+            InRoom,
+            Combat,
+            Inventory
+        }
+        State GameState = new State();
         public Game()
         {
             
@@ -59,9 +67,9 @@ namespace game
         }
 
 
-        public void start()
+        public void init()
         {
-            Console.Clear();
+            if(allowClear) Console.Clear();
             isRunning = true;
             player = new Player(SelectName());
             Console.WriteLine($"\nYour name is {player.name}?");
@@ -78,27 +86,153 @@ namespace game
                 Console.WriteLine(":( okay but we're starting anyway");
             }
             map = new Map();
-            map.GenerateMap();
-            spawn = map.spawn;
-            player.location = spawn;
+            playerLocation = map.spawn;
+            GameState = State.InRoom;
         }
+
+        public void Start()
+        {
+            while (isRunning)
+            {
+                if(allowClear) Console.Clear();
+                List<string> actions = GetActions();
+                PrintTurnDetails(actions);
+                string a = SelectAction(actions);
+                Console.WriteLine("selected action: " + a);
+                DoAction(a);
+
+                Console.WriteLine("End turn?");
+                var ynInput = AskYesOrNo();
+                if (ynInput == "y")
+                {
+                    continue;
+                }
+            }
+        }
+        
+
 
         public void MovePlayer(Room newRoom)
         {
-            Room oldLocation = player.location;
-            Console.Clear();
-            newRoom.print();
-            player.location = newRoom;
+            Console.WriteLine("moved player to room " + newRoom.id);
+            playerLocation = newRoom;
         }
 
-        public void PrintTurnDetails()
+        public List<string> GetValidMoveInputs()
+        {
+            List<string> inputs = new List<string>();
+            for (int i = 0; i < playerLocation.neighbors.Count(); i++)
+            {
+                inputs.Add("[" + (i+1) + "] Room " + playerLocation.neighbors[i].id);
+            }
+            return inputs;
+        }
+
+        public List<string> GetValidActionsInRoom(Room a)
+        {
+            List<string> actions = new List<string>();
+            
+            if(a.neighbors.Count != 0)
+            {
+                actions.Add("[m] Move player");
+            }
+            return actions;
+        }
+
+        public List<string> GetActions()
+        {
+            List<string> actions = new List<string>();
+            switch (GameState)
+            {
+                case State.InRoom :
+                    {
+                        var validActionsInRoom = GetValidActionsInRoom(playerLocation);
+                        foreach(string act in validActionsInRoom)
+                        {
+                            actions.Add(act);
+                        }
+                    }
+                    break;
+            }
+            return actions;
+        }
+
+        public void PrintActions(List<string> actions)
+        {
+            foreach(string a in actions)
+            {
+                Console.Write($"   {a}   |");
+            }
+            Console.WriteLine();
+        }
+
+        // public string ValidateInput(string input, List<string> actions)
+        // {
+        //     if (actions.Contains(input))
+        //     {
+        //         return input;
+        //     }
+        //     else
+        //     {
+        //         return null;
+        //     }
+        // }
+
+        public string SelectAction(List<string> actions)
+        {
+            var rawInput = Console.ReadLine();
+            bool found = false;
+            string act = "";
+            while(!found){
+                foreach(string action in actions)
+                {
+                    if(action.Substring(1,1) == rawInput)
+                    {
+                        found = true;
+                        act = action;
+                        break;
+                    }
+                } 
+                if(found) break;
+                Console.WriteLine("Invalid input, try again");
+                rawInput = Console.ReadLine();
+            }
+            return act;
+        }
+
+        public void selectRoom()
+        {
+            
+        }
+
+        public void DoAction(string input)
+        {
+            Console.WriteLine("do action " + input);
+            switch (input.Substring(1,1))
+            {
+                case "m" :
+                    {
+                        List<string> validRooms = GetValidMoveInputs();
+                        Console.WriteLine("Move to where?\n");
+                        PrintActions(validRooms);
+                        String roomNumber = SelectAction(validRooms).Substring(1,1);
+                        MovePlayer(map.GetRoomByID(roomNumber));
+
+                        //MovePlayer();
+                        break;
+                    }
+            }
+        }
+
+        public void PrintTurnDetails(List<string> actions)
         {
             player.PrintDetails();
             Console.WriteLine("\n");
-            player.location.print();
+            playerLocation.print();
             Console.WriteLine("\nWhat will you do?");    
-        }
+            Console.WriteLine(new string('-', 100));
+            PrintActions(actions);
 
-    
+        }    
     }
 }

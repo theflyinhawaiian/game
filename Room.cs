@@ -10,12 +10,12 @@ namespace game
         private static int nextRoomId = 0;
         public string? description;
         public int id;
-        public List<int> neighbors = new List<int>();
+        public List<Room> neighbors = new List<Room>();
 
-        public Room(List<int>? n = null, string? desc = null)
+        public Room(List<Room>? n = null, string? desc = null)
         {
             id = nextRoomId;
-            neighbors = n;
+            neighbors = n ?? new List<Room>();
             description = desc;
             nextRoomId++;
         }
@@ -40,9 +40,9 @@ namespace game
         public string NeighborsStr()
         {
             string n = "";
-            foreach(int x in neighbors)
+            foreach(Room x in neighbors)
             {
-                n += x + " ";
+                n += x.id + " ";
             }
             return n;
         }

@@ -7,8 +7,8 @@ public class Program
     {
         //Console.Clear();
         Console.WriteLine("Starting game!");
-        Manager GameManager = new Manager();
-        GameManager.StartGame();
-        GameManager.Run();
+        Game game = new Game();
+        game.init();
+        game.Start();
     }   
 }
