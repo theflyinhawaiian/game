@@ -207,16 +207,14 @@ namespace game
             return act;
         }
 
-        public void selectRoom()
-        {
-            
-        }
-
         public void DoAction(string input)
         {
             //Console.WriteLine("do action " + input);
             switch (input.Substring(1,1))
             {
+                case "b" :
+                    //This is where the eventual back button should go
+                    break;
                 case "m" :
                     {
                         List<string> validRooms = GetValidMoveInputs();
@@ -225,8 +223,6 @@ namespace game
                         PrintActions(validRooms);
                         string roomNumber = SelectAction(validRooms)[^1].ToString();
                         MovePlayer(map.GetRoomByID(roomNumber));
-
-                        //MovePlayer();
                         break;
                     }
             }
