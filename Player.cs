@@ -27,6 +27,8 @@ namespace game
             get;
         }
 
+        public int location = 0;
+
         public Player(String n)
         {
             Name = n;

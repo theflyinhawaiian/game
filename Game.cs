@@ -9,6 +9,7 @@ namespace game
     {
         public bool isRunning = false;
         public Player? player;
+        public Map? map;
         public Game()
         {
             
@@ -19,13 +20,14 @@ namespace game
             while (string.IsNullOrWhiteSpace(input)) {
                 Console.WriteLine("What is your name, traveller?");
                 input = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(input))
+                if (input == "nameless") 
+                {
+                    Console.WriteLine("bruh really \n");
+                    input = ""; // clear input
+                }
+                else if (!string.IsNullOrWhiteSpace(input))
                 {
                     break;
-                }
-                else if (input == "nameless")
-                {
-                    Console.WriteLine("bruh really");
                 }
                 else
                 {
@@ -35,16 +37,36 @@ namespace game
             return input;
         }
 
+        public string AskYesOrNo()
+        {
+            string s = "";
+            while (string.IsNullOrWhiteSpace(s))
+            {
+                Console.Write("y/n \n");
+                var input = Console.ReadLine();
+                if (input == "y" || input == "n")
+                {
+                    s = input;
+                    break;
+                }
+                else
+                {
+                    Console.Write("Invalid input: ");
+                }
+            }
+            return s;
+        }
+
 
         public void start()
         {
             isRunning = true;
             player = new Player(SelectName());
-            Console.WriteLine($"Your name is {player.Name}?");
+            Console.WriteLine($"\nYour name is {player.Name}?");
             Console.WriteLine("This is where a lot of BS introduction would go");
             //TODO: tutorial? controls explained? idk
-            Console.WriteLine("does this make sense yadda yadda y/n");
-            var input = Console.ReadLine();
+            Console.WriteLine("does this make sense yadda yadda");
+            var input = AskYesOrNo();
             if(input == "y")
             {
                 Console.WriteLine("yippeee game!!! woooooo start!!!!");
@@ -53,6 +75,9 @@ namespace game
             {
                 Console.WriteLine(":( okay but we're starting anyway");
             }
+            map = new Map();
+            map.GenerateMap();
+            map.PrintMap();
 
         }
     }
