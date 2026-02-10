@@ -1,0 +1,14 @@
+n,this is where you start
+0,hallway???
+1,just another room lol
+0 1 2,testing lol i wonder if this breaks things
+3,i can just do things now cant i
+4,this
+5,is
+6,a
+7,very
+8,long
+9,path
+10,should you keep going?
+11,maybe?
+12 0,funny loop haha

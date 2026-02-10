@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,23 +8,77 @@ namespace game
 {
     public class Game
     {
-        public bool isRunning = false;
-        public bool allowClear = true;
-        public bool turnEnded = false;
-        public Player? player;
+        private static bool isRunning = false;
+        private static bool turnEnded = false;
+        public Player player;
         public Room playerLocation;
         public Map? map;
-         public enum State
+        public enum State
         {
             InRoom,
             Combat,
             Inventory
         }
         State GameState = new State();
+
+        //debug bools
+        private static bool allowClear = true;
+        private static bool allowPrintMap = true;
+
         public Game()
         {
             
         }
+
+        public void init()
+        {
+            if(allowClear) Console.Clear();
+            isRunning = true;
+            player = new Player(SelectName());
+            Console.WriteLine($"\nYour name is {player.name}?");
+            Console.WriteLine("This is where a lot of BS introduction would go");
+            //TODO: tutorial? controls explained? idk
+            Console.WriteLine("does this make sense yadda yadda");
+            var input = AskYesOrNo();
+            if(input == "y")
+            {
+                Console.WriteLine("yippeee game!!! woooooo start!!!!");
+            }
+            else
+            {
+                Console.WriteLine(":( okay but we're starting anyway");
+            }
+            map = new Map("map1.txt");
+            playerLocation = map.spawn;
+            GameState = State.InRoom;
+        }
+
+        public void Start()
+        {
+            while (isRunning)
+            {
+                turnEnded = false;
+                if(allowClear) Console.Clear();
+                List<string> actions = GetActions();
+                PrintTurnDetails(actions);
+                string a = SelectAction(actions);
+                //Console.WriteLine("selected action: " + a);
+                DoAction(a);
+                if (turnEnded)
+                {
+                    continue;
+                }
+
+                Console.WriteLine("End turn?");
+                var ynInput = AskYesOrNo();
+                if (ynInput == "y")
+                {
+                    continue;
+                }
+            }
+        }
+
+
         public string SelectName()
         {
             var input = "";
@@ -66,55 +121,6 @@ namespace game
             }
             return s;
         }
-
-
-        public void init()
-        {
-            if(allowClear) Console.Clear();
-            isRunning = true;
-            player = new Player(SelectName());
-            Console.WriteLine($"\nYour name is {player.name}?");
-            Console.WriteLine("This is where a lot of BS introduction would go");
-            //TODO: tutorial? controls explained? idk
-            Console.WriteLine("does this make sense yadda yadda");
-            var input = AskYesOrNo();
-            if(input == "y")
-            {
-                Console.WriteLine("yippeee game!!! woooooo start!!!!");
-            }
-            else
-            {
-                Console.WriteLine(":( okay but we're starting anyway");
-            }
-            map = new Map();
-            playerLocation = map.spawn;
-            GameState = State.InRoom;
-        }
-
-        public void Start()
-        {
-            while (isRunning)
-            {
-                turnEnded = false;
-                if(allowClear) Console.Clear();
-                List<string> actions = GetActions();
-                PrintTurnDetails(actions);
-                string a = SelectAction(actions);
-                //Console.WriteLine("selected action: " + a);
-                DoAction(a);
-                if (turnEnded)
-                {
-                    continue;
-                }
-
-                Console.WriteLine("End turn?");
-                var ynInput = AskYesOrNo();
-                if (ynInput == "y")
-                {
-                    continue;
-                }
-            }
-        }
         
 
 
@@ -143,6 +149,7 @@ namespace game
             {
                 actions.Add("[m] Move player");
             }
+            if(allowPrintMap) actions.Add("[p] print map");
             return actions;
         }
 
@@ -173,17 +180,6 @@ namespace game
             Console.WriteLine();
         }
 
-        // public string ValidateInput(string input, List<string> actions)
-        // {
-        //     if (actions.Contains(input))
-        //     {
-        //         return input;
-        //     }
-        //     else
-        //     {
-        //         return null;
-        //     }
-        // }
 
         public string SelectAction(List<string> actions)
         {
@@ -221,8 +217,14 @@ namespace game
                         Console.WriteLine("\nMove to where?");
                         Console.WriteLine(new string('-', 100));
                         PrintActions(validRooms);
-                        string roomNumber = SelectAction(validRooms)[^1].ToString();
-                        MovePlayer(map.GetRoomByID(roomNumber));
+                        string room = SelectAction(validRooms).ToString();
+                        string[] roomInfo = room.Split(' ');
+                        MovePlayer(map.GetRoomByID(roomInfo[^1]));
+                        break;
+                    }
+                case "p":
+                    {
+                        map.PrintMap();
                         break;
                     }
             }

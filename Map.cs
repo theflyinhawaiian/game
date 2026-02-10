@@ -10,7 +10,7 @@ namespace game
     public class Map
     {        
         public Room spawn;
-        private List<Room> allRooms = new List<Room>();
+        private static List<Room> allRooms = new List<Room>();
 
         public void AddPath(Room a, Room b)
         {
@@ -34,6 +34,12 @@ namespace game
             {
                 b.neighbors.Remove(a);
             }
+        }
+
+        public Map(string path)
+        {
+            GenerateMapFromTxt(path);
+            spawn = allRooms[0];
         }
 
         public Map()
@@ -61,6 +67,32 @@ namespace game
         {
             Room r1 = CreateNewRoom(new List<Room>(){spawn}, "hallwayy??????");
             Room r2 = CreateNewRoom(new List<Room>(){r1}, "this is definitely a room");
+        }
+
+        private void GenerateMapFromTxt(string filepath)
+        {
+            try
+            {
+                using StreamReader reader = new StreamReader(filepath);
+                List<Room> allRooms = new List<Room>();
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] details = line.Split(',');
+                    string[] ids = details[0].Split(' ');
+                    List<Room> neighbors = new List<Room>();
+                    foreach(string id in ids)
+                    {
+                        if(id == "n") break;
+                        neighbors.Add(GetRoomByID(id));
+                    }
+                    CreateNewRoom(neighbors, details[1]);
+                }
+            }
+            catch 
+            {
+                Console.WriteLine("The file could not be read:");
+            }
         }
 
         public void PrintMap()
