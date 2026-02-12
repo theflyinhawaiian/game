@@ -136,7 +136,7 @@ namespace game
             List<string> inputs = new List<string>();
             for (int i = 0; i < playerLocation.neighbors.Count(); i++)
             {
-                inputs.Add("[" + (i+1) + "] Room " + playerLocation.neighbors[i].id);
+                inputs.Add("[" + (i+1) + "] Room " + playerLocation.neighbors[i]);
             }
             return inputs;
         }
@@ -217,9 +217,8 @@ namespace game
                         Console.WriteLine("\nMove to where?");
                         Console.WriteLine(new string('-', 100));
                         PrintActions(validRooms);
-                        string room = SelectAction(validRooms).ToString();
-                        string[] roomInfo = room.Split(' ');
-                        MovePlayer(map.GetRoomByID(roomInfo[^1]));
+                        var neighborIndex = int.Parse(SelectAction(validRooms).Substring(1,1)) - 1;
+                        MovePlayer(map.GetRoomByID(playerLocation.neighbors[neighborIndex]));
                         break;
                     }
                 case "p":

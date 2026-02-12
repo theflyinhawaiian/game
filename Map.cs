@@ -1,121 +1,90 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace game
 {
     public class Map
     {        
         public Room spawn;
-        private static List<Room> allRooms = new List<Room>();
+        private Dictionary<int, Room> allRooms = new Dictionary<int, Room>();
 
-        public void AddPath(Room a, Room b)
+        private class MapParser
         {
-            if(!a.neighbors.Contains(b))
+
+            public Room CreateNewRoom(List<int>? n = null, string? desc = null)
             {
-                a.neighbors.Add(b);
+                n ??= new List<int>();
+                Room r = new Room(n, desc);
+                return r;
             }
-            if (!b.neighbors.Contains(a))
+
+            public void CreateConnections(Room room, int id, Dictionary<int, Room> allRooms)
             {
-                b.neighbors.Add(a);
+                foreach(int neighborID in room.neighbors)
+                {
+                    if (allRooms.ContainsKey(neighborID))
+                    {
+                        if (!allRooms[neighborID].neighbors.Contains(id))
+                        {
+                            allRooms[neighborID].neighbors.Add(id);
+                        }
+                    }
+                }
+            }
+
+            public Dictionary<int, Room> GenerateMapFromTxt(string filepath)
+            {
+                Dictionary<int, Room> allRooms = new Dictionary<int, Room>();
+                int newRoomId = 0;
+                try
+                {
+                    using StreamReader reader = new StreamReader(filepath);
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] details = line.Split(',');
+                        string[] ids = details[0].Split(' ');
+                        List<int> neighbors = new List<int>();
+                        foreach(string id in ids)
+                        {
+                            if(id == "n") break;
+                            neighbors.Add(int.Parse(id));
+                        }
+                        var newRoom = CreateNewRoom(neighbors, details[1]);
+                        allRooms.Add(newRoomId, newRoom);
+                        CreateConnections(newRoom, newRoomId, allRooms);
+                        newRoomId++;
+                    }
+                }
+                catch 
+                {
+                    Console.WriteLine("The file could not be read:");
+                }
+                return allRooms;
             }
         }
 
-        public void RemovePath(Room a, Room b)
-        {
-            if(!a.neighbors.Contains(b))
-            {
-                a.neighbors.Remove(b);
-            }
-            if (!b.neighbors.Contains(a))
-            {
-                b.neighbors.Remove(a);
-            }
-        }
 
         public Map(string path)
         {
-            GenerateMapFromTxt(path);
+            var parser = new MapParser();
+            allRooms = parser.GenerateMapFromTxt(path);
             spawn = allRooms[0];
         }
 
-        public Map()
+        public Room GetRoomByID(int id)
         {
-            spawn = CreateNewRoom(desc:"This is where you start");
-            GenerateMap();
+            return allRooms[id];
         }
 
-        public Room CreateNewRoom(List<Room>? n = null, string? desc = null)
-        {
-            n ??= new List<Room>();
-            Room r = new Room(n, desc);
-            allRooms.Add(r);
-            foreach(Room x in allRooms)
-            {
-                if (r.neighbors.Contains(x))
-                {
-                    AddPath(x, r);
-                }
-            }
-            return r;
-        }
-
-        private void GenerateMap()
-        {
-            Room r1 = CreateNewRoom(new List<Room>(){spawn}, "hallwayy??????");
-            Room r2 = CreateNewRoom(new List<Room>(){r1}, "this is definitely a room");
-        }
-
-        private void GenerateMapFromTxt(string filepath)
-        {
-            try
-            {
-                using StreamReader reader = new StreamReader(filepath);
-                List<Room> allRooms = new List<Room>();
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] details = line.Split(',');
-                    string[] ids = details[0].Split(' ');
-                    List<Room> neighbors = new List<Room>();
-                    foreach(string id in ids)
-                    {
-                        if(id == "n") break;
-                        neighbors.Add(GetRoomByID(id));
-                    }
-                    CreateNewRoom(neighbors, details[1]);
-                }
-            }
-            catch 
-            {
-                Console.WriteLine("The file could not be read:");
-            }
-        }
 
         public void PrintMap()
         {
             Console.WriteLine($"Current Map ({allRooms.Count()} rooms):\n");
-            foreach(Room r in allRooms)
+            foreach(var entry in allRooms)
             {
-                Console.WriteLine($"Room id {r.id}'s description: {r.description}");
+                var r = entry.Value;
+                Console.WriteLine($"Room id {entry.Key}'s description: {r.description}");
                 Console.WriteLine($"Neighbors: {r.NeighborsStr()}\n");
             }
-        }
-
-        public Room GetRoomByID(string input)
-        {
-            int id = int.Parse(input);
-            foreach(Room r in allRooms)
-            {
-                if(r.id == id)
-                {
-                    return r;
-                }
-            }
-            return spawn; //room not found
         }
     }
 }

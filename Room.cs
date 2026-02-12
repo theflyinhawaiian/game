@@ -7,28 +7,18 @@ namespace game
 {
     public class Room
     {
-        private static int nextRoomId = 0;
         public string? description;
-        public int id;
-        public List<Room> neighbors = new List<Room>();
+        public List<int> neighbors = new List<int>();
 
-        public Room(List<Room>? n = null, string? desc = null)
+        public Room(List<int>? n = null, string? desc = null)
         {
-            id = nextRoomId;
-            neighbors = n ?? new List<Room>();
+            neighbors = n ?? new List<int>();
             description = desc;
-            nextRoomId++;
-        }
-        public Room()
-        {
-            id = nextRoomId;
-            nextRoomId++;
         }
 
 
         public void print()
         {
-            Console.WriteLine($"You are in room {id}");
             Console.WriteLine(description);
             if(neighbors.Count() != 0)
             {
@@ -40,9 +30,9 @@ namespace game
         public string NeighborsStr()
         {
             string n = "";
-            foreach(Room x in neighbors)
+            foreach(int x in neighbors)
             {
-                n += x.id + " ";
+                n += x + " ";
             }
             return n;
         }
