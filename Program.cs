@@ -1,5 +1,4 @@
-﻿using System;
-using game;
+﻿using game;
 
 public class Program
 {
@@ -9,6 +8,6 @@ public class Program
         Console.WriteLine("Starting game!");
         Game game = new Game();
         game.init();
-        game.Start();
+        game.Run();
     }   
 }

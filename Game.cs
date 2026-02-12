@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace game
 {
     public class Game
@@ -53,7 +47,7 @@ namespace game
             GameState = State.InRoom;
         }
 
-        public void Start()
+        public void Run()
         {
             while (isRunning)
             {
