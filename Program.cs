@@ -1,11 +1,13 @@
-﻿
+﻿using System;
+
 public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("Enter a number:");
-        var input = Console.ReadLine();
+        var myWeapon = new Weapon("sword", 8, 60);
+        Console.WriteLine(myWeapon.ToString());
 
-        Console.WriteLine($"Your number is: {input}");
+        var myWeapon2 = new Weapon("gun", 100);
+        Console.WriteLine(myWeapon2.ToString());
     }
 }
