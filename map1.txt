@@ -1,6 +1,6 @@
 n,this is where you start
 0,hallway???
-1,just another room lol
+1 0,just another room lol
 0 1 2,testing lol i wonder if this breaks things
 3,i can just do things now cant i
 4,this

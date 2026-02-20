@@ -1,18 +1,31 @@
 namespace game
 {
-    public class Player
+    public class Enemy
     {
-        public int maxHealth = 100;
-        public int hp = 100;
-        public int armor  = 1;
-        public int inventorySize = 5;
-        public int attack = 1;
-        public string name = "placeholder";
-        public Player(string n)
+        public int maxHealth;
+        public int hp;
+        public string name;
+        public string type;
+        public int attack;
+        public int defense;
+
+        public Enemy(int maxHealth = 2, int hp = 2, string name = "Jeff", string type = "blob", int attack = 2, int defense = 2)
         {
-            name = n;
+            this.maxHealth = maxHealth;
+            this.hp = hp;
+            this.name = name;
+            this.type = type;
+            this.attack = attack;
+            this.defense = defense;
         }
-        public void PrintDetails()
+
+
+        public void DealDamage(int incoming)
+        {
+            this.hp -= incoming - defense;
+        }
+
+        public void PrintEnemy()
         {
             Console.WriteLine($"{name}:");
             Console.Write("HP: ");
@@ -23,11 +36,8 @@ namespace game
             Console.Write(hp);
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write($"/{maxHealth}   |   Armor:");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write(armor);
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write($"   |   Attack: {attack}");
         }
     }
 }
-    

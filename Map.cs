@@ -53,9 +53,9 @@ namespace game
                         newRoomId++;
                     }
                 }
-                catch 
+                catch (Exception e)
                 {
-                    Console.WriteLine("The file could not be read:");
+                    Console.WriteLine("The file could not be read: " + e);
                 }
                 return allRooms;
             }
