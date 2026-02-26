@@ -17,7 +17,8 @@ public class Program
         Console.WriteLine(player.CurrentHealth);
         player.Inventory.GainHealthPotion();
         player.Inventory.HealthPotionAmount();
-        player.Inventory.Consumables[0].UseHealthPotion(); 
+        player.Inventory.UseHealthPotion();
+        player.Inventory.HealthPotionAmount();
         Console.WriteLine(player.CurrentHealth);
         Console.WriteLine(player.Inventory.HealthPotionAmount());
 

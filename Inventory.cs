@@ -3,24 +3,35 @@
 public class Inventory
 {
 
-	public List<Consumable> Consumables { get; set; }
+	public List<HealthPotion> HealthPotions { get; set; }
 
 	public Player Player { get; set; }
 
 	public Inventory(Player player)
 	{
-		Consumables = new List<Consumable>();
+		HealthPotions = new List<HealthPotion>();
 		Player = player;
 	}
 	
 	public void GainHealthPotion()
 	{
-		Consumables.Add(new Consumable(Player));
+		HealthPotions.Add(new HealthPotion(Player));
 	}
 
 	public int HealthPotionAmount()
 	{
-		var consumableAmount = Consumables.Count;
-		return consumableAmount;
+		var healthPotionAmount = HealthPotions.Count;
+		return healthPotionAmount;
+	}
+
+	public void UseHealthPotion()
+	{
+        if (HealthPotionAmount() > 0)
+		{
+            HealthPotions[0].Use();
+            HealthPotions.RemoveAt(0);
+        }   
 	}
 }
+
+
