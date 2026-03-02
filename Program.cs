@@ -12,16 +12,27 @@ public class Program
 
         
 
-        var player = new Player(20, 2, 2);
-        player.CurrentHealth = 5;
-        Console.WriteLine(player.CurrentHealth);
-        player.Inventory.GainHealthPotion();
-        player.Inventory.HealthPotionAmount();
-        player.Inventory.UseHealthPotion();
-        player.Inventory.HealthPotionAmount();
-        Console.WriteLine(player.CurrentHealth);
-        Console.WriteLine(player.Inventory.HealthPotionAmount());
+        var player = new Player(20, 3, 2);
+        var enemy = new Enemy(5, 3, 1, "Probe");
+
+        Console.WriteLine("You see a " + enemy.EnemyName + " heading towards you. What would you like to do?");
+        var input = Console.ReadLine();
+        
+        while (input == "a")
+        {
+            var playerDamage = player.AttackStat - enemy.DefenseStat;
+            enemy.TakeDamage(playerDamage);
+            var enemyDamage = enemy.AttackStat - player.DefenseStat;
+            player.TakeDamage(enemyDamage);
+            if (enemy.CurrentHealth > 0 && player.CurrentHealth > 0)
+            {
+                Console.WriteLine("You are left at " + player.CurrentHealth + " health. The enemy has " + enemy.CurrentHealth + " health. What would you like to do?");
+            }
+            input = Console.ReadLine();
+        }
 
 
     }
+
+
 }

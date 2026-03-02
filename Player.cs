@@ -17,5 +17,13 @@ public class Player
 		Inventory = new Inventory(this);
 	}
 
+	public void TakeDamage(int damage)
+	{
+		CurrentHealth -= damage;
+		if (CurrentHealth <= 0)
+		{
+			Console.WriteLine("GAME OVER");
+		}
+	}
 	
 }
