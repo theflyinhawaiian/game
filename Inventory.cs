@@ -5,6 +5,8 @@ public class Inventory
 
 	public List<HealthPotion> HealthPotions { get; set; }
 
+	public Weapon Weapon { get; set; }
+
 	public Player Player { get; set; }
 
 	public Inventory(Player player)
@@ -32,6 +34,12 @@ public class Inventory
             HealthPotions.RemoveAt(0);
         }   
 	}
+
+	public void EquipWeapon(Weapon weapon)
+	{
+		Weapon = weapon;
+		Player.CurrentAttackStat = Player.BaseAttackStat + Weapon.Damage;
+	}
+
+
 }
-
-

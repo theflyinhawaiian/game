@@ -2,9 +2,9 @@
 
 public class Weapon
 {
-    private string WeaponName { get; set; }
-    private int Damage { get; set; }
-    private int HitPercentage { get; set; } = 100;
+    public string WeaponName { get; set; }
+    public int Damage { get; set; }
+    public int HitPercentage { get; set; } = 100;
 
     public Weapon(string weaponName, int damage, int hitPercentage)
     {

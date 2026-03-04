@@ -4,7 +4,8 @@ public class Player
 {
 	public int MaxHealth { get; set; }
 	public int CurrentHealth { get; set; }
-	public int AttackStat {  get; set; }
+	public int BaseAttackStat {  get; set; }
+	public int CurrentAttackStat { get; set; }
 	public int DefenseStat { get; set; }
 	public Inventory Inventory { get; set; } 
 
@@ -12,7 +13,8 @@ public class Player
 	{
 		MaxHealth = maxHealth;
 		CurrentHealth = maxHealth;
-		AttackStat = attack;
+		BaseAttackStat = attack;
+		CurrentAttackStat = attack;
 		DefenseStat = defense;
 		Inventory = new Inventory(this);
 	}

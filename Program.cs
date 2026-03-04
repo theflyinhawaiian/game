@@ -12,15 +12,19 @@ public class Program
 
         
 
-        var player = new Player(20, 3, 2);
-        var enemy = new Enemy(5, 3, 1, "Probe");
+        var player = new Player(20, 1, 2);
+        var enemy = new Enemy(108, 3, 1, "Probe");
+
+
+        player.Inventory.EquipWeapon(myWeapon);
+        player.Inventory.EquipWeapon(myWeapon2);
 
         Console.WriteLine("You see a " + enemy.EnemyName + " heading towards you. What would you like to do?");
         var input = Console.ReadLine();
-        
+
         while (input == "a")
         {
-            var playerDamage = player.AttackStat - enemy.DefenseStat;
+            var playerDamage = player.CurrentAttackStat - enemy.DefenseStat;
             enemy.TakeDamage(playerDamage);
             var enemyDamage = enemy.AttackStat - player.DefenseStat;
             player.TakeDamage(enemyDamage);
