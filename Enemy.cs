@@ -24,20 +24,5 @@ namespace game
         {
             this.hp -= incoming - defense;
         }
-
-        public void PrintEnemy()
-        {
-            Console.WriteLine($"{name}:");
-            Console.Write("HP: ");
-            if(hp < (0.1 * maxHealth) ) Console.ForegroundColor = ConsoleColor.DarkRed;
-            else if (hp < (0.33 * maxHealth)) Console.ForegroundColor = ConsoleColor.Red;
-            else if (hp < 0.67 * maxHealth) Console.ForegroundColor = ConsoleColor.Yellow;
-            else Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(hp);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"/{maxHealth}   |   Armor:");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write($"   |   Attack: {attack}");
-        }
     }
 }

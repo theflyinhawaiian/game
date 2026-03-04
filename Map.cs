@@ -3,7 +3,7 @@ namespace game
     public class Map
     {        
         public Room spawn;
-        private Dictionary<int, Room> allRooms = new Dictionary<int, Room>();
+        public Dictionary<int, Room> allRooms = new Dictionary<int, Room>();
 
         private class MapParser
         {
@@ -72,18 +72,6 @@ namespace game
         public Room GetRoomByID(int id)
         {
             return allRooms[id];
-        }
-
-
-        public void PrintMap()
-        {
-            Console.WriteLine($"Current Map ({allRooms.Count()} rooms):\n");
-            foreach(var entry in allRooms)
-            {
-                var r = entry.Value;
-                Console.WriteLine($"Room id {entry.Key}'s description: {r.description}");
-                Console.WriteLine($"Neighbors: {r.NeighborsStr()}\n");
-            }
         }
     }
 }

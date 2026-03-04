@@ -7,6 +7,7 @@ namespace game
         public Player player;
         public Room playerLocation;
         public Map? map;
+        public DisplayManager displayManager;
         public enum State
         {
             InRoom,
@@ -21,7 +22,7 @@ namespace game
 
         public Game()
         {
-            
+            displayManager = new DisplayManager(this);
         }
 
         public void init()
@@ -54,7 +55,7 @@ namespace game
                 turnEnded = false;
                 if(allowClear) Console.Clear();
                 List<string> actions = GetActions();
-                PrintTurnDetails(actions);
+                displayManager.PrintTurnDetails(actions);
                 string a = SelectAction(actions);
                 //Console.WriteLine("selected action: " + a);
                 DoAction(a);
@@ -165,16 +166,6 @@ namespace game
             return actions;
         }
 
-        public void PrintActions(List<string> actions)
-        {
-            foreach(string a in actions)
-            {
-                Console.Write($"   {a}   |");
-            }
-            Console.WriteLine();
-        }
-
-
         public string SelectAction(List<string> actions)
         {
             var rawInput = Console.ReadLine();
@@ -210,28 +201,18 @@ namespace game
                         List<string> validRooms = GetValidMoveInputs();
                         Console.WriteLine("\nMove to where?");
                         Console.WriteLine(new string('-', 100));
-                        PrintActions(validRooms);
+                        displayManager.PrintActions(validRooms);
                         var neighborIndex = int.Parse(SelectAction(validRooms).Substring(1,1)) - 1;
                         MovePlayer(map.GetRoomByID(playerLocation.neighbors[neighborIndex]));
                         break;
                     }
                 case "p":
                     {
-                        map.PrintMap();
+                        displayManager.PrintMap(map);
                         break;
                     }
             }
         }
-
-        public void PrintTurnDetails(List<string> actions)
-        {
-            player.PrintDetails();
-            Console.WriteLine("\n");
-            playerLocation.print();
-            Console.WriteLine("\n\n\nWhat will you do?");    
-            Console.WriteLine(new string('-', 100));
-            PrintActions(actions);
-
-        }    
+  
     }
 }
