@@ -40,23 +40,21 @@ namespace game
                 Dictionary<int, Room> allRooms = new Dictionary<int, Room>();
                 try
                 {
-                    Console.WriteLine("Reading file");
                     string jsonString = File.ReadAllText(path);
-                    Console.WriteLine("File read successfully. Content:");
                     Console.WriteLine(jsonString);
 
-                    Console.WriteLine("deserializing");
                     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                     var jsonRooms = JsonSerializer.Deserialize<List<JsonRoom>>(jsonString, options);
-                    Console.WriteLine($"Deserialized {jsonRooms.Count} rooms");
 
-                    //embracing claude
+                    //embracing claude (initializes rooms)
                     List<Room> rooms = jsonRooms.Select(jr => new Room(
                         desc: jr.Description
                     )).ToList();
 
+
                     for (int i = 0; i < rooms.Count; i++)
                     {
+                        //assign room exits
                         int j = 1;
                         foreach (var exit in jsonRooms[i].Exits)
                         {
@@ -65,11 +63,12 @@ namespace game
                                 destinationRoom: destination,
                                 act: Action.ActionType.move,
                                 description: exit.Description,
-                                inputChar: $"{j}" // or however you want to assign this
+                                inputChar: $"{j}"
                             ));
                             j++;
                         }
 
+                        //assign room enemies
                         foreach (var enemy in jsonRooms[i].Enemies)
                         {
                             rooms[i].enemies.Add(new Enemy(
