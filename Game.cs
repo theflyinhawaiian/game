@@ -8,6 +8,7 @@ namespace game
         public Room playerLocation;
         public Map? map;
         public DisplayManager displayManager;
+        public InputManager inputManager;
         public enum State
         {
             InRoom,
@@ -23,18 +24,19 @@ namespace game
         public Game()
         {
             displayManager = new DisplayManager(this);
+            inputManager = new InputManager(this);
         }
 
         public void init()
         {
             if(allowClear) Console.Clear();
             isRunning = true;
-            player = new Player(SelectName());
+            player = new Player(inputManager.SelectName());
             Console.WriteLine($"\nYour name is {player.name}?");
             Console.WriteLine("This is where a lot of BS introduction would go");
             //TODO: tutorial? controls explained? idk
             Console.WriteLine("does this make sense yadda yadda");
-            var input = AskYesOrNo();
+            var input = inputManager.PromptYesOrNo();
             if(input == "y")
             {
                 Console.WriteLine("yippeee game!!! woooooo start!!!!");
@@ -56,7 +58,7 @@ namespace game
                 if(allowClear) Console.Clear();
                 List<string> actions = GetActions();
                 displayManager.PrintTurnDetails(actions);
-                string a = SelectAction(actions);
+                string a = inputManager.SelectAction(actions);
                 //Console.WriteLine("selected action: " + a);
                 DoAction(a);
                 if (turnEnded)
@@ -65,58 +67,13 @@ namespace game
                 }
 
                 Console.WriteLine("End turn?");
-                var ynInput = AskYesOrNo();
+                var ynInput = inputManager.PromptYesOrNo();
                 if (ynInput == "y")
                 {
                     continue;
                 }
             }
         }
-
-
-        public string SelectName()
-        {
-            var input = "";
-            while (string.IsNullOrWhiteSpace(input)) {
-                Console.WriteLine("What is your name, traveller?");
-                input = Console.ReadLine();
-                if (input == "nameless") 
-                {
-                    Console.WriteLine("bruh really \n");
-                    input = ""; // clear input
-                }
-                else if (!string.IsNullOrWhiteSpace(input))
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("You cannot be nameless");
-                }
-            }
-            return input;
-        }
-
-        public string AskYesOrNo()
-        {
-            string s = "";
-            while (string.IsNullOrWhiteSpace(s))
-            {
-                Console.Write("y/n \n");
-                var input = Console.ReadLine();
-                if (input == "y" || input == "n")
-                {
-                    s = input;
-                    break;
-                }
-                else
-                {
-                    Console.Write("Invalid input: ");
-                }
-            }
-            return s;
-        }
-        
 
 
         public void MovePlayer(Room newRoom)
@@ -166,28 +123,6 @@ namespace game
             return actions;
         }
 
-        public string SelectAction(List<string> actions)
-        {
-            var rawInput = Console.ReadLine();
-            bool found = false;
-            string act = "";
-            while(!found){
-                foreach(string action in actions)
-                {
-                    if(action.Substring(1,1) == rawInput)
-                    {
-                        found = true;
-                        act = action;
-                        break;
-                    }
-                } 
-                if(found) break;
-                Console.WriteLine("Invalid input, try again");
-                rawInput = Console.ReadLine();
-            }
-            return act;
-        }
-
         public void DoAction(string input)
         {
             //Console.WriteLine("do action " + input);
@@ -202,7 +137,7 @@ namespace game
                         Console.WriteLine("\nMove to where?");
                         Console.WriteLine(new string('-', 100));
                         displayManager.PrintActions(validRooms);
-                        var neighborIndex = int.Parse(SelectAction(validRooms).Substring(1,1)) - 1;
+                        var neighborIndex = int.Parse(inputManager.SelectAction(validRooms).Substring(1,1)) - 1;
                         MovePlayer(map.GetRoomByID(playerLocation.neighbors[neighborIndex]));
                         break;
                     }
