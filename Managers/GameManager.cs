@@ -7,6 +7,7 @@ namespace game
         public Game game;
         public DisplayManager displayManager;
         public InputManager inputManager;
+        public ActionManager actionManager;
         public enum State
         {
             InRoom,
@@ -25,6 +26,8 @@ namespace game
             this.game = game;
             displayManager = new DisplayManager(game);
             inputManager = new InputManager(game);
+            actionManager = new ActionManager(game);
+
         }
         public void init()
         {
@@ -55,10 +58,10 @@ namespace game
             {
                 turnEnded = false;
                 if(allowClear) Console.Clear();
-                List<string> actions = GetActions();
+                List<Action> actions = actionManager.GetActions(GameState);
+                if(allowPrintMap) actions.Add(new Action(Action.ActionType.printMap, "Print map", "p"));
                 displayManager.PrintTurnDetails(actions);
-                string a = inputManager.SelectAction(actions);
-                //Console.WriteLine("selected action: " + a);
+                Action a = inputManager.SelectAction(actions);
                 DoAction(a);
                 if (turnEnded)
                 {
@@ -82,71 +85,18 @@ namespace game
             turnEnded = true;
         }
 
-        public List<string> GetValidMoveInputs()
-        {
-            List<string> inputs = new List<string>();
-            for (int i = 0; i <game.playerLocation.neighbors.Count(); i++)
-            {
-                inputs.Add("[" + (i+1) + "] Room " + game.playerLocation.neighbors[i]);
-            }
-            return inputs;
-        }
-
-        public List<string> GetValidActionsInRoom(Room a)
-        {
-            List<string> actions = new List<string>();
-            
-            if(a.neighbors.Count != 0)
-            {
-                actions.Add("[m] Move player");
-            }
-            if(allowPrintMap) actions.Add("[p] print map");
-            return actions;
-        }
-
-        public List<string> GetActions()
-        {
-            List<string> actions = new List<string>();
-            switch (GameState)
-            {
-                case State.InRoom :
-                    {
-                        var validActionsInRoom = GetValidActionsInRoom(game.playerLocation);
-                        foreach(string act in validActionsInRoom)
-                        {
-                            actions.Add(act);
-                        }
-                    }
-                    break;
-            }
-            return actions;
-        }
-
-        public void DoAction(string input)
+        public void DoAction(Action a)
         {
             //Console.WriteLine("do action " + input);
-            switch (input.Substring(1,1))
+            switch (a.act)
             {
-                case "b" :
-                    //This is where the eventual back button should go
+                case Action.ActionType.move :
+                    MovePlayer(a.destinationRoom);
                     break;
-                case "m" :
-                    {
-                        List<string> validRooms = GetValidMoveInputs();
-                        Console.WriteLine("\nMove to where?");
-                        Console.WriteLine(new string('-', 100));
-                        displayManager.PrintActions(validRooms);
-                        var neighborIndex = int.Parse(inputManager.SelectAction(validRooms).Substring(1,1)) - 1;
-                        MovePlayer(game.map.GetRoomByID(game.playerLocation.neighbors[neighborIndex]));
-                        break;
-                    }
-                case "p":
-                    {
-                        displayManager.PrintMap(game.map);
-                        break;
-                    }
+                case Action.ActionType.printMap :
+                    displayManager.PrintMap(game.map);
+                    break;
             }
         }
-
     }
 }

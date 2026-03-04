@@ -1,5 +1,3 @@
-using System.IO.MemoryMappedFiles;
-
 namespace game
 {
     public class DisplayManager
@@ -10,7 +8,7 @@ namespace game
             this.game = game;
         }
 
-        public void PrintTurnDetails(List<string> actions)
+        public void PrintTurnDetails(List<Action> actions)
         {
             game.player.PrintDetails();
             Console.WriteLine("\n");
@@ -115,13 +113,12 @@ namespace game
             return n;
         }
 
-        public void PrintActions(List<string> actions)
+        public void PrintActions(List<Action> actions)
         {
-            foreach(string a in actions)
+            foreach(Action a in actions)
             {
-                Console.Write($"   {a}   |");
+                Console.WriteLine($"[{a.inputChar}] {a.description}");
             }
-            Console.WriteLine();
         }
 
         public void PrintMap(Map map)

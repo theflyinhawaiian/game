@@ -28,15 +28,15 @@ namespace game
             return s;
         }
 
-        public string SelectAction(List<string> actions)
+        public Action SelectAction(List<Action> actions)
         {
             var rawInput = Console.ReadLine();
             bool found = false;
-            string act = "";
+            Action act = new Action();
             while(!found){
-                foreach(string action in actions)
+                foreach(Action action in actions)
                 {
-                    if(action.Substring(1,1) == rawInput)
+                    if(action.inputChar == rawInput)
                     {
                         found = true;
                         act = action;
