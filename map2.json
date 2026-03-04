@@ -1,0 +1,33 @@
+[
+    {
+        "description": "This is where you start",
+        "exits": [
+            {
+                "destinationID": 1,
+                "description": "Walk down the hallway"
+            }
+        ]
+    },
+    {
+        "description": "You are in the hallway",
+        "exits":[
+            {
+                "destinationID": 0,
+                "description": "Go back towards the light"
+            },
+            {
+                "destinationID": 2,
+                "description": "Continue into the darkness"
+            }
+        ]
+    },
+    {
+        "description": "There is a locked door",
+        "exits":[
+            {
+                "destinationID": 1,
+                "description": "Turn around"
+            }
+        ]
+    }
+]

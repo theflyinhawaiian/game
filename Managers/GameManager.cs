@@ -47,7 +47,7 @@ namespace game
             {
                 Console.WriteLine(":( okay but we're starting anyway");
             }
-            game.map = new Map("map1.txt");
+            game.map = new Map("map2.json");
             game.playerLocation = game.map.spawn;
             GameState = State.InRoom;
         }

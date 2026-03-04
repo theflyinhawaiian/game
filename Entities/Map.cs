@@ -1,3 +1,7 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+
 namespace game
 {
     public class Map
@@ -7,13 +11,6 @@ namespace game
 
         private class MapParser
         {
-
-            public Room CreateNewRoom(List<int>? n = null, string? desc = null)
-            {
-                n ??= new List<int>();
-                Room r = new Room(n, desc);
-                return r;
-            }
 
             public void CreateConnections(Room room, int id, Dictionary<int, Room> allRooms)
             {
@@ -47,7 +44,7 @@ namespace game
                             if(id == "n") break;
                             neighbors.Add(int.Parse(id));
                         }
-                        var newRoom = CreateNewRoom(neighbors, details[1]);
+                        var newRoom = new Room(details[1], neighbors);
                         allRooms.Add(newRoomId, newRoom);
                         CreateConnections(newRoom, newRoomId, allRooms);
                         newRoomId++;
@@ -59,13 +56,71 @@ namespace game
                 }
                 return allRooms;
             }
+
+
+            public class JsonRoom
+            {
+                public string? Description { get; set; }
+                public List<JsonExit> Exits { get; set; } = new();
+            }
+
+            public class JsonExit
+            {
+                public int DestinationID { get; set; }
+                public string? Description { get; set; }
+            }
+
+            public Dictionary<int, Room> GenerateMapFromJSON(string path)
+            {
+                Dictionary<int, Room> allRooms = new Dictionary<int, Room>();
+                try
+                {
+                    Console.WriteLine("Reading file");
+                    string jsonString = File.ReadAllText(path);
+                    Console.WriteLine("File read successfully. Content:");
+                    Console.WriteLine(jsonString);
+
+                    Console.WriteLine("deserializing");
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var jsonRooms = JsonSerializer.Deserialize<List<JsonRoom>>(jsonString, options);
+                    Console.WriteLine($"Deserialized {jsonRooms.Count} rooms");
+
+                    //embracing claude
+                    List<Room> rooms = jsonRooms.Select(jr => new Room(
+                        desc: jr.Description
+                    )).ToList();
+
+                    for (int i = 0; i < rooms.Count; i++)
+                    {
+                        int j = 1;
+                        foreach (var exit in jsonRooms[i].Exits)
+                        {
+                            Room destination = rooms[exit.DestinationID];
+                            rooms[i].exits.Add(new Action(
+                                destinationRoom: destination,
+                                act: Action.ActionType.move,
+                                description: exit.Description,
+                                inputChar: $"{j}" // or however you want to assign this
+                            ));
+                            j++;
+                        }
+                        allRooms.Add(i, rooms[i]);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("The file could not be read: " + e);
+                }
+                return allRooms;
+            }
+
         }
 
 
         public Map(string path)
         {
             var parser = new MapParser();
-            allRooms = parser.GenerateMapFromTxt(path);
+            allRooms = parser.GenerateMapFromJSON(path);
             spawn = allRooms[0];
         }
 
