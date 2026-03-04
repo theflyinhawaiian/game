@@ -12,62 +12,27 @@ namespace game
         private class MapParser
         {
 
-            public void CreateConnections(Room room, int id, Dictionary<int, Room> allRooms)
-            {
-                foreach(int neighborID in room.neighbors)
-                {
-                    if (allRooms.ContainsKey(neighborID))
-                    {
-                        if (!allRooms[neighborID].neighbors.Contains(id))
-                        {
-                            allRooms[neighborID].neighbors.Add(id);
-                        }
-                    }
-                }
-            }
-
-            public Dictionary<int, Room> GenerateMapFromTxt(string filepath)
-            {
-                Dictionary<int, Room> allRooms = new Dictionary<int, Room>();
-                int newRoomId = 0;
-                try
-                {
-                    using StreamReader reader = new StreamReader(filepath);
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        string[] details = line.Split(',');
-                        string[] ids = details[0].Split(' ');
-                        List<int> neighbors = new List<int>();
-                        foreach(string id in ids)
-                        {
-                            if(id == "n") break;
-                            neighbors.Add(int.Parse(id));
-                        }
-                        var newRoom = new Room(details[1], neighbors);
-                        allRooms.Add(newRoomId, newRoom);
-                        CreateConnections(newRoom, newRoomId, allRooms);
-                        newRoomId++;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("The file could not be read: " + e);
-                }
-                return allRooms;
-            }
-
-
             public class JsonRoom
             {
                 public string? Description { get; set; }
                 public List<JsonExit> Exits { get; set; } = new();
+                public List<JsonEnemy> Enemies { get; set; } = new();
             }
 
             public class JsonExit
             {
                 public int DestinationID { get; set; }
                 public string? Description { get; set; }
+            }
+
+            public class JsonEnemy
+            {
+                public int MaxHealth { get; set; } = 2;
+                public int Hp { get; set; } = 2;
+                public string Name { get; set; } = "Jeff";
+                public string Type { get; set; } = "blob";
+                public int Attack { get; set; } = 2;
+                public int Defense { get; set; } = 2;
             }
 
             public Dictionary<int, Room> GenerateMapFromJSON(string path)
@@ -103,6 +68,18 @@ namespace game
                                 inputChar: $"{j}" // or however you want to assign this
                             ));
                             j++;
+                        }
+
+                        foreach (var enemy in jsonRooms[i].Enemies)
+                        {
+                            rooms[i].enemies.Add(new Enemy(
+                                maxHealth: enemy.MaxHealth,
+                                hp: enemy.Hp,
+                                name: enemy.Name,
+                                type: enemy.Type,
+                                attack: enemy.Attack,
+                                defense: enemy.Defense
+                            ));
                         }
                         allRooms.Add(i, rooms[i]);
                     }

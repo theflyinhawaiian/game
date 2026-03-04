@@ -17,10 +17,6 @@ namespace game
             {
                 case GameManager.State.InRoom :
                     {
-                        foreach(int n in game.playerLocation.neighbors)
-                        {
-                            actions.Add(new Action(game.map.GetRoomByID(n), Action.ActionType.move, $"Move to room {n}", n.ToString()));
-                        }
                         foreach(Action exit in game.playerLocation.exits)
                         {
                             actions.Add(exit);

@@ -9,7 +9,7 @@
         ]
     },
     {
-        "description": "You are in the hallway",
+        "description": "You are in a hallway. You can see a faint light in one direction.",
         "exits":[
             {
                 "destinationID": 0,
@@ -22,11 +22,34 @@
         ]
     },
     {
-        "description": "There is a locked door",
+        "description": "There is a door",
         "exits":[
             {
                 "destinationID": 1,
-                "description": "Turn around"
+                "description": "Go back down the hallway"
+            },
+            {
+                "destinationID": 3,
+                "description": "Open it"
+            }
+        ]
+    },
+    {
+        "description": "You are in a large, open chamber",
+        "exits":[
+            {
+                "destinationID": 2,
+                "description": "Leave the chamber"
+            }
+        ],
+        "enemies":[
+            {
+                "name": "Bob",
+                "type": "Skeleton",
+                "maxHealth": 5,
+                "hp": 5,
+                "attack": 3,
+                "defense": 1
             }
         ]
     }

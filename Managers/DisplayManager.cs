@@ -22,11 +22,7 @@ namespace game
         {
             Console.WriteLine(room.description);
             Console.WriteLine(EnemiesStr(room));
-            if(room.neighbors.Count() != 0)
-            {
-                Console.Write($"You can see {room.neighbors.Count()} path");
-                if(room.neighbors.Count() > 1) Console.Write("s");
-            }
+            
         }
 
         public string EnemiesStr(Room room)
@@ -106,9 +102,9 @@ namespace game
         public string RoomNeighborsStr(Room room)
         {
             string n = "";
-            foreach(int x in room.neighbors)
+            foreach(Action x in room.exits)
             {
-                n += x + " ";
+                n += x.description + " ";
             }
             return n;
         }
