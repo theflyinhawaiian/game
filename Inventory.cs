@@ -4,6 +4,7 @@ public class Inventory
 {
 
 	public List<HealthPotion> HealthPotions { get; set; }
+	public List<ArmorPotion> ArmorPotions { get; set; }
 
 	public Weapon Weapon { get; set; }
 
@@ -11,7 +12,9 @@ public class Inventory
 
 	public Inventory(Player player)
 	{
+
 		HealthPotions = new List<HealthPotion>();
+		ArmorPotions = new List<ArmorPotion>();
 		Player = player;
 	}
 	
@@ -20,10 +23,21 @@ public class Inventory
 		HealthPotions.Add(new HealthPotion(Player));
 	}
 
+	public void GainArmorPotion()
+	{
+		ArmorPotions.Add(new ArmorPotion(Player));
+	}
+
 	public int HealthPotionAmount()
 	{
 		var healthPotionAmount = HealthPotions.Count;
 		return healthPotionAmount;
+	}
+
+	public int ArmorPotionAmount()
+	{
+		var armorPotionAmount = ArmorPotions.Count;
+		return armorPotionAmount;
 	}
 
 	public void UseHealthPotion()
@@ -34,6 +48,17 @@ public class Inventory
             HealthPotions.RemoveAt(0);
         }   
 	}
+
+	public void UseArmorPotion()
+	{
+		if (ArmorPotionAmount() > 0)
+		{
+			ArmorPotions[0].Use();
+			ArmorPotions.RemoveAt(0);
+		}
+	}
+
+	
 
 	public void EquipWeapon(Weapon weapon)
 	{
