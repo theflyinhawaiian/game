@@ -52,7 +52,15 @@ public class Program
                 Console.WriteLine(player.Inventory.Describe());
                 Console.WriteLine("\n Which item would you like to use?");
 
-                Console.WriteLine(player.Inventory.Options());
+                string optionsConcatenated = ("");
+                foreach(string option in player.Inventory.Options())
+                {
+                    optionsConcatenated += option;
+                }
+                Console.WriteLine(optionsConcatenated);
+
+                //var inventoryInput = Console.ReadLine();
+
             }
             
             input = Console.ReadLine();

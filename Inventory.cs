@@ -91,23 +91,26 @@ public class Inventory
 
     }
 
-	public string Options()
+	public List<string> Options()
 	{
-		string optionsMenu = "";
+		var optionsMenu = new List<string>();
 		if (ArmorPotionAmount() > 0)
 		{
-			string armorOption = "  Use Armor Potion (a)   ";
-			optionsMenu += armorOption;
+			var armourOption = new Option("Armor Potion", "a");
+			//string armorOption = "  Use Armor Potion (a)   ";
+			//optionsMenu.Add(armorOption);
 		}
 		if (HealthPotionAmount() > 0)
 		{
-			string healthOption = "  Use Health Potion (h)   ";
-			optionsMenu += healthOption;
+			var healthOption = new Option("Health Potion", "h");
+			//string healthOption = "  Use Health Potion (h)   ";
+			//optionsMenu.Add(healthOption);
 		}
 		if (Weapon != null)
 		{
-			string weaponOption = "  Use Weapon (w)   ";
-			optionsMenu += weaponOption;
+			var weaponOption = new Option("Weapon", "w");
+			//string weaponOption = "  Change Weapon (w)   ";
+			//optionsMenu.Add(weaponOption);
 		}
 
 		return optionsMenu;
