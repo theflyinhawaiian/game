@@ -66,5 +66,51 @@ public class Inventory
 		Player.CurrentAttackStat = Player.BaseAttackStat + Weapon.Damage;
 	}
 
+	public string Describe()
+	{
+		string totalInventoryList = "";
+
+		if (ArmorPotionAmount() > 0)
+		{
+			string strArmorPotionAmount = ArmorPotionAmount() + " Armor Potions, ";
+			totalInventoryList += strArmorPotionAmount;
+		}
+        if (HealthPotionAmount() > 0)
+        {
+            string strHealthPotionAmount = HealthPotionAmount() + " Health Potions, ";
+            totalInventoryList += strHealthPotionAmount;
+        }
+
+		if (Weapon != null)
+		{
+            string strEquippedWeapon = Weapon.WeaponName + "Equipped.";
+            totalInventoryList += strEquippedWeapon;
+        }
+
+		return totalInventoryList;
+
+    }
+
+	public string Options()
+	{
+		string optionsMenu = "";
+		if (ArmorPotionAmount() > 0)
+		{
+			string armorOption = "  Use Armor Potion (a)   ";
+			optionsMenu += armorOption;
+		}
+		if (HealthPotionAmount() > 0)
+		{
+			string healthOption = "  Use Health Potion (h)   ";
+			optionsMenu += healthOption;
+		}
+		if (Weapon != null)
+		{
+			string weaponOption = "  Use Weapon (w)   ";
+			optionsMenu += weaponOption;
+		}
+
+		return optionsMenu;
+	}
 
 }
