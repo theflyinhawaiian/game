@@ -83,7 +83,7 @@ public class Inventory
 
 		if (Weapon != null)
 		{
-            string strEquippedWeapon = Weapon.WeaponName + "Equipped.";
+            string strEquippedWeapon = Weapon.WeaponName + " Equipped.";
             totalInventoryList += strEquippedWeapon;
         }
 
@@ -91,26 +91,26 @@ public class Inventory
 
     }
 
-	public List<string> Options()
+	public List<Option> Options()
 	{
-		var optionsMenu = new List<string>();
+		var optionsMenu = new List<Option>();
 		if (ArmorPotionAmount() > 0)
 		{
 			var armourOption = new Option("Armor Potion", "a");
 			//string armorOption = "  Use Armor Potion (a)   ";
-			//optionsMenu.Add(armorOption);
+			optionsMenu.Add(armourOption);
 		}
 		if (HealthPotionAmount() > 0)
 		{
 			var healthOption = new Option("Health Potion", "h");
 			//string healthOption = "  Use Health Potion (h)   ";
-			//optionsMenu.Add(healthOption);
+			optionsMenu.Add(healthOption);
 		}
 		if (Weapon != null)
 		{
 			var weaponOption = new Option("Weapon", "w");
 			//string weaponOption = "  Change Weapon (w)   ";
-			//optionsMenu.Add(weaponOption);
+			optionsMenu.Add(weaponOption);
 		}
 
 		return optionsMenu;

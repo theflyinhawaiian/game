@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 public class Program
 {
@@ -49,15 +50,23 @@ public class Program
 
             if (input == "i" || input == "item" || input == "inventory")
             {
+                Console.Clear();
                 Console.WriteLine(player.Inventory.Describe());
-                Console.WriteLine("\n Which item would you like to use?");
+                Console.WriteLine("\n \n Which item would you like to use? \n");
 
-                string optionsConcatenated = ("");
-                foreach(string option in player.Inventory.Options())
+                List<Option> itemOptionsMenu = player.Inventory.Options();
+                string describeInventory = "";
+                string optionsMenu = "";
+
+                foreach (Option i in itemOptionsMenu)
                 {
-                    optionsConcatenated += option;
+
+                    optionsMenu += ("\n     Use " + i.OptionName + " (" + i.OptionKey + ") \n");
                 }
-                Console.WriteLine(optionsConcatenated);
+                
+                Console.WriteLine(optionsMenu);
+
+                
 
                 //var inventoryInput = Console.ReadLine();
 
