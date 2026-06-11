@@ -3,9 +3,16 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("Enter a number:");
-        var input = Console.ReadLine();
+        var princess = new Unit("the princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f);
+        var hero = new Unit("the hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f);
 
-        Console.WriteLine($"Your number is: {input}");
+        var attackingDamage = princess.Damage * princess.DamageModifier;
+        var attackingDamageInt = (int) MathF.Round(attackingDamage);
+        hero.CurrentHP -= attackingDamageInt;
+
+        Console.WriteLine(hero.CurrentHP.ToString());
+
+
+
     }
 }
