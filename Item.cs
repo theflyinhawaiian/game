@@ -3,12 +3,12 @@
 public class Item
 {
 	public string ItemName {get; set; }
-	public List<ItemEffect> Effects { get; set; }
+	public List<ItemEffect> listOfEffects { get; set; }
 
 	public Item(string itemName, List<ItemEffect> effects)
 	{
 		ItemName = itemName;
-		Effects = effects;
+		listOfEffects = effects;
 	}
 
 }

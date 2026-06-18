@@ -24,7 +24,7 @@ public class Program
 
         princess.Inventory = new Inventory(list);
 
-        princess.Inventory.InventorySort();
+        princess.Inventory.InventoryDisplay();
 
         attackingDamage = princess.BaseDamage * princess.DamageModifier;
         attackingDamageInt = (int)MathF.Round(attackingDamage);

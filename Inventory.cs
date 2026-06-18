@@ -14,11 +14,20 @@ public class Inventory
         Items = items;
     }
 
-    public void InventorySort()
+    public void InventoryDisplay()
     {
         foreach (var item in Items)
         {
-            Console.WriteLine(item.Effects);
+            string str = "";
+            foreach(var effect in item.listOfEffects)
+            {
+                var modNumberStr = effect.ModificationNumber.ToString();
+                var operatorSignStr = effect.OperatorSign.ToString();
+                var statModifiedStr = effect.StatModified.ToString();
+
+                str = str + statModifiedStr + ": " + operatorSignStr + " " + modNumberStr + "; ";
+            }
+            Console.WriteLine(str);
         }
     }
 }
