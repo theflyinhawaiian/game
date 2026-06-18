@@ -27,6 +27,7 @@ public class Unit
 	public Unit(string name, int level, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, float damageModifier, float damageReduction)
 	{
 		Name = name;
+		Inventory = new Inventory(this);
 		Level = level;
 		BaseHP = baseHP;
 		EffectiveMaxHP = baseHP;
