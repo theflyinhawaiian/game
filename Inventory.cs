@@ -51,15 +51,88 @@ public class Inventory
                         Unit.EffectiveMaxHP = Unit.BaseHP * Convert.ToInt32(effect.ModificationNumber);
                     }
                 }
-                else if (effect.StatModified == Stat.Movement) { var modifyingStat = Unit.BaseMovement; }
-                else if (effect.StatModified == Stat.CritChance) { var modifyingStat = Unit.BaseCritChance; }
-                else if (effect.StatModified == Stat.Speed) { var modifyingStat = Unit.BaseSpeed; }
-                else if (effect.StatModified == Stat.Energy) { var modifyingStat = Unit.CurrentEnergy; }
-                else if (effect.StatModified == Stat.Damage) { var modifyingStat = Unit.BaseDamage; }
-                else if (effect.StatModified == Stat.DamageModifier) { var modifyingStat = Unit.DamageModifier; }
-                else if (effect.StatModified == Stat.DamageReduction) { var modifyingStat = Unit.DamageReduction; }
+                else if (effect.StatModified == Stat.Movement) 
+                {
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        Unit.EffectiveMovement = Unit.BaseMovement + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        Unit.EffectiveMovement = Unit.BaseMovement * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                }
+                else if (effect.StatModified == Stat.CritChance) 
+                {
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        Unit.EffectiveCritChance = Unit.BaseMovement + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        Unit.EffectiveCritChance = Unit.BaseMovement * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                }
+                else if (effect.StatModified == Stat.Speed)
+                {
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        Unit.EffectiveSpeed = Unit.BaseSpeed + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        Unit.EffectiveSpeed = Unit.BaseSpeed * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                }
+                else if (effect.StatModified == Stat.Energy)
+                {
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        Unit.CurrentEnergy = Unit.CurrentEnergy + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        Unit.CurrentEnergy = Unit.CurrentEnergy * Convert.ToInt32(effect.ModificationNumber);
+                    }
 
-                
+                    if (Unit.CurrentEnergy > Unit.MaxEnergy)
+                    {
+                        Unit.CurrentEnergy = Unit.MaxEnergy;
+                    }
+                }
+                else if (effect.StatModified == Stat.Damage)
+                {
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        Unit.EffectiveDamage = Unit.BaseDamage + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        Unit.EffectiveDamage = Unit.BaseDamage * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                }
+                else if (effect.StatModified == Stat.DamageModifier)
+                {
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        Unit.DamageModifier = Unit.DamageModifier + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        Unit.DamageModifier = Unit.DamageModifier * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                }
+                else if (effect.StatModified == Stat.DamageReduction)
+                {
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        Unit.DamageReduction = Unit.DamageReduction + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        Unit.DamageReduction = Unit.DamageReduction * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                }
             }
         }
     }
