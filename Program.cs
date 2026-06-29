@@ -6,7 +6,7 @@ public class Program
         var princess = new Unit("the princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f);
         var hero = new Unit("the hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f);
 
-        var attackingDamage = princess.BaseDamage * princess.DamageModifier;
+        var attackingDamage = princess.EffectiveDamage * princess.EffectiveDamageModifier;
         var attackingDamageInt = (int) MathF.Round(attackingDamage);
         hero.CurrentHP -= attackingDamageInt;
 
@@ -22,13 +22,23 @@ public class Program
         list.Add(sacsPizza);
         list.Add(sniperScope);
 
-        princess.Inventory = new Inventory(list);
+        princess.Inventory = new Inventory(list, princess);
+
+        Console.WriteLine(princess.EffectiveDamage.ToString());
+        Console.WriteLine(princess.EffectiveDamageModifier.ToString());
+
 
         princess.Inventory.InventoryDisplay();
+        princess.Inventory.InventoryModify();
 
-        attackingDamage = princess.BaseDamage * princess.DamageModifier;
+        Console.WriteLine(princess.EffectiveDamage.ToString());
+        Console.WriteLine(princess.EffectiveDamageModifier.ToString());
+
+        attackingDamage = princess.EffectiveDamage * princess.EffectiveDamageModifier;
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         hero.CurrentHP -= attackingDamageInt;
+
+
 
         Console.WriteLine(hero.CurrentHP.ToString());
 

@@ -19,7 +19,8 @@ public class Unit
 	public int CurrentEnergy { get; set; } = 0;
 	public int BaseDamage { get; set; } 
 	public int EffectiveDamage {  get; set; }
-	public float DamageModifier { get; set; } = 1.0f;
+	public float BaseDamageModifier { get; set; }
+	public float EffectiveDamageModifier { get; set; } 
 	public float DamageReduction { get; set; } = 1.0f;
 
 
@@ -41,7 +42,8 @@ public class Unit
 		MaxEnergy = maxEnergy;
 		BaseDamage = baseDamage;
 		EffectiveDamage = baseDamage;
-		DamageModifier = damageModifier;
+		BaseDamageModifier = damageModifier;
+		EffectiveDamageModifier = damageModifier;
 		DamageReduction = damageReduction;
 		
 	}

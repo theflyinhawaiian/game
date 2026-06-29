@@ -12,9 +12,10 @@ public class Inventory
 
     }
 
-    public Inventory(List<Item> items)
+    public Inventory(List<Item> items, Unit unit)
     {
         Items = items;
+        Unit = unit;
     }
 
     public void InventoryDisplay()
@@ -66,11 +67,11 @@ public class Inventory
                 {
                     if (effect.OperatorSign == OperatorHandler.Add)
                     {
-                        Unit.EffectiveCritChance = Unit.BaseMovement + Convert.ToInt32(effect.ModificationNumber);
+                        Unit.EffectiveCritChance = Unit.BaseCritChance + Convert.ToInt32(effect.ModificationNumber);
                     }
                     else if (effect.OperatorSign == OperatorHandler.Multiply)
                     {
-                        Unit.EffectiveCritChance = Unit.BaseMovement * Convert.ToInt32(effect.ModificationNumber);
+                        Unit.EffectiveCritChance = Unit.BaseCritChance * Convert.ToInt32(effect.ModificationNumber);
                     }
                 }
                 else if (effect.StatModified == Stat.Speed)
@@ -115,11 +116,11 @@ public class Inventory
                 {
                     if (effect.OperatorSign == OperatorHandler.Add)
                     {
-                        Unit.DamageModifier = Unit.DamageModifier + Convert.ToInt32(effect.ModificationNumber);
+                        Unit.EffectiveDamageModifier = Unit.BaseDamageModifier + effect.ModificationNumber;
                     }
                     else if (effect.OperatorSign == OperatorHandler.Multiply)
                     {
-                        Unit.DamageModifier = Unit.DamageModifier * Convert.ToInt32(effect.ModificationNumber);
+                        Unit.EffectiveDamageModifier = Unit.BaseDamageModifier * effect.ModificationNumber;
                     }
                 }
                 else if (effect.StatModified == Stat.DamageReduction)
