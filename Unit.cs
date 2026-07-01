@@ -21,7 +21,8 @@ public class Unit
 	public int EffectiveDamage {  get; set; }
 	public float BaseDamageModifier { get; set; }
 	public float EffectiveDamageModifier { get; set; } 
-	public float DamageReduction { get; set; } = 1.0f;
+	public float BaseDamageReduction { get; set; } = 1.0f;
+	public float EffectiveDamageReduction { get; set; }
 
 
 
@@ -44,7 +45,8 @@ public class Unit
 		EffectiveDamage = baseDamage;
 		BaseDamageModifier = damageModifier;
 		EffectiveDamageModifier = damageModifier;
-		DamageReduction = damageReduction;
+		BaseDamageReduction = damageReduction;
+		EffectiveDamageReduction = damageReduction;
 		
 	}
 
