@@ -3,17 +3,12 @@
 public class Ability
 {
 	public string AbilityName { get; set; }
-	public int Damage {  get; set; }
-	public int Range {  get; set; }
-	public int Mode { get; set; }
-	public AbilityType AbilityType { get; set; }
+	public List<AbilityMode> Mode {  get; set; }
+	
 
-	public Ability(string abilityName, int damage, int range, int mode, AbilityType abilityType)
+	public Ability(string abilityName, List<AbilityMode> mode)
 	{
 		AbilityName = abilityName;
-		Damage = damage;
-		Range = range;
 		Mode = mode;
-		AbilityType = abilityType;
 	}
 }

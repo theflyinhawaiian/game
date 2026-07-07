@@ -6,7 +6,8 @@ public class Program
     public static void Main(string[] args)
     {
 
-        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid);
+        var flareShot = new Ability("Flare Shot", new List<AbilityMode> { new AbilityMode("ImpactShot", 15, 3, AbilityType.Rigid), new AbilityMode("Flare Spread", 25, 5, AbilityType.Rigid) });
+
 
         var princess = new Unit("the princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, flareShot,null,null,null);
         var hero = new Unit("the hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f,null,null,null,null);
