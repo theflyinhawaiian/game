@@ -1,12 +1,14 @@
 ﻿
 using System.Net.Http.Headers;
+using System.Net.Mail;
+using System.Security.Cryptography;
 
 public class Program
 {
     public static void Main(string[] args)
     {
 
-        var flareShot = new Ability("Flare Shot", new List<AbilityMode> { new AbilityMode("ImpactShot", 15, 3, AbilityType.Rigid), new AbilityMode("Flare Spread", 25, 5, AbilityType.Rigid) });
+        var flareShot = new Ability("Flare Shot", new List<AbilityMode> { new AbilityMode("ImpactShot", 15, 3, AbilityType.Rigid), new AbilityMode("Flare Spread", 20, 5, AbilityType.Rigid) });
 
 
         var princess = new Unit("the princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, flareShot,null,null,null);
@@ -14,9 +16,13 @@ public class Program
 
         var attackingDamage = princess.EffectiveDamage * princess.EffectiveDamageModifier;
         var attackingDamageInt = (int) MathF.Round(attackingDamage);
+        
+
+        attackingDamage = princess.Ability1!.Mode[0].Damage * princess.EffectiveDamageModifier;
+        attackingDamageInt = (int) MathF.Round(attackingDamage);
         hero.CurrentHP -= attackingDamageInt;
 
-        Console.WriteLine(hero.EffectiveSpeed.ToString());
+        Console.WriteLine(hero.CurrentHP.ToString());
 
         var currentUnit = princess;
         var targetedUnit = hero;
@@ -48,7 +54,7 @@ public class Program
         Console.WriteLine(currentUnit.EffectiveDamageModifier.ToString());
         Console.WriteLine(currentUnit.EffectiveCritChance.ToString());
 
-        attackingDamage = currentUnit.EffectiveDamage * currentUnit.EffectiveDamageModifier;
+        attackingDamage = currentUnit.Ability1!.Mode[0].Damage * currentUnit.EffectiveDamageModifier;
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
