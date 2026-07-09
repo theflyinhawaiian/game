@@ -23,15 +23,10 @@ public class Unit
 	public float EffectiveDamageModifier { get; set; } 
 	public float BaseDamageReduction { get; set; } = 1.0f;
 	public float EffectiveDamageReduction { get; set; }
-	public Ability? Ability1 { get; set; }
-	public Ability? Ability2 { get; set; }
-	public Ability? Ability3 { get; set; }
-	public Ability? AbilityUltimate { get; set; }
+	public List<Ability> Ability {  get; set; }
 
 
-
-
-	public Unit(string name, int level, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, float damageModifier, float damageReduction, Ability? ability1, Ability? ability2, Ability? ability3, Ability? abilityUltimate)
+	public Unit(string name, int level, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, float damageModifier, float damageReduction, List<Ability> abilities)
 	{
 		Name = name;
 		Inventory = new Inventory(this);
@@ -52,10 +47,7 @@ public class Unit
 		EffectiveDamageModifier = damageModifier;
 		BaseDamageReduction = damageReduction;
 		EffectiveDamageReduction = damageReduction;
-		Ability1 = ability1;
-		Ability2 = ability2;
-		Ability3 = ability3;
-		AbilityUltimate = abilityUltimate;
+		Ability = abilities;
 		
 	}
 
