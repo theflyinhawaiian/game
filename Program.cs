@@ -14,10 +14,13 @@ public class Program
         //This is functionally equivalent to list.Add(flareshot)
         var princessAbilities = new List<Ability> {flareShot};
         var heroAbilities = new List<Ability>();
-        
 
-        var princess = new Unit("the princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, princessAbilities);
-        var hero = new Unit("the hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f, heroAbilities);
+        var silenceStatus = new Status("silence", 2, new List<StatusEffect>());
+        var princessStatuses = new List<Status>() {silenceStatus};
+        var heroStatuses = new List<Status>();
+
+        var princess = new Unit("the princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, princessAbilities, princessStatuses);
+        var hero = new Unit("the hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f, heroAbilities, heroStatuses);
 
         var currentUnit = princess;
         var targetedUnit = hero;
@@ -67,7 +70,26 @@ public class Program
 
         Console.WriteLine(hero.CurrentHP.ToString());
 
+        StatusEffectRelay(princess);
+        StatusEffectUpdate(princess);
 
+    }
 
+    public static void StatusEffectRelay(Unit unit)
+    {
+        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP.ToString()}/{unit.EffectiveMaxHP.ToString()}] ({unit.Statuses[0].Name}, {unit.Statuses[0].Duration.ToString()} turns)");
+    }
+
+    public static void StatusEffectUpdate(Unit unit)
+    {
+        var concateStatus = "";
+
+        for (int i = 0; i < unit.Statuses.Count; i++)
+        {
+            unit.Statuses[i].Duration -= 1;
+            concateStatus += unit.Statuses[i].Name + "," + unit.Statuses[i].Duration.ToString() + "turns)";
+            
+        }
+        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP.ToString()}/{unit.EffectiveMaxHP.ToString()}] ({concateStatus} )");
     }
 }
