@@ -9,7 +9,7 @@ public class Program
     public static void Main(string[] args)
     {
 
-        var flareShot = new Ability("Flare Shot", new List<AbilityMode> { new AbilityMode("ImpactShot", 50, 3, AbilityType.Rigid), new AbilityMode("Flare Spread", 20, 5, AbilityType.Rigid) });
+        var flareShot = new Ability("Flare Shot", new List<AbilityMode> { new AbilityMode("ImpactShot", 15, 3, AbilityType.Rigid), new AbilityMode("Flare Spread", 20, 5, AbilityType.Rigid) });
 
         //This is functionally equivalent to list.Add(flareshot)
         var princessAbilities = new List<Ability> {flareShot};
@@ -72,7 +72,7 @@ public class Program
 
         StatusEffectRelay(princess);
         StatusEffectUpdate(princess);
-
+        StatUpdate(princess);
     }
 
     public static void StatusEffectRelay(Unit unit)
@@ -91,5 +91,17 @@ public class Program
             
         }
         Console.WriteLine($"- {unit.Name} [{unit.CurrentHP.ToString()}/{unit.EffectiveMaxHP.ToString()}] ({concateStatus} )");
+    }
+
+    public static void StatUpdate(Unit unit)
+    {
+        var statText = "";
+        Console.WriteLine(unit.Name);
+        Console.WriteLine($"\nLevel:  {unit.Level} ");
+        Console.WriteLine($"Hp:     {unit.CurrentHP}/{unit.EffectiveMaxHP}");
+        Console.WriteLine($"Move:   {unit.EffectiveMovement}");
+        Console.WriteLine($"Crit %: {unit.EffectiveCritChance}");
+        Console.WriteLine($"Speed:  {unit.EffectiveSpeed}");
+        Console.WriteLine($"Energy: {unit.CurrentEnergy}/{unit.MaxEnergy}");
     }
 }
