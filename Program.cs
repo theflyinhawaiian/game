@@ -13,14 +13,22 @@ public class Program
 
         //This is functionally equivalent to list.Add(flareshot)
         var princessAbilities = new List<Ability> {flareShot};
-        var heroAbilities = new List<Ability>();
+        var placeholderAbilities = new List<Ability>();
 
         var silenceStatus = new Status("silence", 2, new List<StatusEffect>());
         var princessStatuses = new List<Status>() {silenceStatus};
-        var heroStatuses = new List<Status>();
+        var placeholderStatuses = new List<Status>();
 
-        var princess = new Unit("the princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, princessAbilities, princessStatuses);
-        var hero = new Unit("the hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f, heroAbilities, heroStatuses);
+        var princess = new Unit("The Princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, princessAbilities, princessStatuses);
+        var hero = new Unit("The Hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f, placeholderAbilities, placeholderStatuses);
+        var savior = new Unit("The Savior", 1, 70, 4, 12, .10f, 3, 12, 1.0f, 1.0f, placeholderAbilities, placeholderStatuses);
+        var feeder = new Unit("The Mayor", 1, 80, 4, 9, .05f, 5, 5, 1.0f, 1.0f, placeholderAbilities, placeholderStatuses);
+
+        var unitList = new List<Unit>();
+        unitList.Add(princess); 
+        unitList.Add(hero);
+        unitList.Add(savior);
+        unitList.Add(feeder);
 
         var currentUnit = princess;
         var targetedUnit = hero;
@@ -73,11 +81,12 @@ public class Program
         StatusEffectRelay(princess);
         StatusEffectUpdate(princess);
         StatUpdate(princess);
+        StatUpdateAll(unitList);
     }
 
     public static void StatusEffectRelay(Unit unit)
     {
-        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP.ToString()}/{unit.EffectiveMaxHP.ToString()}] ({unit.Statuses[0].Name}, {unit.Statuses[0].Duration.ToString()} turns)");
+        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] ({unit.Statuses[0].Name}, {unit.Statuses[0].Duration} turns)");
     }
 
     public static void StatusEffectUpdate(Unit unit)
@@ -90,18 +99,31 @@ public class Program
             concateStatus += unit.Statuses[i].Name + "," + unit.Statuses[i].Duration.ToString() + "turns)";
             
         }
-        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP.ToString()}/{unit.EffectiveMaxHP.ToString()}] ({concateStatus} )");
+        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] ({concateStatus} )");
     }
 
     public static void StatUpdate(Unit unit)
     {
-        var statText = "";
-        Console.WriteLine(unit.Name);
-        Console.WriteLine($"\nLevel:  {unit.Level} ");
+        Console.WriteLine($"\n {unit.Name} \n");
+        Console.WriteLine($"Level:  {unit.Level} ");
         Console.WriteLine($"Hp:     {unit.CurrentHP}/{unit.EffectiveMaxHP}");
         Console.WriteLine($"Move:   {unit.EffectiveMovement}");
         Console.WriteLine($"Crit %: {unit.EffectiveCritChance}");
         Console.WriteLine($"Speed:  {unit.EffectiveSpeed}");
         Console.WriteLine($"Energy: {unit.CurrentEnergy}/{unit.MaxEnergy}");
+    }
+
+    public static void StatUpdateAll(List<Unit> unitList)
+    {
+        for (int i = 0; i < unitList.Count; i++)
+        {
+            Console.WriteLine($"\n {unitList[i].Name} \n");
+            Console.WriteLine($"Level:  {unitList[i].Level} ");
+            Console.WriteLine($"Hp:     {unitList[i].CurrentHP}/{unitList[i].EffectiveMaxHP}");
+            Console.WriteLine($"Move:   {unitList[i].EffectiveMovement}");
+            Console.WriteLine($"Crit %: {unitList[i].EffectiveCritChance}");
+            Console.WriteLine($"Speed:  {unitList[i].EffectiveSpeed}");
+            Console.WriteLine($"Energy: {unitList[i].CurrentEnergy}/{unitList[i].MaxEnergy}");
+        }
     }
 }
