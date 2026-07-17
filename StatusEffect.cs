@@ -4,7 +4,8 @@ public class StatusEffect
 {
 	public Stat StatModified { get; set; }
 
-	public StatusEffect()
+	public StatusEffect(Stat statModified)
 	{
+		StatModified = statModified;
 	}
 }

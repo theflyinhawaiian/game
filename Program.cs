@@ -8,8 +8,13 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        var burnStatus = new Status("Burn", 3, new List<StatusEffect> { new StatusEffect(Stat.Hp) });
+        var freezeStatus = new Status("Freeze", 1, new List<StatusEffect> { new StatusEffect(Stat.Movement) });
+        var slowStatus = new Status("Slow", 1, new List<StatusEffect> { new StatusEffect(Stat.Movement) });
 
-        var flareShot = new Ability("Flare Shot", new List<AbilityMode> { new AbilityMode("ImpactShot", 15, 3, AbilityType.Rigid), new AbilityMode("Flare Spread", 20, 5, AbilityType.Rigid) });
+        var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, new List<Status> { slowStatus, freezeStatus }, null);
+
+        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<Status> { burnStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, burnStatus), new AbilityEffect("Flare Spread", 20, 5, burnStatus) });
 
         //This is functionally equivalent to list.Add(flareshot)
         var princessAbilities = new List<Ability> {flareShot};
@@ -33,7 +38,7 @@ public class Program
         var currentUnit = princess;
         var targetedUnit = hero;
 
-        var attackingDamage = currentUnit.Abilities[0].Mode[0].Damage * currentUnit.EffectiveDamageModifier;
+        var attackingDamage = currentUnit.Abilities[0].Damage * currentUnit.EffectiveDamageModifier;
         var attackingDamageInt = (int) MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
@@ -68,13 +73,9 @@ public class Program
         Console.WriteLine(currentUnit.EffectiveDamageModifier.ToString());
         Console.WriteLine(currentUnit.EffectiveCritChance.ToString());
 
-        attackingDamage = currentUnit.Abilities[0].Mode[0].Damage * currentUnit.EffectiveDamageModifier;
+        attackingDamage = currentUnit.Abilities[0].Damage * currentUnit.EffectiveDamageModifier;
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
-
-        hero = targetedUnit;
-        princess = currentUnit;
-
 
         Console.WriteLine(hero.CurrentHP.ToString());
 
@@ -121,7 +122,10 @@ public class Program
         }
         Console.WriteLine($"\n{concateStatus}");
 
-        for (int i = 0; i < unit.)
+        for (int i = 0; i < unit.Abilities.Count; i++)
+        {
+            //Console.WriteLine(unit.Abilities.)
+        }
     }
 
     public static void CheckStatAll(List<Unit> unitList)
@@ -137,4 +141,15 @@ public class Program
             Console.WriteLine($"Energy: {unitList[i].CurrentEnergy}/{unitList[i].MaxEnergy}");
         }
     }
+
+    public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit)
+    {
+        var attackingDamage = attackingUnit.Abilities[0].Damage * attackingUnit.EffectiveDamageModifier;
+        attackingDamage = attackingDamage * defendingUnit.EffectiveDamageModifier;
+        var attackingDamageInt = (int)MathF.Round(attackingDamage);
+        defendingUnit.CurrentHP -= attackingDamageInt;
+
+    }
+
+
 }
