@@ -23,7 +23,7 @@ public class Unit
 	public float EffectiveDamageModifier { get; set; } 
 	public float BaseDamageReduction { get; set; } = 1.0f;
 	public float EffectiveDamageReduction { get; set; }
-	public List<Ability> Ability {  get; set; }
+	public List<Ability> Abilities {  get; set; }
 	public List<Status> Statuses { get; set; }
 
 
@@ -48,7 +48,7 @@ public class Unit
 		EffectiveDamageModifier = damageModifier;
 		BaseDamageReduction = damageReduction;
 		EffectiveDamageReduction = damageReduction;
-		Ability = abilities;
+		Abilities = abilities;
 		Statuses = statuses;
 	}
 

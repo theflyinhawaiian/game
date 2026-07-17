@@ -33,7 +33,7 @@ public class Program
         var currentUnit = princess;
         var targetedUnit = hero;
 
-        var attackingDamage = currentUnit.Ability[0].Mode[0].Damage * currentUnit.EffectiveDamageModifier;
+        var attackingDamage = currentUnit.Abilities[0].Mode[0].Damage * currentUnit.EffectiveDamageModifier;
         var attackingDamageInt = (int) MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
@@ -68,7 +68,7 @@ public class Program
         Console.WriteLine(currentUnit.EffectiveDamageModifier.ToString());
         Console.WriteLine(currentUnit.EffectiveCritChance.ToString());
 
-        attackingDamage = currentUnit.Ability[0].Mode[0].Damage * currentUnit.EffectiveDamageModifier;
+        attackingDamage = currentUnit.Abilities[0].Mode[0].Damage * currentUnit.EffectiveDamageModifier;
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
@@ -78,31 +78,32 @@ public class Program
 
         Console.WriteLine(hero.CurrentHP.ToString());
 
-        StatusEffectRelay(princess);
-        StatusEffectUpdate(princess);
-        StatUpdate(princess);
-        StatUpdateAll(unitList);
+        CheckStatusEffect(princess);
+        UpdateStatusEffect(princess);
     }
 
-    public static void StatusEffectRelay(Unit unit)
-    {
-        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] ({unit.Statuses[0].Name}, {unit.Statuses[0].Duration} turns)");
-    }
-
-    public static void StatusEffectUpdate(Unit unit)
+    public static void CheckStatusEffect(Unit unit)
     {
         var concateStatus = "";
+        for (int i = 0; i < unit.Statuses.Count; i++)
+        {
+            concateStatus += "(" + unit.Statuses[i].Name + ", " + unit.Statuses[i].Duration.ToString() + " turns)";
+        }
+        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ");
+    }
 
+    public static void UpdateStatusEffect(Unit unit)
+    {
+        var concateStatus = "";
         for (int i = 0; i < unit.Statuses.Count; i++)
         {
             unit.Statuses[i].Duration -= 1;
-            concateStatus += unit.Statuses[i].Name + "," + unit.Statuses[i].Duration.ToString() + "turns)";
-            
+            concateStatus += "(" + unit.Statuses[i].Name + ", " + unit.Statuses[i].Duration.ToString() + " turns)";
         }
-        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] ({concateStatus} )");
+        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ");
     }
 
-    public static void StatUpdate(Unit unit)
+    public static void CheckStatUnit(Unit unit)
     {
         Console.WriteLine($"\n {unit.Name} \n");
         Console.WriteLine($"Level:  {unit.Level} ");
@@ -111,9 +112,19 @@ public class Program
         Console.WriteLine($"Crit %: {unit.EffectiveCritChance}");
         Console.WriteLine($"Speed:  {unit.EffectiveSpeed}");
         Console.WriteLine($"Energy: {unit.CurrentEnergy}/{unit.MaxEnergy}");
+
+        var concateStatus = "";
+
+        for (int i = 0; i < unit.Statuses.Count; i++)
+        {
+            concateStatus += "(" + unit.Statuses[i].Name + ", " + unit.Statuses[i].Duration.ToString() + " turns)";
+        }
+        Console.WriteLine($"\n{concateStatus}");
+
+        for (int i = 0; i < unit.)
     }
 
-    public static void StatUpdateAll(List<Unit> unitList)
+    public static void CheckStatAll(List<Unit> unitList)
     {
         for (int i = 0; i < unitList.Count; i++)
         {
