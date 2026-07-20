@@ -1,6 +1,7 @@
 ﻿public enum Stat
 {
-    Hp,
+    MaxHp,
+    CurrentHp,
     Movement,
     CritChance,
     Speed,

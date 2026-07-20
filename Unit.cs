@@ -24,10 +24,10 @@ public class Unit
 	public float BaseDamageReduction { get; set; } = 1.0f;
 	public float EffectiveDamageReduction { get; set; }
 	public List<Ability> Abilities {  get; set; }
-	public List<Status> Statuses { get; set; }
+	public List<IStatus> Statuses { get; set; }
 
 
-	public Unit(string name, int level, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, float damageModifier, float damageReduction, List<Ability> abilities, List<Status> statuses)
+	public Unit(string name, int level, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, float damageModifier, float damageReduction, List<Ability> abilities, List<IStatus> statuses)
 	{
 		Name = name;
 		Inventory = new Inventory(this);

@@ -5,7 +5,7 @@ public static class MathHelper
 
     public static void ApplyEffect(float modificationNumber, OperatorHandler operatorSign, Stat statModified, Unit unit)
     {
-        if (statModified == Stat.Hp)
+        if (statModified == Stat.MaxHp)
         {
             if (operatorSign == OperatorHandler.Add)
             {
@@ -15,7 +15,21 @@ public static class MathHelper
             {
                 unit.EffectiveMaxHP = unit.BaseHP * Convert.ToInt32(modificationNumber);
             }
+            if (unit.CurrentHP > unit.EffectiveMaxHP) { unit.CurrentHP = unit.EffectiveMaxHP; }
         }
+        else if (statModified == Stat.CurrentHp)
+        {
+            if (operatorSign == OperatorHandler.Add)
+            {
+                unit.CurrentHP = unit.CurrentHP + Convert.ToInt32(modificationNumber);
+            }
+            else if (operatorSign == OperatorHandler.Multiply)
+            {
+                unit.CurrentHP = unit.CurrentHP * Convert.ToInt32(modificationNumber);
+            }
+            if (unit.CurrentHP > unit.EffectiveMaxHP) { unit.CurrentHP = unit.EffectiveMaxHP; }
+        }
+        
         else if (statModified == Stat.Movement)
         {
             if (operatorSign == OperatorHandler.Add)

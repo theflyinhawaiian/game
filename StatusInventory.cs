@@ -2,16 +2,16 @@
 
 public class StatusInventory
 {
-	public List<Status> Statuses;
+	public List<SingleStatus> Statuses;
 	public Unit Unit;
 
 	public StatusInventory(Unit unit)
 	{
-		Statuses = new List<Status>();
+		Statuses = new List<SingleStatus>();
 		Unit = unit;
 	}
 
-    public StatusInventory(List<Status> statuses, Unit unit)
+    public StatusInventory(List<SingleStatus> statuses, Unit unit)
     {
         Statuses = statuses;
         Unit = unit;

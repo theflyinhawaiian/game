@@ -8,21 +8,22 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var burnStatus = new Status("Burn", 3, new List<StatusEffect> { new StatusEffect(Stat.Hp) });
-        var freezeStatus = new Status("Freeze", 1, new List<StatusEffect> { new StatusEffect(Stat.Movement) });
-        var slowStatus = new Status("Slow", 1, new List<StatusEffect> { new StatusEffect(Stat.Movement) });
+        var burnStatus = new SingleStatus("Burn", 3, Stat.CurrentHp, OperatorHandler.Add, -3f);
+        var freezeStatus = new MultiStatus("Freeze", 1, new List<StatusPart> { new StatusPart(Stat.Movement, OperatorHandler.Multiply, 0f), new StatusPart(Stat.Damage, OperatorHandler.Multiply, 0f)});
+        var slowStatus = new SingleStatus("Slow", 1, Stat.Movement, OperatorHandler.Multiply, .5f);
+        var silenceStatus = new SingleStatus("Silence", 2, Stat.Damage, OperatorHandler.Multiply, 0f);
 
-        var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, new List<Status> { slowStatus, freezeStatus }, null);
+        var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, new List<IStatus> { slowStatus, freezeStatus }, null);
 
-        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<Status> { burnStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, burnStatus), new AbilityEffect("Flare Spread", 20, 5, burnStatus) });
+        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<IStatus> { burnStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, burnStatus), new AbilityEffect("Flare Spread", 20, 5, burnStatus) });
 
         //This is functionally equivalent to list.Add(flareshot)
         var princessAbilities = new List<Ability> {flareShot};
         var placeholderAbilities = new List<Ability>();
 
-        var silenceStatus = new Status("silence", 2, new List<StatusEffect>());
-        var princessStatuses = new List<Status>() {silenceStatus};
-        var placeholderStatuses = new List<Status>();
+        
+        var princessStatuses = new List<IStatus>() {silenceStatus, burnStatus, freezeStatus};
+        var placeholderStatuses = new List<IStatus>();
 
         var princess = new Unit("The Princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, princessAbilities, princessStatuses);
         var hero = new Unit("The Hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f, placeholderAbilities, placeholderStatuses);
@@ -42,10 +43,6 @@ public class Program
         var attackingDamageInt = (int) MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
-        Console.WriteLine(hero.CurrentHP.ToString());
-
-        
-
         var damageCore = new Item("DamageCore", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier), new ItemEffect(3f, OperatorHandler.Add, Stat.Speed) });
         var sacsPizza = new Item("SacsPizza", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Speed) });
         var sniperScope = new Item("SniperScope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance)});
@@ -62,25 +59,18 @@ public class Program
 
         currentUnit.Inventory = new Inventory(list, currentUnit);
 
-        Console.WriteLine(currentUnit.EffectiveDamage.ToString());
-        Console.WriteLine(currentUnit.EffectiveDamageModifier.ToString());
-
-
         currentUnit.Inventory.InventoryDisplay();
         currentUnit.Inventory.InventoryModify();
-
-        Console.WriteLine(currentUnit.EffectiveDamage.ToString());
-        Console.WriteLine(currentUnit.EffectiveDamageModifier.ToString());
-        Console.WriteLine(currentUnit.EffectiveCritChance.ToString());
 
         attackingDamage = currentUnit.Abilities[0].Damage * currentUnit.EffectiveDamageModifier;
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
-        Console.WriteLine(hero.CurrentHP.ToString());
-
+        CheckStatUnit(princess);
         CheckStatusEffect(princess);
-        UpdateStatusEffect(princess);
+        Console.ReadLine();
+        ApplyStatusEffect(princess);
+        CheckStatUnit(princess);
     }
 
     public static void CheckStatusEffect(Unit unit)
@@ -104,6 +94,15 @@ public class Program
         Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ");
     }
 
+    public static void ApplyStatusEffect(Unit unit)
+    {
+        foreach(var status in unit.Statuses)
+        {
+            status.ApplyStatus(unit);
+        }
+    }
+
+
     public static void CheckStatUnit(Unit unit)
     {
         Console.WriteLine($"\n {unit.Name} \n");
@@ -113,6 +112,7 @@ public class Program
         Console.WriteLine($"Crit %: {unit.EffectiveCritChance}");
         Console.WriteLine($"Speed:  {unit.EffectiveSpeed}");
         Console.WriteLine($"Energy: {unit.CurrentEnergy}/{unit.MaxEnergy}");
+        Console.WriteLine($"Damage: {unit.EffectiveDamage}");
 
         var concateStatus = "";
 
@@ -122,10 +122,6 @@ public class Program
         }
         Console.WriteLine($"\n{concateStatus}");
 
-        for (int i = 0; i < unit.Abilities.Count; i++)
-        {
-            //Console.WriteLine(unit.Abilities.)
-        }
     }
 
     public static void CheckStatAll(List<Unit> unitList)
