@@ -48,6 +48,7 @@ public class Program
         var sniperScope = new Item("SniperScope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance)});
         var coolItem = new Item("CoolItem", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Movement), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) });
         var gen1Mech = new Item("Gen1Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance) });
+        var testDamageReductionItem = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.7f, OperatorHandler.Multiply, Stat.DamageReduction) });
 
         var list = new List<Item> {};
 
@@ -56,6 +57,7 @@ public class Program
         list.Add(sniperScope);
         list.Add(coolItem);
         list.Add(gen1Mech);
+        list.Add(testDamageReductionItem);
 
         currentUnit.Inventory = new Inventory(list, currentUnit);
 
@@ -141,11 +143,12 @@ public class Program
     public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit)
     {
         var attackingDamage = attackingUnit.Abilities[0].Damage * attackingUnit.EffectiveDamageModifier;
-        attackingDamage = attackingDamage * defendingUnit.EffectiveDamageModifier;
+        attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;
-
     }
+
+
 
 
 }

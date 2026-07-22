@@ -105,11 +105,11 @@ public static class MathHelper
         {
             if (operatorSign == OperatorHandler.Add)
             {
-                unit.BaseDamageReduction = unit.BaseDamageReduction + Convert.ToInt32(modificationNumber);
+                unit.EffectiveDamageReduction = unit.BaseDamageReduction + Convert.ToInt32(modificationNumber);
             }
             else if (operatorSign == OperatorHandler.Multiply)
             {
-                unit.BaseDamageReduction = unit.BaseDamageReduction * Convert.ToInt32(modificationNumber);
+                unit.EffectiveDamageReduction = unit.BaseDamageReduction * Convert.ToInt32(modificationNumber);
             }
         }
     }
