@@ -18,7 +18,7 @@ public class Program
         var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<IStatus> { burnStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, burnStatus), new AbilityEffect("Flare Spread", 20, 5, burnStatus) });
 
         //This is functionally equivalent to list.Add(flareshot)
-        var princessAbilities = new List<Ability> {flareShot};
+        var princessAbilities = new List<Ability> {snowballThrow};
         var placeholderAbilities = new List<Ability>();
 
         
@@ -68,11 +68,9 @@ public class Program
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
-        CheckStatUnit(princess);
-        CheckStatusEffect(princess);
-        Console.ReadLine();
-        ApplyStatusEffect(princess);
-        CheckStatUnit(princess);
+        CheckStatUnit(hero);
+        DamageCalculation(princess, hero);
+        CheckStatUnit(hero);
     }
 
     public static void CheckStatusEffect(Unit unit)
@@ -137,6 +135,7 @@ public class Program
             Console.WriteLine($"Crit %: {unitList[i].EffectiveCritChance}");
             Console.WriteLine($"Speed:  {unitList[i].EffectiveSpeed}");
             Console.WriteLine($"Energy: {unitList[i].CurrentEnergy}/{unitList[i].MaxEnergy}");
+            Console.WriteLine($"DamRed: {unitList[i].EffectiveDamageReduction}");
         }
     }
 
@@ -146,6 +145,12 @@ public class Program
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;
+
+        var abilityStatuses = attackingUnit.Abilities[0].Statuses;
+        foreach(var status in abilityStatuses)
+        {
+            defendingUnit.Statuses.Add(status);
+        }
     }
 
 
