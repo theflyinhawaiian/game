@@ -68,9 +68,9 @@ public class Program
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
-        CheckStatUnit(hero);
+        CheckStatUnit(princess);
         DamageCalculation(princess, hero);
-        CheckStatUnit(hero);
+        CheckStatUnit(princess);
     }
 
     public static void CheckStatusEffect(Unit unit)
@@ -122,6 +122,17 @@ public class Program
         }
         Console.WriteLine($"\n{concateStatus}");
 
+        foreach (var ability in unit.Abilities)
+        {
+            Console.WriteLine($"{ability.AbilityName}");
+            Console.WriteLine($"{ability.Range}");
+            Console.WriteLine($"{ability.Damage}");
+            if (ability.Multihits > 1)
+            {
+                Console.WriteLine($"\n {ability.Multihits}");
+            }
+            
+        }
     }
 
     public static void CheckStatAll(List<Unit> unitList)
