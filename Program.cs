@@ -18,7 +18,7 @@ public class Program
         var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<IStatus> { burnStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, burnStatus), new AbilityEffect("Flare Spread", 20, 5, burnStatus) });
 
         //This is functionally equivalent to list.Add(flareshot)
-        var princessAbilities = new List<Ability> {snowballThrow};
+        var princessAbilities = new List<Ability> {flareShot};
         var placeholderAbilities = new List<Ability>();
 
         
@@ -43,12 +43,15 @@ public class Program
         var attackingDamageInt = (int) MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
-        var damageCore = new Item("DamageCore", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier), new ItemEffect(3f, OperatorHandler.Add, Stat.Speed) });
-        var sacsPizza = new Item("SacsPizza", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Speed) });
-        var sniperScope = new Item("SniperScope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance)});
-        var coolItem = new Item("CoolItem", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Movement), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) });
-        var gen1Mech = new Item("Gen1Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance) });
-        var testDamageReductionItem = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.7f, OperatorHandler.Multiply, Stat.DamageReduction) });
+
+
+        var damageCore = new Item("DamageCore", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => true), new ItemEffect(3f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
+        var sacsPizza = new Item("SacsPizza", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
+        var sniperScope = new Item("SniperScope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true)});
+        var coolItem = new Item("CoolItem", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Movement, TriggerType.Combat, ctx => true), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
+        var gen1Mech = new Item("Gen1Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true) });
+        var testDamageReductionItem = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.7f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat, ctx => true) });
+        var twoEffectItem = new Item("test", new List<ItemEffect> { new ItemEffect(5f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true), new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid ) });
 
         var list = new List<Item> {};
 
@@ -125,11 +128,11 @@ public class Program
         foreach (var ability in unit.Abilities)
         {
             Console.WriteLine($"{ability.AbilityName}");
-            Console.WriteLine($"{ability.Range}");
-            Console.WriteLine($"{ability.Damage}");
+            Console.WriteLine($"\n Range:  {ability.Range}");
+            Console.WriteLine($"\n Damage: {ability.Damage}");
             if (ability.Multihits > 1)
             {
-                Console.WriteLine($"\n {ability.Multihits}");
+                Console.WriteLine($"\n Multihits: {ability.Multihits}x");
             }
             
         }
@@ -153,6 +156,11 @@ public class Program
     public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit)
     {
         var attackingDamage = attackingUnit.Abilities[0].Damage * attackingUnit.EffectiveDamageModifier;
+        var contextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = attackingUnit.Abilities[0] };
+        var activeEffects = attackingUnit.Inventory.GetItemEffects(contextTrigger);
+
+        foreach (var effect in activeEffects) { Console.WriteLine(effect.ToString()); }
+
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;

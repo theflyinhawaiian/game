@@ -28,8 +28,9 @@ public class Inventory
                 var modNumberStr = effect.ModificationNumber.ToString();
                 var operatorSignStr = effect.OperatorSign.ToString();
                 var statModifiedStr = effect.StatModified.ToString();
+                var activationCondition = effect.TriggerType.ToString();
 
-                str = str + statModifiedStr + ": " + operatorSignStr + " " + modNumberStr + "; ";
+                str = str + statModifiedStr + ": " + operatorSignStr + " " + modNumberStr + "; Activation Condition: " + activationCondition;
             }
             Console.WriteLine(str);
         }
@@ -43,9 +44,28 @@ public class Inventory
         foreach(var item in Items)
         {
             foreach( var effect in item.listOfEffects)
-            {
-                MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, Unit);
+            {   
+               
+                {
+                    MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, Unit);
+                }
             }
         }
+    }
+
+    public List<ItemEffect> GetItemEffects(TriggerContext triggerContext)
+    {
+        var itemEffectList = new List<ItemEffect>();
+        foreach (var item in Items)
+        {
+            foreach (var effect in item.listOfEffects)
+            {
+                if (effect.TriggerCondition(triggerContext))
+                {
+                    itemEffectList.Add(effect);
+                }
+            }
+        }
+        return itemEffectList;
     }
 }
