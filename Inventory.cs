@@ -23,7 +23,7 @@ public class Inventory
         foreach (var item in Items)
         {
             string str = "";
-            foreach(var effect in item.listOfEffects)
+            foreach(var effect in item.ListOfEffects)
             {
                 var modNumberStr = effect.ModificationNumber.ToString();
                 var operatorSignStr = effect.OperatorSign.ToString();
@@ -43,7 +43,7 @@ public class Inventory
     {
         foreach(var item in Items)
         {
-            foreach( var effect in item.listOfEffects)
+            foreach( var effect in item.ListOfEffects)
             {   
                
                 {
@@ -53,12 +53,12 @@ public class Inventory
         }
     }
 
-    public List<ItemEffect> GetItemEffects(TriggerContext triggerContext)
+    public List<ItemEffect> GetActiveItemEffects(TriggerContext triggerContext)
     {
         var itemEffectList = new List<ItemEffect>();
         foreach (var item in Items)
         {
-            foreach (var effect in item.listOfEffects)
+            foreach (var effect in item.ListOfEffects)
             {
                 if (effect.TriggerCondition(triggerContext))
                 {

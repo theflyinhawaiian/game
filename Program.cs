@@ -52,6 +52,8 @@ public class Program
         var gen1Mech = new Item("Gen1Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true) });
         var testDamageReductionItem = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.7f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat, ctx => true) });
         var twoEffectItem = new Item("test", new List<ItemEffect> { new ItemEffect(5f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true), new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid ) });
+        var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee && ctx.Target.EffectiveDamageReduction <= 1.0f), new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Target.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed.AbilityType == AbilityType.Melee) });
+
 
         var list = new List<Item> {};
 
@@ -157,7 +159,7 @@ public class Program
     {
         var attackingDamage = attackingUnit.Abilities[0].Damage * attackingUnit.EffectiveDamageModifier;
         var contextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = attackingUnit.Abilities[0] };
-        var activeEffects = attackingUnit.Inventory.GetItemEffects(contextTrigger);
+        var activeEffects = attackingUnit.Inventory.GetActiveItemEffects(contextTrigger);
 
         foreach (var effect in activeEffects) { Console.WriteLine(effect.ToString()); }
 

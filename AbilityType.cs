@@ -5,7 +5,7 @@
     Flexible,
     RigidMovelinked,
     TargetedMovelinked,
-    Adjacent,
+    Melee,
     Self,
     Global,
 }
