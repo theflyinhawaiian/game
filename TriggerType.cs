@@ -2,5 +2,7 @@
 
 public enum TriggerType
 {
-	Combat
+	Combat,
+	OnTurnStart,
+	OnChestOpen
 }

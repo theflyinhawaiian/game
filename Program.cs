@@ -53,16 +53,19 @@ public class Program
         var testDamageReductionItem = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.7f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat, ctx => true) });
         var twoEffectItem = new Item("test", new List<ItemEffect> { new ItemEffect(5f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true), new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid ) });
         var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee && ctx.Target.EffectiveDamageReduction <= 1.0f), new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Target.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed.AbilityType == AbilityType.Melee) });
-
+        var gielinorCrest = new Item("GielinorCrest", new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => true) });
+        var crowbar = new Item("Crowbar", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP > 90f / 100f) });
 
         var list = new List<Item> {};
 
+        /*
         list.Add(damageCore);
         list.Add(sacsPizza);
         list.Add(sniperScope);
         list.Add(coolItem);
         list.Add(gen1Mech);
-        list.Add(testDamageReductionItem);
+        list.Add(testDamageReductionItem);*/
+        list.Add(gielinorCrest);
 
         currentUnit.Inventory = new Inventory(list, currentUnit);
 
@@ -73,9 +76,10 @@ public class Program
         attackingDamageInt = (int)MathF.Round(attackingDamage);
         targetedUnit.CurrentHP -= attackingDamageInt;
 
-        CheckStatUnit(princess);
+        CheckStatUnit(hero);
         DamageCalculation(princess, hero);
-        CheckStatUnit(princess);
+        Console.WriteLine(gielinorCrest.ListOfEffects[0].ModificationNumber.ToString());
+        CheckStatUnit(hero);
     }
 
     public static void CheckStatusEffect(Unit unit)
