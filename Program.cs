@@ -45,16 +45,16 @@ public class Program
 
 
 
-        var damageCore = new Item("DamageCore", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => true), new ItemEffect(3f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
-        var sacsPizza = new Item("SacsPizza", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
-        var sniperScope = new Item("SniperScope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true)});
-        var coolItem = new Item("CoolItem", new List<ItemEffect> { new ItemEffect(3f, OperatorHandler.Add, Stat.Movement, TriggerType.Combat, ctx => true), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
-        var gen1Mech = new Item("Gen1Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true) });
-        var testDamageReductionItem = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.7f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat, ctx => true) });
-        var twoEffectItem = new Item("test", new List<ItemEffect> { new ItemEffect(5f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true), new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid ) });
-        var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee && ctx.Target.EffectiveDamageReduction <= 1.0f), new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Target.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed.AbilityType == AbilityType.Melee) });
-        var gielinorCrest = new Item("GielinorCrest", new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => true) });
-        var crowbar = new Item("Crowbar", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP > 90f / 100f) });
+        var damageCore = new Item("Damage Core", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => true), new ItemEffect(3f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
+        var sacsPizza = new Item("Sacs Pizza", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Energy, TriggerType.OnEquip, ctx => true) });
+        var sniperScope = new Item("Sniper Scope", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true), new ItemEffect(1.3f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat, ctx => true) });
+        var selerity = new Item("Selerity", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Movement, TriggerType.Combat, ctx => true), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed, TriggerType.Combat, ctx => true) });
+        var gen1Mech = new Item("Generation 1 Mech", ItemRarity.Common, new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => true) });
+        var armorGames = new Item("Armor Games", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(.7f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat, ctx => true) });
+        var cardinalOrnament = new Item("Cardinal Ornament", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid ) });
+        var amyr = new Item("Amyr", ItemRarity.Rare, new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee && ctx.Target.EffectiveDamageReduction <= 1.0f), new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Target.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed.AbilityType == AbilityType.Melee) });
+        var gielinorCrest = new Item("GielinorCrest", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => true) });
+        var crowbar = new Item("Crowbar", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP >= 90f / 100f) });
 
         var list = new List<Item> {};
 
@@ -178,6 +178,26 @@ public class Program
         }
     }
 
+    public static void AddRandomItem(List<Item> items)
+    {
+        Random rnd = new Random();
+        int itemIndex = rnd.Next(1, 101);
+        ItemRarity itemRarity = ItemRarity.Placeholder;
+        if (itemIndex < 45) { itemRarity = ItemRarity.Common; }
+        if (itemIndex > 45 && itemIndex < 80) { itemRarity = ItemRarity.Uncommon; }
+        if (itemIndex > 80 && itemIndex < 94) { itemRarity = ItemRarity.Rare; }
+        if (itemIndex > 94) { itemRarity = ItemRarity.Mystical; }
+
+
+        foreach(var item in items)
+        {
+            if (item.Rarity == itemRarity)
+            {
+
+            }
+        }
+
+    }
 
 
 
