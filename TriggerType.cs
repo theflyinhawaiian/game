@@ -4,5 +4,8 @@ public enum TriggerType
 {
 	Combat,
 	OnTurnStart,
-	OnChestOpen
+	OnChestOpen,
+	OnEquip,
+	OnLevelUp,
+	OnCrit
 }
