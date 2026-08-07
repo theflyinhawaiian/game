@@ -39,11 +39,6 @@ public class Program
         var currentUnit = princess;
         var targetedUnit = hero;
 
-        var attackingDamage = currentUnit.Abilities[0].Damage * currentUnit.EffectiveDamageModifier;
-        var attackingDamageInt = (int)MathF.Round(attackingDamage);
-        targetedUnit.CurrentHP -= attackingDamageInt;
-
-
 
         var damageCore = new Item("Damage Core", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => true, null, null, null) });
         var sacsPizza = new Item("Sacs Pizza", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Energy, TriggerType.OnEquip, ctx => true, null, null, null) });
@@ -66,19 +61,12 @@ public class Program
 
         list.Add(gielinorCrest);
         list.Add(radiantKnightWard);
+        list.Add(hausRebuttal);
 
         currentUnit.Inventory = new Inventory(list, currentUnit);
 
-        currentUnit.Inventory.InventoryDisplay();
-        //currentUnit.Inventory.InventoryModify();
-
-        attackingDamage = currentUnit.Abilities[0].Damage * currentUnit.EffectiveDamageModifier;
-        attackingDamageInt = (int)MathF.Round(attackingDamage);
-        targetedUnit.CurrentHP -= attackingDamageInt;
-
         CheckStatUnit(hero);
         DamageCalculation(princess, hero);
-        Console.WriteLine(gielinorCrest.ListOfEffects[0].ModificationNumber.ToString());
         CheckStatUnit(hero);
     }
 
@@ -177,6 +165,14 @@ public class Program
         defendingUnit.CurrentHP -= attackingDamageInt;
 
         var abilityStatuses = attackingUnit.Abilities[0].Statuses;
+
+        foreach (var effect in activeAttackingEffects)
+        {
+            if (effect.Status != null)
+            {
+                abilityStatuses.Add(effect.Status);
+            }
+        }
 
         foreach(var status in abilityStatuses)
         {
