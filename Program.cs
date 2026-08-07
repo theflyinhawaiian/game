@@ -63,14 +63,8 @@ public class Program
 
         var list = new List<Item> {};
 
-        /*
-        list.Add(damageCore);
-        list.Add(sacsPizza);
-        list.Add(sniperScope);
-        list.Add(coolItem);
-        list.Add(gen1Mech);
-        list.Add(testDamageReductionItem);*/
         list.Add(gielinorCrest);
+        list.Add(radiantKnightWard);
 
         currentUnit.Inventory = new Inventory(list, currentUnit);
 
