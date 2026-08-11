@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Net.WebSockets;
 using System.Security.Cryptography;
 
 public class Program
@@ -56,6 +57,7 @@ public class Program
         var berryHP = new Item("Berry that triggers when you get to low hp", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement, TriggerType.Combat, ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f, null, null, null), new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed, TriggerType.Combat, ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f, null, null, null), new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat, ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f, null, null, null), new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat, ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f, null, null, null) });
         var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy, TriggerType.OnCrit, ctx => true, null, null, null) });
         var hausRebuttal = new Item("Haus's Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.Damage, TriggerType.Combat, ctx => true, null, burnStatus, null) });
+        var redriverwater = new Item("redriverwater", new List<ItemEffect> { new ItemEffect(.05f * currentUnit.TimesDefended, OperatorHandler.Add, Stat.Damage, TriggerType.Combat, ctx => true, null, null, null) });
 
         var list = new List<Item> {};
 
@@ -163,6 +165,8 @@ public class Program
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;
+        attackingUnit.TimesAttacked++; defendingUnit.TimesDefended++;
+        
 
         var abilityStatuses = attackingUnit.Abilities[0].Statuses;
 

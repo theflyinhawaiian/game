@@ -24,6 +24,8 @@ public class Unit
 	public float EffectiveDamageReduction { get; set; }
 	public List<Ability> Abilities {  get; set; }
 	public List<IStatus> Statuses { get; set; }
+	public int TimesDefended { get; set; } = 0;
+	public int TimesAttacked { get; set; } = 0;
 
 
 	public Unit(string name, int level, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, float damageModifier, float damageReduction, List<Ability> abilities, List<IStatus> statuses)
