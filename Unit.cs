@@ -18,21 +18,20 @@ public class Unit
 	public int CurrentEnergy { get; set; } = 0;
 	public int BaseDamage { get; set; } 
 	public int EffectiveDamage {  get; set; }
-	public float BaseDamageModifier { get; set; }
-	public float EffectiveDamageModifier { get; set; } 
+	public float BaseDamageModifier { get; set; } = 1.0f;
+	public float EffectiveDamageModifier { get; set; } = 1.0f; 
 	public float BaseDamageReduction { get; set; } = 1.0f;
-	public float EffectiveDamageReduction { get; set; }
+	public float EffectiveDamageReduction { get; set; } = 1.0f;
 	public List<Ability> Abilities {  get; set; }
 	public List<IStatus> Statuses { get; set; }
 	public int TimesDefended { get; set; } = 0;
 	public int TimesAttacked { get; set; } = 0;
 
 
-	public Unit(string name, int level, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, float damageModifier, float damageReduction, List<Ability> abilities, List<IStatus> statuses)
+	public Unit(string name, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, List<Ability> abilities, List<IStatus> statuses)
 	{
 		Name = name;
 		Inventory = new Inventory(this);
-		Level = level;
 		BaseHP = baseHP;
 		EffectiveMaxHP = baseHP;
 		CurrentHP = baseHP;
@@ -45,10 +44,6 @@ public class Unit
 		MaxEnergy = maxEnergy;
 		BaseDamage = baseDamage;
 		EffectiveDamage = baseDamage;
-		BaseDamageModifier = damageModifier;
-		EffectiveDamageModifier = damageModifier;
-		BaseDamageReduction = damageReduction;
-		EffectiveDamageReduction = damageReduction;
 		Abilities = abilities;
 		Statuses = statuses;
 	}

@@ -26,37 +26,33 @@ public class Program
         var princessStatuses = new List<IStatus>() { silenceStatus, burnStatus, freezeStatus };
         var placeholderStatuses = new List<IStatus>();
 
-        var princess = new Unit("The Princess", 1, 100, 5, 16, .05f, 6, 15, 1.0f, 1.0f, princessAbilities, princessStatuses);
-        var hero = new Unit("The Hero", 1, 140, 5, 10, .05f, 4, 20, 1.0f, 1.0f, placeholderAbilities, placeholderStatuses);
-        var savior = new Unit("The Savior", 1, 70, 4, 12, .10f, 3, 12, 1.0f, 1.0f, placeholderAbilities, placeholderStatuses);
-        var feeder = new Unit("The Mayor", 1, 80, 4, 9, .05f, 5, 5, 1.0f, 1.0f, placeholderAbilities, placeholderStatuses);
+        var princess = new Unit("princess", 100, 5, 16, .05f, 6, 15, princessAbilities, princessStatuses);
+        var hero = new Unit("hero", 140, 5, 10, .05f, 4, 20, placeholderAbilities, placeholderStatuses);
+        var savior = new Unit("savior", 70, 4, 12, .10f, 3, 12, placeholderAbilities, placeholderStatuses);
+        var feeder = new Unit("mayor", 80, 4, 9, .05f, 5, 5, placeholderAbilities, placeholderStatuses);
 
-        var unitList = new List<Unit>();
-        unitList.Add(princess);
-        unitList.Add(hero);
-        unitList.Add(savior);
-        unitList.Add(feeder);
+        var unitList = new List<Unit>() { princess, hero, savior, feeder };
 
         var currentUnit = princess;
         var targetedUnit = hero;
 
 
-        var damageCore = new Item("Damage Core", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) });
-        var sacsPizza = new Item("Sacs Pizza", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Energy, TriggerType.OnEquip) });
-        var sniperScope = new Item("Sniper Scope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat) });
-        var selerity = new Item("Selerity", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Movement, TriggerType.OnEquip) });
-        var gen1Mech = new Item("Generation 1 Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance, TriggerType.Combat) });
-        var armorGames = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.85f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat) });
-        var cardinalOrnament = new Item("Cardinal Ornament", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid } });
-        var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee && ctx.Target.EffectiveDamageReduction <= 1.0f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) { TriggerCondition = ctx => ctx.Target.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed.AbilityType == AbilityType.Melee } });  
-        var gielinorCrest = new Item("GielinorCrest", new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) });
-        var crowbar = new Item("Crowbar", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) }); crowbar.ListOfEffects[0].TriggerCondition = ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP > 90f / 100f;
-        var maidenlessEdge = new Item("Maidenless Edge", new List<ItemEffect> { new ItemEffect(1.25f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee } });
-        var puttPuttItem = new Item("How2Play PuttPutt Walkthrough HD", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Targeted } });
-        var radiantKnightWard = new Item("Radiant Knight Ward", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction, TriggerType.Combat), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed, TriggerType.OnLevelUp) });
-        var berryHP = new Item("Berry that triggers when you get to low hp", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement, TriggerType.Combat) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed, TriggerType.Combat) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier, TriggerType.Combat) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance, TriggerType.Combat) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
-        var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy, TriggerType.OnCrit) });
-        var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier, TriggerType.Combat) }); hausRebuttal.ListOfEffects[0].Status = burnStatus;
+        var damageCore = new Item("Damage Core", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier) });
+        var sacsPizza = new Item("Sacs Pizza", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnEquip } });
+        var sniperScope = new Item("Sniper Scope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance) });
+        var selerity = new Item("Selerity", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Movement) { TriggerType = TriggerType.OnEquip } });
+        var gen1Mech = new Item("Generation 1 Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance) });
+        var armorGames = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.85f, OperatorHandler.Multiply, Stat.DamageReduction) });
+        var cardinalOrnament = new Item("Cardinal Ornament", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid } });
+        var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee && ctx.Target.EffectiveDamageReduction <= 1.0f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed.AbilityType == AbilityType.Melee } });  
+        var gielinorCrest = new Item("GielinorCrest", new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier) });
+        var crowbar = new Item("Crowbar", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP > 90f / 100f } });
+        var maidenlessEdge = new Item("Maidenless Edge", new List<ItemEffect> { new ItemEffect(1.25f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee } });
+        var puttPuttItem = new Item("How2Play PuttPutt Walkthrough HD", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Targeted } });
+        var radiantKnightWard = new Item("Radiant Knight Ward", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) { TriggerType = TriggerType.OnLevelUp } });
+        var berryHP = new Item("Berry that triggers when you get to low hp", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
+        var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
+        var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = burnStatus } }); 
 
         var list = new List<Item> {};
 
@@ -69,9 +65,9 @@ public class Program
         currentUnit.Inventory.InventoryDisplay();
         //currentUnit.Inventory.InventoryModify();
 
-        CheckStatUnit(hero);
-        DamageCalculation(princess, hero);
-        CheckStatUnit(hero);
+        DamageCalculation(currentUnit, targetedUnit, currentUnit.Abilities[0]);
+        CheckStatUnit(targetedUnit);
+
     }
 
     public static void CheckStatusEffect(Unit unit)
@@ -151,17 +147,17 @@ public class Program
         }
     }
 
-    public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit)
+    public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit, Ability abilityUsed)
     {
-        var attackingContextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = attackingUnit.Abilities[0] };
-        var defendingContextTrigger = new TriggerContext { Source = defendingUnit, Target = attackingUnit, AbilityUsed = attackingUnit.Abilities[0] };
+        var attackingContextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = abilityUsed };
+        var defendingContextTrigger = new TriggerContext { Source = defendingUnit, Target = attackingUnit, AbilityUsed = abilityUsed };
         var activeAttackingEffects = attackingUnit.Inventory.GetActiveItemEffects(attackingContextTrigger);
         var activeDefendingEffects = defendingUnit.Inventory.GetActiveItemEffects(defendingContextTrigger);
 
         foreach (var effect in activeAttackingEffects) { MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, attackingUnit); }
         foreach (var effect in activeDefendingEffects) { MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, defendingUnit); }
 
-        var attackingDamage = attackingUnit.Abilities[0].Damage * attackingUnit.EffectiveDamageModifier;
+        var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;
@@ -169,23 +165,56 @@ public class Program
 
         attackingUnit.TimesAttacked++; defendingUnit.TimesDefended++;
 
-        var abilityStatuses = attackingUnit.Abilities[0].Statuses;
-
-        foreach (var effect in activeAttackingEffects)
+        foreach (var itemEffect in activeAttackingEffects)
         {
-            if (effect.Status != null)
+            if (itemEffect.Status != null)
             {
-                abilityStatuses.Add(effect.Status);
+                abilityUsed.Statuses.Add(itemEffect.Status);
             }
         }
 
-        foreach(var status in abilityStatuses)
+        foreach(var status in abilityUsed.Statuses)
         {
             defendingUnit.Statuses.Add(status);
         }
     }
 
+    public static Unit UnitAttack(List<Unit> unitList)
+    {
+        Console.WriteLine("Which unit is attacking?");
+        var optionInt = 0;
+        foreach (var unit in unitList)
+        {
+            Console.WriteLine($" {optionInt}: {unit.Name}");
+            optionInt++;
+        }
+        var attackingUnitInput = Console.ReadLine();
+        var attackingUnit = unitList[Int32.Parse(attackingUnitInput)];
 
+        Console.WriteLine("Which unit is being hit?");
+        optionInt = 0;
+        foreach (var unit in unitList)
+        {
+            Console.WriteLine($" {optionInt}: {unit.Name}");
+            optionInt++;
+        }
+        var defendingUnitInput = Console.ReadLine();
+        var defendingUnit = unitList[Int32.Parse(defendingUnitInput)];
+
+        Console.WriteLine("What Ability is being used?");
+        optionInt = 0;
+        foreach (var ability in attackingUnit.Abilities)
+        {
+            Console.WriteLine($" {optionInt}: {ability.AbilityName}");
+            optionInt++;
+        }
+        var abilityUsedInput = Console.ReadLine();
+        var abilityUsed = attackingUnit.Abilities[Int32.Parse(abilityUsedInput)];
+
+        DamageCalculation(attackingUnit, defendingUnit, abilityUsed);
+
+        return defendingUnit;
+    }
 
 
 }
