@@ -54,14 +54,12 @@ public class Program
         var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
         var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = burnStatus } }); 
 
-        var list = new List<Item> {};
+        var currentUnitItemList = new List<Item> { damageCore };
+        currentUnit.Inventory = new Inventory(currentUnitItemList, currentUnit);
+        var targetedUnitItemList = new List<Item> { armorGames, armorGames };
+        targetedUnit.Inventory = new Inventory(targetedUnitItemList, targetedUnit);
 
-        list.Add(gielinorCrest);
-        list.Add(radiantKnightWard);
-        list.Add(hausRebuttal);
-
-        currentUnit.Inventory = new Inventory(list, currentUnit);
-
+        
         currentUnit.Inventory.InventoryDisplay();
         //currentUnit.Inventory.InventoryModify();
 
@@ -154,11 +152,19 @@ public class Program
         var activeAttackingEffects = attackingUnit.Inventory.GetActiveItemEffects(attackingContextTrigger);
         var activeDefendingEffects = defendingUnit.Inventory.GetActiveItemEffects(defendingContextTrigger);
 
-        foreach (var effect in activeAttackingEffects) { MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, attackingUnit); }
-        foreach (var effect in activeDefendingEffects) { MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, defendingUnit); }
+        foreach (var effect in activeAttackingEffects) 
+        { 
+            MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, attackingUnit);
+        }
+        foreach (var effect in activeDefendingEffects) 
+        { 
+            MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, defendingUnit);
+        }
 
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
+        Console.WriteLine(attackingDamage.ToString() );
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
+        Console.WriteLine(attackingDamage.ToString());
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;
 
