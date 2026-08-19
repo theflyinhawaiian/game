@@ -18,41 +18,6 @@ public class Inventory
         Unit = unit;
     }
 
-    public void InventoryDisplay()
-    {
-        foreach (var item in Items)
-        {
-            string str = "";
-            foreach(var effect in item.ListOfEffects)
-            {
-                var modNumberStr = effect.ModificationNumber.ToString();
-                var operatorSignStr = effect.OperatorSign.ToString();
-                var statModifiedStr = effect.StatModified.ToString();
-                var activationCondition = effect.TriggerType.ToString();
-
-                str = str + statModifiedStr + ": " + operatorSignStr + " " + modNumberStr + "; Activation Condition: " + activationCondition;
-            }
-            Console.WriteLine(str);
-        }
-    }
-
-
-    //public void NewInventoryModify(Stat stat, OperatorHandler operatorsign, )
-
-    public void InventoryModify()
-    {
-        foreach(var item in Items)
-        {
-            foreach( var effect in item.ListOfEffects)
-            {   
-               
-                {
-                    MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, Unit);
-                }
-            }
-        }
-    }
-
     public List<ItemEffect> GetActiveItemEffects(TriggerContext triggerContext)
     {
         var itemEffectList = new List<ItemEffect>();

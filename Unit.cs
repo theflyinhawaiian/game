@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 
 public class Unit
 {
@@ -16,8 +17,6 @@ public class Unit
 	public float EffectiveCritChance { get; set; }
 	public int MaxEnergy { get; set; }
 	public int CurrentEnergy { get; set; } = 0;
-	public int BaseDamage { get; set; } 
-	public int EffectiveDamage {  get; set; }
 	public float BaseDamageModifier { get; set; } = 1.0f;
 	public float EffectiveDamageModifier { get; set; } = 1.0f; 
 	public float BaseDamageReduction { get; set; } = 1.0f;
@@ -28,7 +27,7 @@ public class Unit
 	public int TimesAttacked { get; set; } = 0;
 
 
-	public Unit(string name, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, int baseDamage, List<Ability> abilities, List<IStatus> statuses)
+	public Unit(string name, int baseHP, int baseMovement, int baseSpeed, float baseCritChance, int maxEnergy, List<Ability> abilities, List<IStatus> statuses)
 	{
 		Name = name;
 		Inventory = new Inventory(this);
@@ -42,9 +41,94 @@ public class Unit
 		BaseCritChance = baseCritChance;
 		EffectiveCritChance = baseCritChance;
 		MaxEnergy = maxEnergy;
-		BaseDamage = baseDamage;
-		EffectiveDamage = baseDamage;
 		Abilities = abilities;
 		Statuses = statuses;
 	}
+
+
+	public void CalculateEffectiveStats(TriggerContext triggerContext)
+	{
+		var activeItemEffects = Inventory.GetActiveItemEffects(triggerContext);
+        var intermediateMovement = BaseMovement;
+        var intermediateSpeed = BaseSpeed;
+        var intermediateCritChance = BaseCritChance;
+		var intermediateDamageReduction = BaseDamageReduction;
+		var intermediateDamageModifier = BaseDamageModifier;
+
+
+		foreach (var effect in activeItemEffects)
+		{
+            switch (effect.StatModified)
+            {
+                case Stat.Movement:
+
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        intermediateMovement = intermediateMovement + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        intermediateMovement = intermediateMovement * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    break;
+
+                case Stat.DamageReduction:
+
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        intermediateDamageReduction = intermediateDamageReduction + effect.ModificationNumber;
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        intermediateDamageReduction = intermediateDamageReduction * effect.ModificationNumber;
+                    }
+                    break;
+
+                case Stat.DamageModifier:
+
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        intermediateDamageModifier = intermediateDamageModifier + effect.ModificationNumber;
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        intermediateDamageModifier = intermediateDamageModifier * effect.ModificationNumber;
+                    }
+                    break;
+
+                case Stat.Speed:
+
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        intermediateSpeed = intermediateSpeed + Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        intermediateSpeed = intermediateSpeed * Convert.ToInt32(effect.ModificationNumber);
+                    }
+                    break;
+
+                case Stat.CritChance:
+
+                    if (effect.OperatorSign == OperatorHandler.Add)
+                    {
+                        intermediateCritChance = intermediateCritChance + effect.ModificationNumber;
+                    }
+                    else if (effect.OperatorSign == OperatorHandler.Multiply)
+                    {
+                        intermediateCritChance = intermediateCritChance * effect.ModificationNumber;
+                    }
+                    break;
+            }
+        }
+        EffectiveCritChance = intermediateCritChance;
+        EffectiveDamageModifier = intermediateDamageModifier;
+        EffectiveDamageReduction = intermediateDamageReduction;
+        EffectiveMovement = intermediateMovement;
+        EffectiveSpeed = intermediateSpeed;
+
+
+
+
+    }
 }

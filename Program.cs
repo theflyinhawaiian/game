@@ -9,27 +9,26 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var burnStatus = new SingleStatus("Burn", 3, Stat.CurrentHp, OperatorHandler.Add, -3f);
-        var freezeStatus = new MultiStatus("Freeze", 1, new List<StatusPart> { new StatusPart(Stat.Movement, OperatorHandler.Multiply, 0f), new StatusPart(Stat.Damage, OperatorHandler.Multiply, 0f) });
+        var freezeStatus = new MultiStatus("Freeze", 1, new List<StatusPart> { new StatusPart(Stat.Movement, OperatorHandler.Multiply, 0f), new StatusPart(Stat.DamageModifier, OperatorHandler.Multiply, 0f) });
         var slowStatus = new SingleStatus("Slow", 1, Stat.Movement, OperatorHandler.Multiply, .5f);
-        var silenceStatus = new SingleStatus("Silence", 2, Stat.Damage, OperatorHandler.Multiply, 0f);
+        var silenceStatus = new SingleStatus("Silence", 2, Stat.DamageModifier, OperatorHandler.Multiply, 0f);
 
         var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, new List<IStatus> { slowStatus, freezeStatus }, null);
 
-        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<IStatus> { burnStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, burnStatus), new AbilityEffect("Flare Spread", 20, 5, burnStatus) });
+        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<IStatus> { slowStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, slowStatus), new AbilityEffect("Flare Spread", 20, 5, slowStatus) });
 
         //This is functionally equivalent to list.Add(flareshot)
         var princessAbilities = new List<Ability> { flareShot };
         var placeholderAbilities = new List<Ability>();
 
 
-        var princessStatuses = new List<IStatus>() { silenceStatus, burnStatus, freezeStatus };
+        var princessStatuses = new List<IStatus>() { silenceStatus, freezeStatus };
         var placeholderStatuses = new List<IStatus>();
 
-        var princess = new Unit("princess", 100, 5, 16, .05f, 6, 15, princessAbilities, princessStatuses);
-        var hero = new Unit("hero", 140, 5, 10, .05f, 4, 20, placeholderAbilities, placeholderStatuses);
-        var savior = new Unit("savior", 70, 4, 12, .10f, 3, 12, placeholderAbilities, placeholderStatuses);
-        var feeder = new Unit("mayor", 80, 4, 9, .05f, 5, 5, placeholderAbilities, placeholderStatuses);
+        var princess = new Unit("princess", 100, 5, 16, .05f, 6, princessAbilities, princessStatuses);
+        var hero = new Unit("hero", 140, 5, 10, .05f, 4, placeholderAbilities, placeholderStatuses);
+        var savior = new Unit("savior", 70, 4, 12, .10f, 3, placeholderAbilities, placeholderStatuses);
+        var feeder = new Unit("mayor", 80, 4, 9, .05f, 5, placeholderAbilities, placeholderStatuses);
 
         var unitList = new List<Unit>() { princess, hero, savior, feeder };
 
@@ -52,16 +51,12 @@ public class Program
         var radiantKnightWard = new Item("Radiant Knight Ward", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) { TriggerType = TriggerType.OnLevelUp } });
         var berryHP = new Item("Berry that triggers when you get to low hp", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
         var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
-        var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = burnStatus } });
+        var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = slowStatus } });
 
         var currentUnitItemList = new List<Item> { damageCore };
         currentUnit.Inventory = new Inventory(currentUnitItemList, currentUnit);
         var targetedUnitItemList = new List<Item> { armorGames };
         targetedUnit.Inventory = new Inventory(targetedUnitItemList, targetedUnit);
-
-        
-        currentUnit.Inventory.InventoryDisplay();
-        //currentUnit.Inventory.InventoryModify();
 
         DamageCalculation(currentUnit, targetedUnit, currentUnit.Abilities[0]);
         CheckStatUnit(targetedUnit);
@@ -107,7 +102,6 @@ public class Program
         Console.WriteLine($"Crit %: {unit.EffectiveCritChance}");
         Console.WriteLine($"Speed:  {unit.EffectiveSpeed}");
         Console.WriteLine($"Energy: {unit.CurrentEnergy}/{unit.MaxEnergy}");
-        Console.WriteLine($"Damage: {unit.EffectiveDamage}");
 
         var concateStatus = "";
 
@@ -148,18 +142,7 @@ public class Program
     public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit, Ability abilityUsed)
     {
         var contextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = abilityUsed };
-        var activeAttackingEffects = attackingUnit.Inventory.GetActiveItemEffects(contextTrigger);
-        var activeDefendingEffects = defendingUnit.Inventory.GetActiveItemEffects(contextTrigger);
-
-        foreach (var effect in activeAttackingEffects) 
-        { 
-            MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, attackingUnit);
-        }
-        foreach (var effect in activeDefendingEffects)
-        {
-            MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, defendingUnit);
-        }
-        
+        //TO DO: Consume the new calculation method
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
         Console.WriteLine($"Initial Attack Damage: { attackingDamage } ");
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
@@ -168,6 +151,7 @@ public class Program
         defendingUnit.CurrentHP -= attackingDamageInt;
 
         attackingUnit.TimesAttacked++; defendingUnit.TimesDefended++;
+        var activeAttackingEffects = attackingUnit.Inventory.GetActiveItemEffects(contextTrigger);
 
         foreach (var itemEffect in activeAttackingEffects)
         {

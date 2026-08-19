@@ -6,7 +6,6 @@
     CritChance,
     Speed,
     Energy,
-    Damage,
     DamageModifier,
     DamageReduction
 }
