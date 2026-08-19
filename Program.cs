@@ -147,27 +147,26 @@ public class Program
 
     public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit, Ability abilityUsed)
     {
-        var attackingContextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = abilityUsed };
-        var defendingContextTrigger = new TriggerContext { Source = defendingUnit, Target = attackingUnit, AbilityUsed = abilityUsed };
-        var activeAttackingEffects = attackingUnit.Inventory.GetActiveItemEffects(attackingContextTrigger);
-        var activeDefendingEffects = defendingUnit.Inventory.GetActiveItemEffects(defendingContextTrigger);
+        var contextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = abilityUsed };
+        var activeAttackingEffects = attackingUnit.Inventory.GetActiveItemEffects(contextTrigger);
+        var activeDefendingEffects = defendingUnit.Inventory.GetActiveItemEffects(contextTrigger);
 
         foreach (var effect in activeAttackingEffects) 
         { 
             MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, attackingUnit);
         }
-        foreach (var effect in activeDefendingEffects) 
-        { 
+        foreach (var effect in activeDefendingEffects)
+        {
             MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, defendingUnit);
         }
+        
 
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
-        Console.WriteLine(attackingDamage.ToString() );
+        Console.WriteLine($"Initial Attack Damage: { attackingDamage } ");
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
-        Console.WriteLine(attackingDamage.ToString());
+        Console.WriteLine($"Attack Damage after Damage Reduction: { attackingDamage } ");
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;
-
 
         attackingUnit.TimesAttacked++; defendingUnit.TimesDefended++;
 
