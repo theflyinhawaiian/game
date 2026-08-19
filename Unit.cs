@@ -47,14 +47,4 @@ public class Unit
 		Abilities = abilities;
 		Statuses = statuses;
 	}
-
-	public void TakeDamage(int damage)
-	{
-		CurrentHP -= damage;
-		if (CurrentHP <= 0)
-		{
-			Console.WriteLine("This Unit Should be Dead");
-		}
-	}
-
 }

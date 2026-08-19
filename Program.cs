@@ -52,11 +52,11 @@ public class Program
         var radiantKnightWard = new Item("Radiant Knight Ward", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) { TriggerType = TriggerType.OnLevelUp } });
         var berryHP = new Item("Berry that triggers when you get to low hp", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
         var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
-        var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = burnStatus } }); 
+        var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = burnStatus } });
 
         var currentUnitItemList = new List<Item> { damageCore };
         currentUnit.Inventory = new Inventory(currentUnitItemList, currentUnit);
-        var targetedUnitItemList = new List<Item> { armorGames, armorGames };
+        var targetedUnitItemList = new List<Item> { armorGames };
         targetedUnit.Inventory = new Inventory(targetedUnitItemList, targetedUnit);
 
         
@@ -160,7 +160,6 @@ public class Program
             MathHelper.ApplyEffect(effect.ModificationNumber, effect.OperatorSign, effect.StatModified, defendingUnit);
         }
         
-
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
         Console.WriteLine($"Initial Attack Damage: { attackingDamage } ");
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
