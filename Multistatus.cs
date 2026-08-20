@@ -13,12 +13,8 @@ public class MultiStatus: IStatus
 		StatusParts = statusParts;
 	}
 	
-	public void ApplyStatus(Unit unit)
+	public List<StatusPart> GetActiveStatusParts()
 	{
-		foreach (var statusPart in StatusParts)
-		{
-            MathHelper.ApplyEffect(statusPart.ModificationNumber, statusPart.OperatorSign, statusPart.StatModified, unit);
-        }
-
+		return StatusParts;
     }
 }

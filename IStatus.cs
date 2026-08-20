@@ -2,10 +2,12 @@
 
 public interface IStatus
 {
-    void ApplyStatus(Unit unit);
+    List<StatusPart> GetActiveStatusParts();
     string Name { get; set; }
     int Duration { get; set; }
     
 }
+
+
 
 

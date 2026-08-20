@@ -22,7 +22,7 @@ public class Program
         var placeholderAbilities = new List<Ability>();
 
 
-        var princessStatuses = new List<IStatus>() { silenceStatus, freezeStatus };
+        var princessStatuses = new List<IStatus>() { slowStatus };
         var placeholderStatuses = new List<IStatus>();
 
         var princess = new Unit("princess", 100, 5, 16, .05f, 6, princessAbilities, princessStatuses);
@@ -55,9 +55,11 @@ public class Program
 
         var currentUnitItemList = new List<Item> { damageCore };
         currentUnit.Inventory = new Inventory(currentUnitItemList, currentUnit);
+
         var targetedUnitItemList = new List<Item> { armorGames };
         targetedUnit.Inventory = new Inventory(targetedUnitItemList, targetedUnit);
 
+        CheckStatUnit(targetedUnit);
         DamageCalculation(currentUnit, targetedUnit, currentUnit.Abilities[0]);
         CheckStatUnit(targetedUnit);
 
@@ -83,15 +85,6 @@ public class Program
         }
         Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ");
     }
-
-    public static void ApplyStatusEffect(Unit unit)
-    {
-        foreach(var status in unit.Statuses)
-        {
-            status.ApplyStatus(unit);
-        }
-    }
-
 
     public static void CheckStatUnit(Unit unit)
     {
@@ -142,9 +135,11 @@ public class Program
     public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit, Ability abilityUsed)
     {
         var contextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = abilityUsed };
-        //TO DO: Consume the new calculation method
+        attackingUnit.CalculateEffectiveStats(contextTrigger);
+        defendingUnit.CalculateEffectiveStats(contextTrigger);
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
-        Console.WriteLine($"Initial Attack Damage: { attackingDamage } ");
+        Console.WriteLine($"DamageModifier: {attackingUnit.EffectiveDamageModifier} ");
+        Console.WriteLine($"Initial Attack Damage: { abilityUsed.Damage } ");
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
         Console.WriteLine($"Attack Damage after Damage Reduction: { attackingDamage } ");
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
@@ -160,7 +155,6 @@ public class Program
                 abilityUsed.Statuses.Add(itemEffect.Status);
             }
         }
-
         foreach(var status in abilityUsed.Statuses)
         {
             defendingUnit.Statuses.Add(status);

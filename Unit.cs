@@ -54,10 +54,12 @@ public class Unit
         var intermediateCritChance = BaseCritChance;
 		var intermediateDamageReduction = BaseDamageReduction;
 		var intermediateDamageModifier = BaseDamageModifier;
+        Console.WriteLine($" {intermediateDamageModifier} ");
 
 
 		foreach (var effect in activeItemEffects)
 		{
+            Console.WriteLine($" {effect.ModificationNumber} { effect.OperatorSign} {effect.StatModified}");
             switch (effect.StatModified)
             {
                 case Stat.Movement:
@@ -121,6 +123,79 @@ public class Unit
                     break;
             }
         }
+
+        
+        foreach(var status in Statuses)
+        {
+            foreach(var statusPart in status.GetActiveStatusParts())
+            {
+                switch (statusPart.StatModified)
+                {
+                    case Stat.Movement:
+
+                        if (statusPart.OperatorSign == OperatorHandler.Add)
+                        {
+                            intermediateMovement = intermediateMovement + Convert.ToInt32(statusPart.ModificationNumber);
+                        }
+                        else if (statusPart.OperatorSign == OperatorHandler.Multiply)
+                        {
+                            intermediateMovement = intermediateMovement * Convert.ToInt32(statusPart.ModificationNumber);
+                        }
+                        break;
+
+                    case Stat.DamageReduction:
+
+                        if (statusPart.OperatorSign == OperatorHandler.Add)
+                        {
+                            intermediateDamageReduction = intermediateDamageReduction + statusPart.ModificationNumber;
+                        }
+                        else if (statusPart.OperatorSign == OperatorHandler.Multiply)
+                        {
+                            intermediateDamageReduction = intermediateDamageReduction * statusPart.ModificationNumber;
+                        }
+                        break;
+
+                    case Stat.DamageModifier:
+
+                        if (statusPart.OperatorSign == OperatorHandler.Add)
+                        {
+                            intermediateDamageModifier = intermediateDamageModifier + statusPart.ModificationNumber;
+                        }
+                        else if (statusPart.OperatorSign == OperatorHandler.Multiply)
+                        {
+                            intermediateDamageModifier = intermediateDamageModifier * statusPart.ModificationNumber;
+                        }
+                        break;
+
+                    case Stat.Speed:
+
+                        if (statusPart.OperatorSign == OperatorHandler.Add)
+                        {
+                            intermediateSpeed = intermediateSpeed + Convert.ToInt32(statusPart.ModificationNumber);
+                        }
+                        else if (statusPart.OperatorSign == OperatorHandler.Multiply)
+                        {
+                            intermediateSpeed = intermediateSpeed * Convert.ToInt32(statusPart.ModificationNumber);
+                        }
+                        break;
+
+                    case Stat.CritChance:
+
+                        if (statusPart.OperatorSign == OperatorHandler.Add)
+                        {
+                            intermediateCritChance = intermediateCritChance + statusPart.ModificationNumber;
+                        }
+                        else if (statusPart.OperatorSign == OperatorHandler.Multiply)
+                        {
+                            intermediateCritChance = intermediateCritChance * statusPart.ModificationNumber;
+                        }
+                        break;
+                }
+            }
+        }
+        
+
+
         EffectiveCritChance = intermediateCritChance;
         EffectiveDamageModifier = intermediateDamageModifier;
         EffectiveDamageReduction = intermediateDamageReduction;

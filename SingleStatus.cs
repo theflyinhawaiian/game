@@ -17,10 +17,8 @@ public class SingleStatus: IStatus
 		ModificationNumber = modificationNumber;
 	}
 
-	public void ApplyStatus(Unit unit)
-	{
-		MathHelper.ApplyEffect(ModificationNumber, OperatorSign, StatModified, unit);
-	}
+	public List<StatusPart> GetActiveStatusParts() => new List<StatusPart>() { new StatusPart(StatModified, OperatorSign, ModificationNumber) };
+	
 
 
 
