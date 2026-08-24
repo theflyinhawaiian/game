@@ -2,26 +2,33 @@
 
 public class Inventory
 {
-	public List<Item> Items {  get; set; }
+	public List<Item> EquippedItems {  get; set; }
+    public List<Item> UnequippedItems { get; set; } = new List<Item>();
     public Unit Unit { get; set; }
 
     public Inventory(Unit unit)
     {
-        Items = new List<Item>();
+        EquippedItems = new List<Item>();
+        UnequippedItems = new List<Item>();
         Unit = unit;
 
     }
-
     public Inventory(List<Item> items, Unit unit)
     {
-        Items = items;
+        EquippedItems = items;
+        Unit = unit;
+    }
+    public Inventory(List<Item> items, List<Item> unequippedItems, Unit unit)
+    {
+        EquippedItems = items;
+        UnequippedItems = unequippedItems;
         Unit = unit;
     }
 
     public List<ItemEffect> GetActiveItemEffects(TriggerContext triggerContext)
     {
         var itemEffectList = new List<ItemEffect>();
-        foreach (var item in Items)
+        foreach (var item in EquippedItems)
         {
             foreach (var effect in item.ListOfEffects)
             {

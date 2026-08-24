@@ -53,16 +53,32 @@ public class Program
         var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
         var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = slowStatus } });
 
+        //var listOfAllItems = new List<Item> { damageCore , sacsPizza , sniperScope , selerity , gen1Mech , armorGames , cardinalOrnament , amyr , gielinorCrest , crowbar , maidenlessEdge , puttPuttItem , radiantKnightWard , berryHP , highRoller , hausRebuttal };
+
+        var testUnequippedItemsList = new List<Item> { crowbar, berryHP };
         var currentUnitItemList = new List<Item> { damageCore };
-        currentUnit.Inventory = new Inventory(currentUnitItemList, currentUnit);
+        currentUnit.Inventory = new Inventory(currentUnitItemList, testUnequippedItemsList ,currentUnit);
 
         var targetedUnitItemList = new List<Item> { armorGames };
         targetedUnit.Inventory = new Inventory(targetedUnitItemList, targetedUnit);
 
-        DisplayInfo.CheckStatUnit(targetedUnit);
-        var attackedUnit = UnitAttack(unitList);
-        DisplayInfo.CheckStatUnit(attackedUnit);
-        
+        princess = currentUnit;
+        hero = targetedUnit;
+
+        //DisplayInfo.CheckStatUnit(targetedUnit);
+        //var attackedUnit = UnitAttack(unitList);
+        //DisplayInfo.CheckStatUnit(attackedUnit);
+
+        foreach (var item in princess.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($" {item.ItemName}");
+        }
+        foreach (var item in savior.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($" {item.ItemName}");
+        }
+
+        ItemThrow(unitList);
 
     }
 
@@ -142,6 +158,52 @@ public class Program
         DamageCalculation(attackingUnit, defendingUnit, abilityUsed);
 
         return defendingUnit;
+    }
+
+    public static void ItemThrow(List<Unit> unitList)
+    {
+        Console.WriteLine("Which unit is throwing?");
+        var optionInt = 0;
+        foreach (var unit in unitList)
+        {
+            Console.WriteLine($" {optionInt}: {unit.Name}");
+            optionInt++;
+        }
+        var throwingUnitInput = Console.ReadLine();
+        var throwingUnit = unitList[Int32.Parse(throwingUnitInput)];
+
+        Console.WriteLine("Which unit is being thrown to?");
+        optionInt = 0;
+        foreach (var unit in unitList)
+        {
+            Console.WriteLine($" {optionInt}: {unit.Name}");
+            optionInt++;
+        }
+        var throwntoUnitInput = Console.ReadLine();
+        var throwntoUnit = unitList[Int32.Parse(throwntoUnitInput)];
+
+        Console.WriteLine("Which Item is being thrown?");
+        optionInt = 0;
+        foreach(var item in throwingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($" {optionInt}: {item.ItemName}");
+            optionInt++;
+        }
+        var thrownItemInput = Console.ReadLine();
+        var thrownItem = throwingUnit.Inventory.UnequippedItems[Int32.Parse(thrownItemInput)];
+
+
+        throwntoUnit.Inventory.UnequippedItems.Add(thrownItem);
+        throwingUnit.Inventory.UnequippedItems.Remove(thrownItem);
+
+        foreach(var item in throwntoUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($"{throwntoUnit.Name}: {item.ItemName}");
+        }
+        foreach (var item in throwingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($"{throwingUnit.Name}: {item.ItemName}");
+        }
     }
 
 
