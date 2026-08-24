@@ -2,10 +2,11 @@
 
 public enum TriggerType
 {
-	Combat,
-	OnTurnStart,
-	OnChestOpen,
-	OnEquip,
-	OnLevelUp,
-	OnCrit
+	Combat, //source, target, ability used
+	OnRoundStart, //source
+	OnChestOpen, //source
+	OnEquip, //source
+	OnLevelUp, //source
+	OnCrit, //source
+	OnKill //source
 }

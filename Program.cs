@@ -13,9 +13,9 @@ public class Program
         var slowStatus = new SingleStatus("Slow", 1, Stat.Movement, OperatorHandler.Multiply, .5f);
         var silenceStatus = new SingleStatus("Silence", 2, Stat.DamageModifier, OperatorHandler.Multiply, 0f);
 
-        var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, new List<IStatus> { slowStatus, freezeStatus }, null);
+        var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, null) { Statuses = new List<IStatus> { slowStatus, freezeStatus }, };
 
-        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<IStatus> { slowStatus }, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, slowStatus), new AbilityEffect("Flare Spread", 20, 5, slowStatus) });
+        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, slowStatus), new AbilityEffect("Flare Spread", 20, 5, slowStatus) }) { Statuses = new List<IStatus> { slowStatus }, };
 
         //This is functionally equivalent to list.Add(flareshot)
         var princessAbilities = new List<Ability> { flareShot };
@@ -25,10 +25,10 @@ public class Program
         var princessStatuses = new List<IStatus>() { slowStatus };
         var placeholderStatuses = new List<IStatus>();
 
-        var princess = new Unit("princess", 100, 5, 16, .05f, 6, princessAbilities, princessStatuses);
-        var hero = new Unit("hero", 140, 5, 10, .05f, 4, placeholderAbilities, placeholderStatuses);
-        var savior = new Unit("savior", 70, 4, 12, .10f, 3, placeholderAbilities, placeholderStatuses);
-        var feeder = new Unit("mayor", 80, 4, 9, .05f, 5, placeholderAbilities, placeholderStatuses);
+        var princess = new Unit("The Princess", 100, 5, 16, .05f, 6, princessAbilities, princessStatuses);
+        var hero = new Unit("The Hero", 140, 5, 10, .05f, 4, placeholderAbilities, placeholderStatuses);
+        var savior = new Unit("The Savior", 70, 4, 12, .10f, 3, placeholderAbilities, placeholderStatuses);
+        var feeder = new Unit("The Mayor", 80, 4, 9, .05f, 5, placeholderAbilities, placeholderStatuses);
 
         var unitList = new List<Unit>() { princess, hero, savior, feeder };
 
@@ -42,12 +42,12 @@ public class Program
         var selerity = new Item("Selerity", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Movement) { TriggerType = TriggerType.OnEquip } });
         var gen1Mech = new Item("Generation 1 Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance) });
         var armorGames = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.85f, OperatorHandler.Multiply, Stat.DamageReduction) });
-        var cardinalOrnament = new Item("Cardinal Ornament", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Rigid } });
-        var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee && ctx.Target.EffectiveDamageReduction <= 1.0f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed.AbilityType == AbilityType.Melee } });  
+        var cardinalOrnament = new Item("Cardinal Ornament", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Rigid } });
+        var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Melee && ctx.Target?.EffectiveDamageReduction <= 1.0f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target?.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed?.AbilityType == AbilityType.Melee } });  
         var gielinorCrest = new Item("GielinorCrest", new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier) });
         var crowbar = new Item("Crowbar", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP > 90f / 100f } });
-        var maidenlessEdge = new Item("Maidenless Edge", new List<ItemEffect> { new ItemEffect(1.25f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Melee } });
-        var puttPuttItem = new Item("How2Play PuttPutt Walkthrough HD", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed.AbilityType == AbilityType.Targeted } });
+        var maidenlessEdge = new Item("Maidenless Edge", new List<ItemEffect> { new ItemEffect(1.25f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Melee } });
+        var puttPuttItem = new Item("How2Play PuttPutt Walkthrough HD", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Targeted } });
         var radiantKnightWard = new Item("Radiant Knight Ward", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) { TriggerType = TriggerType.OnLevelUp } });
         var berryHP = new Item("Berry that triggers when you get to low hp", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
         var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
@@ -59,22 +59,14 @@ public class Program
         var targetedUnitItemList = new List<Item> { armorGames };
         targetedUnit.Inventory = new Inventory(targetedUnitItemList, targetedUnit);
 
-        CheckStatUnit(targetedUnit);
-        DamageCalculation(currentUnit, targetedUnit, currentUnit.Abilities[0]);
-        CheckStatUnit(targetedUnit);
+        DisplayInfo.CheckStatUnit(targetedUnit);
+        var attackedUnit = UnitAttack(unitList);
+        DisplayInfo.CheckStatUnit(attackedUnit);
+        
 
     }
 
-    public static void CheckStatusEffect(Unit unit)
-    {
-        var concateStatus = "";
-        for (int i = 0; i < unit.Statuses.Count; i++)
-        {
-            concateStatus += "(" + unit.Statuses[i].Name + ", " + unit.Statuses[i].Duration.ToString() + " turns)";
-        }
-        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ");
-    }
-
+    
     public static void UpdateStatusEffect(Unit unit)
     {
         var concateStatus = "";
@@ -86,55 +78,9 @@ public class Program
         Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ");
     }
 
-    public static void CheckStatUnit(Unit unit)
-    {
-        Console.WriteLine($"\n {unit.Name} \n");
-        Console.WriteLine($"Level:  {unit.Level} ");
-        Console.WriteLine($"Hp:     {unit.CurrentHP}/{unit.EffectiveMaxHP}");
-        Console.WriteLine($"Move:   {unit.EffectiveMovement}");
-        Console.WriteLine($"Crit %: {unit.EffectiveCritChance}");
-        Console.WriteLine($"Speed:  {unit.EffectiveSpeed}");
-        Console.WriteLine($"Energy: {unit.CurrentEnergy}/{unit.MaxEnergy}");
-
-        var concateStatus = "";
-
-        for (int i = 0; i < unit.Statuses.Count; i++)
-        {
-            concateStatus += "(" + unit.Statuses[i].Name + ", " + unit.Statuses[i].Duration.ToString() + " turns)";
-        }
-        Console.WriteLine($"\n{concateStatus}");
-
-        foreach (var ability in unit.Abilities)
-        {
-            Console.WriteLine($"{ability.AbilityName}");
-            Console.WriteLine($"\n Range:  {ability.Range}");
-            Console.WriteLine($"\n Damage: {ability.Damage}");
-            if (ability.Multihits > 1)
-            {
-                Console.WriteLine($"\n Multihits: {ability.Multihits}x");
-            }
-            
-        }
-    }
-
-    public static void CheckStatAll(List<Unit> unitList)
-    {
-        for (int i = 0; i < unitList.Count; i++)
-        {
-            Console.WriteLine($"\n {unitList[i].Name} \n");
-            Console.WriteLine($"Level:  {unitList[i].Level} ");
-            Console.WriteLine($"Hp:     {unitList[i].CurrentHP}/{unitList[i].EffectiveMaxHP}");
-            Console.WriteLine($"Move:   {unitList[i].EffectiveMovement}");
-            Console.WriteLine($"Crit %: {unitList[i].EffectiveCritChance}");
-            Console.WriteLine($"Speed:  {unitList[i].EffectiveSpeed}");
-            Console.WriteLine($"Energy: {unitList[i].CurrentEnergy}/{unitList[i].MaxEnergy}");
-            Console.WriteLine($"DamRed: {unitList[i].EffectiveDamageReduction}");
-        }
-    }
-
     public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit, Ability abilityUsed)
     {
-        var contextTrigger = new TriggerContext { Source = attackingUnit, Target = defendingUnit, AbilityUsed = abilityUsed };
+        var contextTrigger = new TriggerContext(attackingUnit, TriggerType.Combat) { Target = defendingUnit, AbilityUsed = abilityUsed };
         attackingUnit.CalculateEffectiveStats(contextTrigger);
         defendingUnit.CalculateEffectiveStats(contextTrigger);
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
@@ -152,7 +98,7 @@ public class Program
         {
             if (itemEffect.Status != null)
             {
-                abilityUsed.Statuses.Add(itemEffect.Status);
+                abilityUsed.Statuses?.Add(itemEffect.Status);
             }
         }
         foreach(var status in abilityUsed.Statuses)

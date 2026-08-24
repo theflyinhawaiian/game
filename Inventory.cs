@@ -25,7 +25,7 @@ public class Inventory
         {
             foreach (var effect in item.ListOfEffects)
             {
-                if (effect.TriggerCondition(triggerContext))
+                if (effect.TriggerCondition(triggerContext) && effect.TriggerType == triggerContext.TriggerType)
                 {
                     itemEffectList.Add(effect);
                 }
