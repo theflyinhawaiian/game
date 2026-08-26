@@ -36,24 +36,25 @@ public class Program
         var targetedUnit = hero;
 
 
-        var damageCore = new Item("Damage Core", new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier) });
-        var sacsPizza = new Item("Sacs Pizza", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnEquip } });
-        var sniperScope = new Item("Sniper Scope", new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance) });
-        var selerity = new Item("Selerity", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Movement) { TriggerType = TriggerType.OnEquip } });
-        var gen1Mech = new Item("Generation 1 Mech", new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance) });
-        var armorGames = new Item("ArmorItem", new List<ItemEffect> { new ItemEffect(.85f, OperatorHandler.Multiply, Stat.DamageReduction) });
-        var cardinalOrnament = new Item("Cardinal Ornament", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Rigid } });
-        var amyr = new Item("Amyr", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Melee && ctx.Target?.EffectiveDamageReduction <= 1.0f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target?.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed?.AbilityType == AbilityType.Melee } });  
-        var gielinorCrest = new Item("GielinorCrest", new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier) });
-        var crowbar = new Item("Crowbar", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP > 90f / 100f } });
-        var maidenlessEdge = new Item("Maidenless Edge", new List<ItemEffect> { new ItemEffect(1.25f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Melee } });
-        var puttPuttItem = new Item("How2Play PuttPutt Walkthrough HD", new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Targeted } });
-        var radiantKnightWard = new Item("Radiant Knight Ward", new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) { TriggerType = TriggerType.OnLevelUp } });
-        var berryHP = new Item("Berry that triggers when you get to low hp", new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
-        var highRoller = new Item("High Roller", new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
-        var hausRebuttal = new Item("Haus' Rebuttal", new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = slowStatus } });
+        var damageCore = new Item("Damage Core", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier) });
+        var sacsPizza = new Item("Sacs Pizza", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnEquip } });
+        var sniperScope = new Item("Sniper Scope", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(.1f, OperatorHandler.Add, Stat.CritChance) });
+        var selerity = new Item("Selerity", ItemRarity.Uncommon,new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Movement) { TriggerType = TriggerType.OnEquip } });
+        var gen1Mech = new Item("Generation 1 Mech", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect((Convert.ToSingle(currentUnit.EffectiveSpeed) / 100), OperatorHandler.Add, Stat.CritChance) });
+        var armorGames = new Item("ArmorGames", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(.85f, OperatorHandler.Multiply, Stat.DamageReduction) });
+        var cardinalOrnament = new Item("Cardinal Ornament", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Rigid } });
+        var amyr = new Item("Amyr", ItemRarity.Rare, new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Melee && ctx.Target?.EffectiveDamageReduction <= 1.0f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target?.EffectiveDamageReduction > 1.0f && ctx.AbilityUsed?.AbilityType == AbilityType.Melee } });  
+        var gielinorCrest = new Item("GielinorCrest", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(currentUnit.CurrentHP / currentUnit.EffectiveMaxHP +.5f, OperatorHandler.Multiply, Stat.DamageModifier) });
+        var crowbar = new Item("Crowbar", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Target.CurrentHP / ctx.Target.EffectiveMaxHP > 90f / 100f } });
+        var maidenlessEdge = new Item("Maidenless Edge", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1.25f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Melee } });
+        var puttPuttItem = new Item("How2Play PuttPutt Walkthrough HD", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1.15f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.AbilityUsed?.AbilityType == AbilityType.Targeted } });
+        var radiantKnightWard = new Item("Radiant Knight Ward", ItemRarity.Rare, new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) { TriggerType = TriggerType.OnLevelUp } });
+        var berryHP = new Item("Berry that triggers when you get to low hp", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
+        var highRoller = new Item("High Roller", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
+        var hausRebuttal = new Item("Haus' Rebuttal", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = slowStatus } });
+        var smallAntVision = new Item("A Small Ant's Vision", ItemRarity.Mystical, new List<ItemEffect> { new ItemEffect(2.0f, OperatorHandler.Multiply, Stat.DamageModifier) });
 
-        //var listOfAllItems = new List<Item> { damageCore , sacsPizza , sniperScope , selerity , gen1Mech , armorGames , cardinalOrnament , amyr , gielinorCrest , crowbar , maidenlessEdge , puttPuttItem , radiantKnightWard , berryHP , highRoller , hausRebuttal };
+        var listOfAllItems = new List<Item> { damageCore , sacsPizza , sniperScope , selerity , gen1Mech , armorGames , cardinalOrnament , amyr , gielinorCrest , crowbar , maidenlessEdge , puttPuttItem , radiantKnightWard , berryHP , highRoller , hausRebuttal , smallAntVision};
 
         var testUnequippedItemsList = new List<Item> { crowbar, berryHP };
         var currentUnitItemList = new List<Item> { damageCore };
@@ -65,21 +66,7 @@ public class Program
         princess = currentUnit;
         hero = targetedUnit;
 
-        //DisplayInfo.CheckStatUnit(targetedUnit);
-        //var attackedUnit = UnitAttack(unitList);
-        //DisplayInfo.CheckStatUnit(attackedUnit);
-
-        foreach (var item in princess.Inventory.UnequippedItems)
-        {
-            Console.WriteLine($" {item.ItemName}");
-        }
-        foreach (var item in savior.Inventory.UnequippedItems)
-        {
-            Console.WriteLine($" {item.ItemName}");
-        }
-
-        ItemThrow(unitList);
-
+        OpenChest(listOfAllItems, unitList);
     }
 
     
@@ -206,5 +193,48 @@ public class Program
         }
     }
 
+    public static Item AddRandomItem(List<Item> listOfAllItems, Unit unit)
+    {
 
+        Random rnd = new Random();
+        int itemIndex = rnd.Next(1, 101);
+        ItemRarity itemRarity = ItemRarity.Placeholder;
+        if (itemIndex <= 45) { itemRarity = ItemRarity.Common; }
+        if (itemIndex > 45 && itemIndex <= 80) { itemRarity = ItemRarity.Uncommon; }
+        if (itemIndex > 80 && itemIndex <= 94) { itemRarity = ItemRarity.Rare; }
+        if (itemIndex > 94) { itemRarity = ItemRarity.Mystical; }
+        var itemPool = new List<Item>();
+
+        foreach (var item in listOfAllItems)
+        {
+            if (item.Rarity == itemRarity)
+            {
+                itemPool.Add(item);
+            }
+        }
+        var itemID = rnd.Next(0, itemPool.Count);
+
+        var chestItem = itemPool[itemID];
+        unit.Inventory.UnequippedItems.Add(chestItem);
+        return chestItem;
+
+
+    }
+
+    public static void OpenChest(List<Item> listOfAllItems, List<Unit> unitList)
+    {
+        Console.WriteLine("Which unit is opening a Chest?");
+        var optionInt = 0;
+        foreach (var unit in unitList)
+        {
+            Console.WriteLine($" {optionInt}: {unit.Name}");
+            optionInt++;
+        }
+        var chestUnitInput = Console.ReadLine();
+        var chestUnit = unitList[Int32.Parse(chestUnitInput)];
+        var chestItem = AddRandomItem(listOfAllItems, chestUnit);
+        Console.WriteLine($"\n\n'{chestItem.ItemName}' was added to {chestUnit}'s Inventory\n");
+
+        DisplayInfo.CheckInventory(chestUnit);
+    }
 }

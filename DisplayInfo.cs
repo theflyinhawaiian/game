@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 public static class DisplayInfo
 {
@@ -53,6 +54,20 @@ public static class DisplayInfo
             Console.WriteLine($"Speed:  {unitList[i].EffectiveSpeed}");
             Console.WriteLine($"Energy: {unitList[i].CurrentEnergy}/{unitList[i].MaxEnergy}");
             Console.WriteLine($"DamRed: {unitList[i].EffectiveDamageReduction}");
+        }
+    }
+    public static void CheckInventory(Unit unit)
+    {
+        Console.WriteLine($"{unit.Name}'s Inventory");
+        Console.WriteLine($"\nEquipped Items: \n");
+        foreach (var item in unit.Inventory.EquippedItems)
+        {
+            Console.WriteLine($"   {item.ItemName}");
+        }
+        Console.WriteLine($"\nUnequipped Items: \n");
+        foreach (var item in unit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($"   {item.ItemName}");
         }
     }
 
