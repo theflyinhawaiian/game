@@ -62,12 +62,12 @@ public static class DisplayInfo
         Console.WriteLine($"\nEquipped Items: \n");
         foreach (var item in unit.Inventory.EquippedItems)
         {
-            Console.WriteLine($"   {item.ItemName}");
+            Console.WriteLine($"   {item.Name}");
         }
         Console.WriteLine($"\nUnequipped Items: \n");
         foreach (var item in unit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($"   {item.ItemName}");
+            Console.WriteLine($"   {item.Name}");
         }
     }
 

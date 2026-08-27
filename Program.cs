@@ -67,6 +67,7 @@ public class Program
         hero = targetedUnit;
 
         OpenChest(listOfAllItems, unitList);
+        EquipItem(unitList);
     }
 
     
@@ -173,7 +174,7 @@ public class Program
         optionInt = 0;
         foreach(var item in throwingUnit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($" {optionInt}: {item.ItemName}");
+            Console.WriteLine($" {optionInt}: {item.Name}");
             optionInt++;
         }
         var thrownItemInput = Console.ReadLine();
@@ -185,11 +186,11 @@ public class Program
 
         foreach(var item in throwntoUnit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($"{throwntoUnit.Name}: {item.ItemName}");
+            Console.WriteLine($"{throwntoUnit.Name}: {item.Name}");
         }
         foreach (var item in throwingUnit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($"{throwingUnit.Name}: {item.ItemName}");
+            Console.WriteLine($"{throwingUnit.Name}: {item.Name}");
         }
     }
 
@@ -233,8 +234,50 @@ public class Program
         var chestUnitInput = Console.ReadLine();
         var chestUnit = unitList[Int32.Parse(chestUnitInput)];
         var chestItem = AddRandomItem(listOfAllItems, chestUnit);
-        Console.WriteLine($"\n\n'{chestItem.ItemName}' was added to {chestUnit}'s Inventory\n");
+        Console.WriteLine($"\n\n'{chestItem.Name}' was added to {chestUnit}'s Inventory\n");
 
         DisplayInfo.CheckInventory(chestUnit);
     }
+
+    public static void EquipItem(List<Unit> unitList)
+    {
+        Console.WriteLine("\nWhich unit is Equipping an Item?\n");
+        var optionInt = 0;
+        foreach (var unit in unitList)
+        {
+            Console.WriteLine($" {optionInt}: {unit.Name}");
+            optionInt++;
+        }
+        var equippingUnitInput = Console.ReadLine();
+        var equippingUnit = unitList[Int32.Parse(equippingUnitInput)];
+
+        Console.WriteLine($"\nWhich Item is {equippingUnit.Name} Equipping?\n");
+        optionInt = 0;
+        foreach(var item in equippingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($" {optionInt}: {item.Name}");
+            optionInt++;
+        }
+
+        var itemToEquipInput = Console.ReadLine();
+        var itemToEquip = equippingUnit.Inventory.UnequippedItems[Int32.Parse(itemToEquipInput)];
+        equippingUnit.Inventory.UnequippedItems.Remove(itemToEquip);
+        equippingUnit.Inventory.EquippedItems.Add(itemToEquip);
+
+
+        Console.WriteLine($"\n\n'{itemToEquip.Name}' was Equipped\n");
+        foreach (var item in equippingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($"unequipped Item: {item.Name}");
+        }
+        foreach (var item in equippingUnit.Inventory.EquippedItems)
+        {
+            Console.WriteLine($"equipped Item: {item.Name}");
+        }
+
+    }
+
+
+
+
 }
