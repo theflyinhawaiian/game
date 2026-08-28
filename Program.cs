@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Mail;
 using System.Net.WebSockets;
 using System.Security.Cryptography;
+using System.Linq;
 
 public class Program
 {
@@ -57,7 +58,7 @@ public class Program
         var listOfAllItems = new List<Item> { damageCore , sacsPizza , sniperScope , selerity , gen1Mech , armorGames , cardinalOrnament , amyr , gielinorCrest , crowbar , maidenlessEdge , puttPuttItem , radiantKnightWard , berryHP , highRoller , hausRebuttal , smallAntVision};
 
         var testUnequippedItemsList = new List<Item> { crowbar, berryHP };
-        var currentUnitItemList = new List<Item> { damageCore };
+        var currentUnitItemList = new List<Item> { damageCore, sacsPizza, sniperScope };
         currentUnit.Inventory = new Inventory(currentUnitItemList, testUnequippedItemsList ,currentUnit);
 
         var targetedUnitItemList = new List<Item> { armorGames };
@@ -66,8 +67,7 @@ public class Program
         princess = currentUnit;
         hero = targetedUnit;
 
-        OpenChest(listOfAllItems, unitList);
-        EquipItem(unitList);
+        DisplayTurnOrder(unitList);
     }
 
     
@@ -251,6 +251,12 @@ public class Program
         var equippingUnitInput = Console.ReadLine();
         var equippingUnit = unitList[Int32.Parse(equippingUnitInput)];
 
+        while (equippingUnit.Inventory.EquippedItems.Count >= 4)
+        {
+            Console.WriteLine("Too many Items: Please Unequip Item of your choice");
+            UnEquipItem(equippingUnit);
+        }
+
         Console.WriteLine($"\nWhich Item is {equippingUnit.Name} Equipping?\n");
         optionInt = 0;
         foreach(var item in equippingUnit.Inventory.UnequippedItems)
@@ -277,6 +283,34 @@ public class Program
 
     }
 
+    public static void UnEquipItem(Unit unit)
+    {
+        Console.WriteLine("Which Item is being Unequipped?");
+        var optionInt = 0;
+        foreach(var item in unit.Inventory.EquippedItems)
+        {
+            Console.WriteLine($" {optionInt}: {item.Name}");
+            optionInt++;
+        }
+
+        var itemToUnEquipInput = Console.ReadLine();
+        var itemToUnEquip = unit.Inventory.EquippedItems[Int32.Parse(itemToUnEquipInput)];
+        unit.Inventory.EquippedItems.Remove(itemToUnEquip);
+        unit.Inventory.UnequippedItems.Add (itemToUnEquip);
+    }
+
+    public static void DisplayTurnOrder(List<Unit> unitList)
+    {
+        List<Unit> turnOrderList = unitList.OrderByDescending(unit=>unit.EffectiveSpeed).ToList();
+
+        Console.WriteLine("\n\nTurn Order: \n\n");
+        
+        foreach (var unit in turnOrderList)
+        {
+            var unitSumText = DisplayInfo.CheckUnitSummary(unit);
+            Console.WriteLine($" Spd: {unit.EffectiveSpeed} {unitSumText}");
+        }
+    }
 
 
 

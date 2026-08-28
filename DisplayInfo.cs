@@ -3,15 +3,21 @@ using System.Diagnostics;
 
 public static class DisplayInfo
 {
-    public static void CheckStatusEffect(Unit unit)
+    public static string CheckUnitSummary(Unit unit)
     {
         var concateStatus = "";
         for (int i = 0; i < unit.Statuses.Count; i++)
         {
             concateStatus += "(" + unit.Statuses[i].Name + ", " + unit.Statuses[i].Duration.ToString() + " turns)";
         }
-        Console.WriteLine($"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ");
+        var fullText = $"- {unit.Name} [{unit.CurrentHP}/{unit.EffectiveMaxHP}] {concateStatus} ";
+        return fullText;
     }
+    public static void CheckStatusEffect(Unit unit)
+    {
+        Console.WriteLine(CheckUnitSummary(unit));
+    }
+
     public static void CheckStatUnit(Unit unit)
     {
         Console.WriteLine($"\n {unit.Name} \n");
