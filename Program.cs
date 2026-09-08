@@ -26,15 +26,19 @@ public class Program
         var princessStatuses = new List<IStatus>() { slowStatus };
         var placeholderStatuses = new List<IStatus>();
 
-        var princess = new Unit("The Princess", 100, 5, 16, .05f, 6, princessAbilities, princessStatuses);
-        var hero = new Unit("The Hero", 140, 5, 10, .05f, 4, placeholderAbilities, placeholderStatuses);
-        var savior = new Unit("The Savior", 70, 4, 12, .10f, 3, placeholderAbilities, placeholderStatuses);
-        var feeder = new Unit("The Mayor", 80, 4, 9, .05f, 5, placeholderAbilities, placeholderStatuses);
+        var princessUnit = new Unit("The Princess", 100, 5, 16, .05f, 6, princessAbilities, princessStatuses);
+        var heroUnit = new Unit("The Hero", 140, 5, 10, .05f, 4, placeholderAbilities, placeholderStatuses);
+        var saviorUnit = new Unit("The Savior", 70, 4, 12, .10f, 3, placeholderAbilities, placeholderStatuses);
+        var mayorUnit = new Unit("The Mayor", 80, 4, 9, .05f, 5, placeholderAbilities, placeholderStatuses);
+        var feederUnit = new Unit("The Feeder", 100, 4, 13, .05f, 6, placeholderAbilities, placeholderStatuses);
+        var penguinUnit = new Unit("The Penguin", 105, 4, 7, .05f, 7, placeholderAbilities, placeholderStatuses);
+        var manicUnit = new Unit("The Manic!", 70, 4, 6, .05f, 6, placeholderAbilities, placeholderStatuses);
+        
 
-        var unitList = new List<Unit>() { princess, hero, savior, feeder };
+        var unitList = new List<Unit>() { princessUnit, heroUnit, saviorUnit, mayorUnit };
 
-        var currentUnit = princess;
-        var targetedUnit = hero;
+        var currentUnit = princessUnit;
+        var targetedUnit = heroUnit;
 
 
         var damageCore = new Item("Damage Core", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1.1f, OperatorHandler.Multiply, Stat.DamageModifier) });
@@ -64,10 +68,11 @@ public class Program
         var targetedUnitItemList = new List<Item> { armorGames };
         targetedUnit.Inventory = new Inventory(targetedUnitItemList, targetedUnit);
 
-        princess = currentUnit;
-        hero = targetedUnit;
+        princessUnit = currentUnit;
+        heroUnit = targetedUnit;
 
         DisplayTurnOrder(unitList);
+        UnitAttack(unitList);
     }
 
     
@@ -312,6 +317,12 @@ public class Program
         }
     }
 
+    public static void InitiateGameStart(List<Unit> unitList)
+    {
+        Console.WriteLine("Welcome to Project: Knockoffs! Thank you for loading in. How many characters will be on your lineup?");
+        var rosterSizeInput = Console.ReadLine();
+        var rosterSize = Int32.Parse(rosterSizeInput);
+    }
 
 
 }
