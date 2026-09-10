@@ -71,8 +71,8 @@ public class Program
         princessUnit = currentUnit;
         heroUnit = targetedUnit;
 
-        DisplayTurnOrder(unitList);
-        UnitAttack(unitList);
+
+        InitiateGameStart(unitList);
     }
 
     
@@ -319,9 +319,31 @@ public class Program
 
     public static void InitiateGameStart(List<Unit> unitList)
     {
-        Console.WriteLine("Welcome to Project: Knockoffs! Thank you for loading in. How many characters will be on your lineup?");
+        Console.WriteLine("Welcome to Project: Knockoffs! Thank you for loading in. How many characters will be on each person's lineup?");
         var rosterSizeInput = Console.ReadLine();
         var rosterSize = Int32.Parse(rosterSizeInput);
+
+        var playerLists = new List<List<Unit>>();
+
+        for (int i = 0; i < rosterSize; i++)
+        {
+            Console.WriteLine($"Player 1: Select Unit #{i + 1} ");
+            var optionInt = 0;
+            foreach (var unit in unitList)
+            {
+                Console.WriteLine($"{optionInt}: {unit.Name}");
+                optionInt++;
+            }
+            var selectedUnitInput = Console.ReadLine();
+            var selectedUnit = Int32.Parse(selectedUnitInput);
+            playerLists[0].Add(unitList[selectedUnit]);
+            Console.WriteLine($"{unitList[selectedUnit].Name} was added to Player 1 Roster. {rosterSize - i} left");
+
+        }
+        foreach (var unit in playerLists[0])
+        {
+            Console.WriteLine($"Player 1: {unit.Name}");
+        }
     }
 
 
