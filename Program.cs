@@ -35,7 +35,7 @@ public class Program
         var manicUnit = new Unit("The Manic!", 70, 4, 6, .05f, 6, placeholderAbilities, placeholderStatuses);
         
 
-        var unitList = new List<Unit>() { princessUnit, heroUnit, saviorUnit, mayorUnit };
+        var unitList = new List<Unit>() { princessUnit, heroUnit, saviorUnit, mayorUnit, feederUnit, penguinUnit, manicUnit };
 
         var currentUnit = princessUnit;
         var targetedUnit = heroUnit;
@@ -324,26 +324,37 @@ public class Program
         var rosterSize = Int32.Parse(rosterSizeInput);
 
         var playerLists = new List<List<Unit>>();
+        var playerCount = 4;
 
-        for (int i = 0; i < rosterSize; i++)
+        for (int p = 0; p < playerCount; p++)
         {
-            Console.WriteLine($"Player 1: Select Unit #{i + 1} ");
-            var optionInt = 0;
-            foreach (var unit in unitList)
+            playerLists.Add(new List<Unit>());
+
+            Console.WriteLine($"\n\n Player {p + 1}: Your turn to select your roster: \n");
+
+            for (int i = 0; i < rosterSize; i++)
             {
-                Console.WriteLine($"{optionInt}: {unit.Name}");
-                optionInt++;
+                Console.WriteLine($"Player {p + 1}: Select Unit #{i + 1} ");
+                var optionInt = 0;
+                foreach (var unit in unitList)
+                {
+                    Console.WriteLine($"{optionInt}: {unit.Name}");
+                    optionInt++;
+                }
+                var selectedUnitInput = Console.ReadLine();
+                var selectedUnit = Int32.Parse(selectedUnitInput);
+                playerLists[p].Add(unitList[selectedUnit]);
+                Console.WriteLine($"\n{unitList[selectedUnit].Name} was added to Player {p + 1}'s Roster. {rosterSize - i - 1} left\n");
             }
-            var selectedUnitInput = Console.ReadLine();
-            var selectedUnit = Int32.Parse(selectedUnitInput);
-            playerLists[0].Add(unitList[selectedUnit]);
-            Console.WriteLine($"{unitList[selectedUnit].Name} was added to Player 1 Roster. {rosterSize - i} left");
-
+            Console.WriteLine($"\nPlayer {p + 1}'s Roster: \n");
+            foreach (var unit in playerLists[p])
+            {
+                Console.WriteLine($" {unit.Name}");
+            }
+            
         }
-        foreach (var unit in playerLists[0])
-        {
-            Console.WriteLine($"Player 1: {unit.Name}");
-        }
+        
+        
     }
 
 
