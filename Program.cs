@@ -96,10 +96,7 @@ public class Program
         attackingUnit.CalculateEffectiveStats(contextTrigger);
         defendingUnit.CalculateEffectiveStats(contextTrigger);
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;
-        Console.WriteLine($"DamageModifier: {attackingUnit.EffectiveDamageModifier} ");
-        Console.WriteLine($"Initial Attack Damage: { abilityUsed.Damage } ");
         attackingDamage = attackingDamage * defendingUnit.EffectiveDamageReduction;
-        Console.WriteLine($"Attack Damage after Damage Reduction: { attackingDamage } ");
         var attackingDamageInt = (int)MathF.Round(attackingDamage);
         defendingUnit.CurrentHP -= attackingDamageInt;
 
@@ -119,30 +116,22 @@ public class Program
         }
     }
 
-    public static Unit UnitAttack(List<Unit> unitList)
+    public static Unit UnitAttack(List<List<Unit>> listOfRosters)
     {
+        var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
+
         Console.WriteLine("Which unit is attacking?");
-        var optionInt = 0;
-        foreach (var unit in unitList)
-        {
-            Console.WriteLine($" {optionInt}: {unit.Name}");
-            optionInt++;
-        }
+        DisplayFullRoster(listOfRosters);
         var attackingUnitInput = Console.ReadLine();
-        var attackingUnit = unitList[Int32.Parse(attackingUnitInput)];
+        var attackingUnit = concatenatedListOfActiveUnits[Int32.Parse(attackingUnitInput)];
 
         Console.WriteLine("Which unit is being hit?");
-        optionInt = 0;
-        foreach (var unit in unitList)
-        {
-            Console.WriteLine($" {optionInt}: {unit.Name}");
-            optionInt++;
-        }
+        DisplayFullRoster(listOfRosters);
         var defendingUnitInput = Console.ReadLine();
-        var defendingUnit = unitList[Int32.Parse(defendingUnitInput)];
+        var defendingUnit = concatenatedListOfActiveUnits[Int32.Parse(defendingUnitInput)];
 
         Console.WriteLine("What Ability is being used?");
-        optionInt = 0;
+        int optionInt = 0;
         foreach (var ability in attackingUnit.Abilities)
         {
             Console.WriteLine($" {optionInt}: {ability.AbilityName}");
@@ -156,30 +145,25 @@ public class Program
         return defendingUnit;
     }
 
-    public static void ItemThrow(List<Unit> unitList)
+    public static void ItemThrow(List<List<Unit>> listOfRosters)
     {
-        Console.WriteLine("Which unit is throwing?");
-        var optionInt = 0;
-        foreach (var unit in unitList)
-        {
-            Console.WriteLine($" {optionInt}: {unit.Name}");
-            optionInt++;
-        }
-        var throwingUnitInput = Console.ReadLine();
-        var throwingUnit = unitList[Int32.Parse(throwingUnitInput)];
+        var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
 
+        DisplayFullRoster(listOfRosters);
+        Console.WriteLine("Which unit is throwing?");
+        var throwingUnitInput = Console.ReadLine();
+        var throwingUnit = concatenatedListOfActiveUnits[Int32.Parse(throwingUnitInput)];
+        
+
+        DisplayFullRoster(listOfRosters);
         Console.WriteLine("Which unit is being thrown to?");
-        optionInt = 0;
-        foreach (var unit in unitList)
-        {
-            Console.WriteLine($" {optionInt}: {unit.Name}");
-            optionInt++;
-        }
         var throwntoUnitInput = Console.ReadLine();
-        var throwntoUnit = unitList[Int32.Parse(throwntoUnitInput)];
+        var throwntoUnit = concatenatedListOfActiveUnits[Int32.Parse(throwntoUnitInput)];
+        
+
 
         Console.WriteLine("Which Item is being thrown?");
-        optionInt = 0;
+        var optionInt = 0;
         foreach(var item in throwingUnit.Inventory.UnequippedItems)
         {
             Console.WriteLine($" {optionInt}: {item.Name}");
@@ -202,20 +186,23 @@ public class Program
         }
     }
 
-    public static void ItemThrow(Unit throwingUnit, List<Unit> listOfActiveUnits)
-    {
-        Console.WriteLine("Which unit is being thrown to?");
-        var optionInt = 0;
-        foreach (var unit in listOfActiveUnits)
+    public static void ItemThrow(Unit throwingUnit, List<List<Unit>> listOfRosters)
+    {   
+        if (throwingUnit.Inventory.UnequippedItems.Count == 0) 
         {
-            Console.WriteLine($" {optionInt}: {unit.Name}");
-            optionInt++;
+            Console.WriteLine("Error: No unequipped items to throw");
+            return; 
         }
+
+        var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
+
+        DisplayFullRoster(listOfRosters);
+        Console.WriteLine("\nWhich unit is being thrown to?");
         var throwntoUnitInput = Console.ReadLine();
-        var throwntoUnit = listOfActiveUnits[Int32.Parse(throwntoUnitInput)];
+        var throwntoUnit = concatenatedListOfActiveUnits[Int32.Parse(throwntoUnitInput)];
 
         Console.WriteLine("Which Item is being thrown?");
-        optionInt = 0;
+        var optionInt = 0;
         foreach (var item in throwingUnit.Inventory.UnequippedItems)
         {
             Console.WriteLine($" {optionInt}: {item.Name}");
@@ -434,7 +421,7 @@ public class Program
         var selectedUnit = concatenatedListOfUnits[Int32.Parse(selectedUnitInput)];
         Console.WriteLine($"Is {selectedUnit.Name} throwing an item? (y/n)");
         var isUnitThrowingInput = Console.ReadLine();
-        if (isUnitThrowingInput == "y") { ItemThrow(selectedUnit, concatenatedListOfUnits); }
+        if (isUnitThrowingInput == "y") { ItemThrow(selectedUnit, listOfRosters); }
         
     }
 
