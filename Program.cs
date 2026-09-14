@@ -71,10 +71,11 @@ public class Program
         princessUnit = currentUnit;
         heroUnit = targetedUnit;
 
-
+        //var testRosterList allows for easier testing without having to create a new roster
         var testRosterList = new List<List<Unit>> { new List<Unit> { heroUnit, princessUnit, saviorUnit }, new List<Unit> { princessUnit, saviorUnit, feederUnit}, new List<Unit> { princessUnit, manicUnit, penguinUnit}, new List<Unit> { saviorUnit, mayorUnit, princessUnit} };
-        ListConcatenation(testRosterList);
-        DisplayFullRoster(testRosterList);
+        //var rosterList = InitialRosterSelection(unitList);
+        FullTurnRunthrough(testRosterList);
+
     }
 
     
@@ -192,6 +193,42 @@ public class Program
         throwingUnit.Inventory.UnequippedItems.Remove(thrownItem);
 
         foreach(var item in throwntoUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($"{throwntoUnit.Name}: {item.Name}");
+        }
+        foreach (var item in throwingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($"{throwingUnit.Name}: {item.Name}");
+        }
+    }
+
+    public static void ItemThrow(Unit throwingUnit, List<Unit> listOfActiveUnits)
+    {
+        Console.WriteLine("Which unit is being thrown to?");
+        var optionInt = 0;
+        foreach (var unit in listOfActiveUnits)
+        {
+            Console.WriteLine($" {optionInt}: {unit.Name}");
+            optionInt++;
+        }
+        var throwntoUnitInput = Console.ReadLine();
+        var throwntoUnit = listOfActiveUnits[Int32.Parse(throwntoUnitInput)];
+
+        Console.WriteLine("Which Item is being thrown?");
+        optionInt = 0;
+        foreach (var item in throwingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($" {optionInt}: {item.Name}");
+            optionInt++;
+        }
+        var thrownItemInput = Console.ReadLine();
+        var thrownItem = throwingUnit.Inventory.UnequippedItems[Int32.Parse(thrownItemInput)];
+
+
+        throwntoUnit.Inventory.UnequippedItems.Add(thrownItem);
+        throwingUnit.Inventory.UnequippedItems.Remove(thrownItem);
+
+        foreach (var item in throwntoUnit.Inventory.UnequippedItems)
         {
             Console.WriteLine($"{throwntoUnit.Name}: {item.Name}");
         }
@@ -319,7 +356,7 @@ public class Program
         }
     }
 
-    public static List<List<Unit>> InitiateGameStart(List<Unit> unitList)
+    public static List<List<Unit>> InitialRosterSelection(List<Unit> unitList)
     {
         Console.WriteLine("Welcome to Project: Knockoffs! Thank you for loading in. How many characters will be on each person's lineup?");
         var rosterSizeInput = Console.ReadLine();
@@ -386,6 +423,19 @@ public class Program
             }
             rosterCount++;
         }
+    }
+
+    public static void FullTurnRunthrough(List<List<Unit>> listOfRosters)
+    {
+        var concatenatedListOfUnits = ListConcatenation(listOfRosters);
+        DisplayFullRoster(listOfRosters);
+        Console.WriteLine("\nWhich Unit's turn is next?\n");
+        var selectedUnitInput = Console.ReadLine();
+        var selectedUnit = concatenatedListOfUnits[Int32.Parse(selectedUnitInput)];
+        Console.WriteLine($"Is {selectedUnit.Name} throwing an item? (y/n)");
+        var isUnitThrowingInput = Console.ReadLine();
+        if (isUnitThrowingInput == "y") { ItemThrow(selectedUnit, concatenatedListOfUnits); }
+        
     }
 
 }
