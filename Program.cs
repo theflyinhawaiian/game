@@ -72,7 +72,9 @@ public class Program
         heroUnit = targetedUnit;
 
 
-        InitiateGameStart(unitList);
+        var testRosterList = new List<List<Unit>> { new List<Unit> { heroUnit, princessUnit, saviorUnit }, new List<Unit> { princessUnit, saviorUnit, feederUnit}, new List<Unit> { princessUnit, manicUnit, penguinUnit}, new List<Unit> { saviorUnit, mayorUnit, princessUnit} };
+        ListConcatenation(testRosterList);
+        DisplayFullRoster(testRosterList);
     }
 
     
@@ -317,7 +319,7 @@ public class Program
         }
     }
 
-    public static void InitiateGameStart(List<Unit> unitList)
+    public static List<List<Unit>> InitiateGameStart(List<Unit> unitList)
     {
         Console.WriteLine("Welcome to Project: Knockoffs! Thank you for loading in. How many characters will be on each person's lineup?");
         var rosterSizeInput = Console.ReadLine();
@@ -351,11 +353,39 @@ public class Program
             {
                 Console.WriteLine($" {unit.Name}");
             }
-            
         }
-        
-        
+        return playerLists;
     }
 
+    public static List<Unit> ListConcatenation(List<List<Unit>> listOfRosters)
+    {
+        var concatenatedListOfAllActiveUnits = new List<Unit>();
+
+        foreach (var roster in listOfRosters)
+        {
+            foreach (var unit in roster)
+            {
+                concatenatedListOfAllActiveUnits.Add(unit);
+            }
+        }
+        return concatenatedListOfAllActiveUnits;
+    }
+
+    public static void DisplayFullRoster(List<List<Unit>> listOfRosters)
+    {
+        var optionInt = 0;
+        var rosterCount = 0;
+
+        foreach (var roster in listOfRosters)
+        {
+            Console.WriteLine($"\nRoster {rosterCount + 1}: \n");
+            foreach (var unit in roster)
+            {
+                Console.WriteLine($"{optionInt}: {unit.Name} ");
+                optionInt++;
+            }
+            rosterCount++;
+        }
+    }
 
 }
