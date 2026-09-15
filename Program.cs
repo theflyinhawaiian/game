@@ -74,7 +74,8 @@ public class Program
         //var testRosterList allows for easier testing without having to create a new roster
         var testRosterList = new List<List<Unit>> { new List<Unit> { heroUnit, princessUnit, saviorUnit }, new List<Unit> { princessUnit, saviorUnit, feederUnit}, new List<Unit> { princessUnit, manicUnit, penguinUnit}, new List<Unit> { saviorUnit, mayorUnit, princessUnit} };
         //var rosterList = InitialRosterSelection(unitList);
-        FullTurnRunthrough(testRosterList);
+        //FullTurnRunthrough(testRosterList);
+        OpenChest(listOfAllItems, testRosterList);
 
     }
 
@@ -153,7 +154,12 @@ public class Program
         Console.WriteLine("Which unit is throwing?");
         var throwingUnitInput = Console.ReadLine();
         var throwingUnit = concatenatedListOfActiveUnits[Int32.Parse(throwingUnitInput)];
-        
+
+        if (throwingUnit.Inventory.UnequippedItems.Count == 0)
+        {
+            Console.WriteLine("Error: No unequipped items to throw");
+            return;
+        }
 
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("Which unit is being thrown to?");
@@ -249,21 +255,16 @@ public class Program
         var chestItem = itemPool[itemID];
         unit.Inventory.UnequippedItems.Add(chestItem);
         return chestItem;
-
-
     }
 
-    public static void OpenChest(List<Item> listOfAllItems, List<Unit> unitList)
+    public static void OpenChest(List<Item> listOfAllItems, List<List<Unit>> listOfRosters)
     {
-        Console.WriteLine("Which unit is opening a Chest?");
-        var optionInt = 0;
-        foreach (var unit in unitList)
-        {
-            Console.WriteLine($" {optionInt}: {unit.Name}");
-            optionInt++;
-        }
+        var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
+
+        DisplayFullRoster(listOfRosters);
+        Console.WriteLine("\nWhich unit is opening a Chest?");
         var chestUnitInput = Console.ReadLine();
-        var chestUnit = unitList[Int32.Parse(chestUnitInput)];
+        var chestUnit = concatenatedListOfActiveUnits[Int32.Parse(chestUnitInput)];
         var chestItem = AddRandomItem(listOfAllItems, chestUnit);
         Console.WriteLine($"\n\n'{chestItem.Name}' was added to {chestUnit}'s Inventory\n");
 
@@ -417,8 +418,11 @@ public class Program
         var concatenatedListOfUnits = ListConcatenation(listOfRosters);
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("\nWhich Unit's turn is next?\n");
+
         var selectedUnitInput = Console.ReadLine();
         var selectedUnit = concatenatedListOfUnits[Int32.Parse(selectedUnitInput)];
+        
+
         Console.WriteLine($"Is {selectedUnit.Name} throwing an item? (y/n)");
         var isUnitThrowingInput = Console.ReadLine();
         if (isUnitThrowingInput == "y") { ItemThrow(selectedUnit, listOfRosters); }
